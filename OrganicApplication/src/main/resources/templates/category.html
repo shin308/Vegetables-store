@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Management Category</title>
+  <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+</head>
+<body>
+  <div class="container-fluid text-center">
+    <div>
+      <h1>Management Category</h1>
+    </div>
+    <div class="m-2">
+      <a class="h3" th:href="@{/category/new}">Add New Category</a>
+    </div>
+
+    <div th:if="${message}" class="alert alert-success text-center">[[${message}]]</div>
+
+    <div>
+      <table class="table table-bordered">
+        <thead>
+        <tr class="bg-dark text-light">
+          <th>Category ID</th>
+          <th>Category Name</th>
+          <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <th:block th:each="category:${categoryList}">
+          <tr>
+            <td>[[${category.categoryID}]]</td>
+            <td>[[${category.categoryName}]]</td>
+            <td>
+              <a class="h4 m-3" th:href="@{'/category/edit/' + ${category.categoryID}}">Edit</a>
+              <a class="h4" th:href="@{'/category/delete/' + ${category.categoryID}}">Delete</a>
+            </td>
+          </tr>
+        </th:block>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</body>
+</html>

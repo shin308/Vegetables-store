@@ -1,81 +1,60 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-<meta charset="ISO-8859-1">
-<title>Registration and Login App</title>
-
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-	crossorigin="anonymous">
-	
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/5a213e1813.js" crossorigin="anonymous"></script>
 </head>
-<body>
+<style>
+    body{
+        text-align: center;
+    }
+    #container{
+        height: 550px;
+        width: 500px;
+        border: 1px solid #5CB85C;
+        margin: 150px auto;
+        padding: 10px 60px;
+        border-radius: 5px;
+    }
+    .mb-3{
+        text-align: left;
+    }
+    button{
+        width: 200px;
+        height: 50px;
+        margin: 40px 0 30px 0;
+        border: 0;
+    }
+    h2{
+        margin-bottom: 50px;
+        color: #5CB85C;
+    }
+</style>
 
-	<!-- create navigation bar ( header) -->
-	<nav class="navbar navbar-inverse navbar-fixed-top">
-		<div class="container">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed"
-					data-toggle="collapse" data-target="#navbar" aria-expanded="false"
-					aria-controls="navbar">
-					<span class="sr-only">Toggle navigation</span> <span
-						class="icon-bar"></span> <span class="icon-bar"></span> <span
-						class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="#" th:href="@{/}">Registration and
-					Login Module</a>
-			</div>
-		</div>
-	</nav>
-	
-	<br>
-	<br>
-	<div class = "container">
-		<div class = "row">
-			<div class = "col-md-6 col-md-offset-3">
-				
-				<h1> User Login Page </h1>
-				<form th:action="@{/login}" method="post">
-					
-					<!-- error message -->
-					<div th:if="${param.error}">
-						<div class="alert alert-danger">Invalid username or
-							password.</div>
-					</div>
-				
-					<!-- logout message -->
-					<div th:if="${param.logout}">
-						<div class="alert alert-info">You have been logged out.</div>
-					</div>
-					
-					<div class = "form-group">
-						<label for ="username"> Username </label> :
-						<input type="text" class = "form-control" id ="username" name = "username"
-						placeholder="Enter Email ID" autofocus="autofocus">
-					</div>
-					
-					<div class="form-group">
-						<label for="password">Password</label>: <input type="password"
-							id="password" name="password" class="form-control"
-							placeholder="Enter Password" />
-					</div>
-					
-					<div class="form-group">
-						<div class="row">
-							<div class="col-sm-6 col-sm-offset-3">
-								<input type="submit" name="login-submit" id="login-submit"
-									class="form-control btn btn-primary" value="Log In" />
-							</div>
-						</div>
-					</div>
-				</form>
-				<div class="form-group">
-						<span>New user? <a href="/" th:href="@{/registration}">Register
-								here</a></span>
-				</div>
-			</div>
-		</div>
-	</div>
+<body>
+    <div id="container">
+        <img src="https://img.freepik.com/premium-vector/organic-icon-100-percent-organic-product-label_349999-1003.jpg?w=2000" alt="brand_icon" width="170">
+        <h2>LOGIN</h2>
+        <form>
+            <div class="form-floating mb-3">
+                <input type="email" class="form-control" id="floatingInput">
+                <label for="floatingInput">Email address</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="password" class="form-control" id="floatingPassword">
+                <label for="floatingPassword">Password</label>
+            </div>
+            <a style="float: left;" href="#">Forget password?</a>
+            <br>
+            <button type="submit" class="btn btn-success" style="background-color: #5CB85C;">Login</button>
+        </form>
+        <h6>Need an account? <a href="./signup.html">Sign up</a></h6>
+    </div>
 </body>
+
 </html>

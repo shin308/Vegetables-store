@@ -144,26 +144,28 @@
                     <th scope="col-1">Mã sản phẩm</th>
                     <th scope="col-2">Hình ảnh</th>
                     <th scope="col-5">Tên sản phẩm</th>
+                    <th scope="col-1">Loại</th>
                     <th scope="col-1">Số lượng</th>
                     <th scope="col-1">Giá bán</th>
                     <th scope="col-2">Chức năng</th>
                 </tr>
             </thead>
             <tbody class="list">
-                <tr class="item">
-                    <td scope="row">1</td>
-                    <td><img src="../images/image 5.png" width="70"></td>
-                    <td>Cà chua</td>
-                    <td>20</td>
-                    <td>15.000</td>
-                    <td>
-                        <a href="./productInfo.html"><button type="button" class="btn btn-success">Xem</button></a>
-                        <button type="button" class="btn btn-primary" onclick="openEdit()">Sửa</button>
-                        <button type="button" class="btn btn-danger">Xoá</button>
-                    </td>
-                </tr>
-                
-
+                <th:block th:each="product:${productList}">
+                    <tr class="item">
+                        <td>[[${product.productID}]]</td>
+                        <td><img src="https://hcm.fstorage.vn/images/2022/cai-chip-500g_261fc71a-d25a-4cb5-b2cd-8c2018b67292-og.jpg" width="70"></td>
+                        <td>[[${product.productName}]]</td>
+                        <td>[[${product.unit}]]</td>
+                        <td>[[${product.quantity}]]</td>
+                        <td>[[${product.price}]]</td>
+                        <td>
+                            <a th:href="@{/productInfo}"><button type="button" class="btn btn-success">Xem</button></a>
+                            <button type="button" class="btn btn-primary" onclick="openEdit()">Sửa</button>
+                            <button type="button" class="btn btn-danger">Xoá</button>
+                        </td>
+                    </tr>
+                </th:block>
             </tbody>
         </table>
             <ul class="listPage">

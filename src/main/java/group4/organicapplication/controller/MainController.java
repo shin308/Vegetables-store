@@ -14,15 +14,13 @@ public class MainController {
     @Autowired
     private CategoryService service;
     @GetMapping("")
-    public String showHomePage(Model model){
-        List<Category> categoryList = service.listAll();
-        model.addAttribute("categoryList", categoryList);
+    public String showHomePage(){
         return "index";
     }
 
-    @GetMapping("/product")
-    public String showProductPage(){
-        return "product";
+    @GetMapping("/productInfo")
+    public String showproductInfoPage(){
+        return "productInfo";
     }
 
     @GetMapping("/sale")

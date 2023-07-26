@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/5a213e1813.js" crossorigin="anonymous"></script>
+</head>
+<style>
+    ul>li {
+        margin: 0 10px;
+    }
+
+    .listPage {
+        padding: 10px;
+        text-align: center;
+        list-style: none;
+        margin: 0 auto; 
+        position: sticky;
+        top: 100%;
+    }
+
+    .listPage li {
+        background-color: white;
+        padding: 10px 20px;
+        display: inline-block;
+        margin: 0 10px;
+        cursor: pointer;
+    }
+
+    .listPage .active {
+        background-color: #8FC742;
+        color: white;
+    }
+
+    #content {
+        display: grid;
+        grid-template-columns: 60% 40%;
+    }
+
+    .counter {
+        display: flex;
+        align-items: center;
+        justify-content: right;
+    }
+
+    .counter input {
+        width: 50px;
+        line-height: 30px;
+        font-size: 20px;
+        text-align: center;
+        appearance: none;
+        border: 0.5px solid gray;
+    }
+
+    .counter span {
+        display: block;
+        font-size: 25px;
+        padding: 0 10px;
+        cursor: pointer;
+        user-select: none;
+    }
+
+    .addCart {
+        width: 50%;
+        height: 42px;
+        border: 0;
+        border-radius: 5px;
+        background-color: #8FC742;
+        color: white;
+        float: right;
+    }
+
+    div.description{
+        padding: 20px 30px;
+        height: 280px;
+        overflow: auto;
+        border: 0.5px solid;
+        border-radius: 10px;
+    }
+</style>
+
+<body>
+    <header>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid shadow-sm" style="height: 100px;">
+            <a class="navbar-brand" href="#"><img
+                    src="https://img.freepik.com/premium-vector/organic-icon-100-percent-organic-product-label_349999-1003.jpg?w=2000"
+                    alt="brand_icon" width="150"></a>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav">
+
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/product}">SẢN PHẨM</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/sale}">BÁN HÀNG</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/order}">ĐƠN HÀNG</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/category}">DANH MỤC</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/supplier}">NHÀ CUNG CẤP</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/import}">NHẬP HÀNG</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/account}">QUẢN LÝ TÀI KHOẢN</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">THỐNG KÊ</a>
+                    </li>
+                    <li class="nav-item" style="margin-left: 400px;">
+                        <a class="nav-link" href="#"><i class="fa-solid fa-basket-shopping"></i> GIỎ HÀNG</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fa-regular fa-user"></i> ADMIN</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+    <div style="margin: 0 30px;">
+        <div style="display: flex; background-color:#8FC742; color:white;">
+            <div style="height:60px; padding:15px 80px;">
+                <h5>Quản lý sản phẩm / Cà chua</h5>
+            </div>
+        </div>
+
+        <div id="content">
+            <div >
+                <div id="productInfo" class="row mt-3 mb-3">
+                    <div class="col-5">
+                        <img style="transform: translate(25%, 0%); border: 1px solid #8FC742;"
+                            src="../images/image 5.png" width="300">
+                    </div>
+                    <div class="col-4">
+                        <h2 class="mt-3 mb-5">Cà chua</h2>
+                        <div class="row">
+                            <div class="col">
+                                <h5 class="mb-4">Giá bán</h5>
+                                <h5 class="mb-4">Tình trạng</h5>
+                                <h5 class="mb-4">Số lượng</h5>
+                            </div>
+                            <div class="col" style="text-align: right;">
+                                <h5 class="mb-4">20.000</h5>
+                                <h5 class="mb-4">Còn hàng</h5>
+                                <div class="mb-4">
+                                    <div class="counter">
+                                        <span class="down" onClick='decreaseCount(event, this)'>-</span>
+                                        <input type="text" value="1">
+                                        <span class="up" onClick='increaseCount(event, this)'>+</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="addCart">Thêm vào giỏ</button>
+                    </div>
+                </div>
+
+                <div style="display: flex; margin-left:70px;">
+                    <div class="me-3" ><span>5</span> <span style="color: yellow;"><i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i></span>
+                    </div>
+                    <div class="me-3"><span>20</span> Đánh giá</div>
+                    <div><span>30</span> Đã bán</div>
+                </div>
+
+                <div style="margin: 20px 70px;">
+                    <h5>Mô tả sản phẩm</h5>
+                    <div class="description">
+                        <p>
+                        Cà chua đỏ Loại 1 WinEco chứa nhiều các chất dinh dưỡng và vitamin, bao gồm lượng vitamin A,
+                        vitamin C và vitamin K một cách ấn tượng, bên cạnh đó lượng vitamin B6, folate và thiamin cũng
+                        rất đáng kể. Cà chua cũng là nguồn kali, mangan, magiê, phốt pho và đồng. Hơn nữa trong cà chua
+                        cũng chứa chất xơ và protein, cũng như một số hợp chất hữu cơ như lycopene góp phần vào lợi ích
+                        sức khoẻ tổng thể.
+                        <br>
+                        Ngoài ra, Cà chua đỏ Loại 1 WinEco có chứa một lượng lớn lycopene, một chất chống oxy hoá có
+                        hiệu quả cao trong việc thu nhặt ung thư gây ra các gốc tự do. Lợi ích này thậm chí có thể thu
+                        được từ các sản phẩm cà chua được xử lý nhiệt như số tương cà. Lycopene trong cà chua phòng
+                        chống ung thư và có hiệu quả đặc biệt trong việc chống lại ung thư tuyến tiền liệt, ung thư cổ
+                        tử cung, ung thư dạ dày và trực tràng, cũng như ung thư họng và thực quản. Nó cũng bảo vệ chống
+                        ung thư vú và ung thư miệng, theo các nghiên cứu của Trường Y tế Công cộng Harvard.
+                        <br>
+                        Lưu ý:
+                        <br>
+                        - Hạn sử dụng thực tế quý khách vui lòng xem trên bao bì.
+                        <br>
+                        - Hình sản phẩm chỉ mang tính chất minh họa, hình thực tế bao bì của sản phẩm tùy thời điểm sẽ
+                        khác so với thực tế.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div id="review" class="mt-3 mb-3">
+                <div style="background-color: #8FC742; width:35%; height:50px; padding:13px; display:inline-block;">
+                    <h5>Đánh giá của khách hàng</h5>
+                </div>
+                <div class="list border" style="width:90%; padding:15px 15px 0 15px; height:620px;">
+                    <div class="item border mb-3 p-3">
+                        <div class="row">
+                            <div class="col-1 me-3"><i style="font-size: 50px;" class="fa-solid fa-circle-user"></i></div>
+                            <div class="col">
+                                <h6>LinhNT</h6>
+                                <p>2023/06/04</p>
+                            </div>
+                            <div class="col-3" style="color: yellow;"><i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-1 me-3"></div>
+                            <span class="col">Đã mua nhiều lần.<br> Đóng gói chắc chắn.<br> Chất lượng ok</span>
+                        </div>
+                    </div>
+
+
+                    
+                    <ul class="listPage">
+                        <li class="active">1</li>
+                        <li>2</li>
+                        <li>3</li>
+                    </ul>
+                </div>
+
+                
+            </div>
+        </div>
+    </div>
+
+
+    <footer class="position-absolute bottom-0 end-0  shadow-lg p-4"
+        style="height: 70px; width:100%; background-color:black; color:white;">
+        <div class="footer-bottom clearfix">
+            <div class="container">
+                <div class="row">
+                    &copy; 2023 - Vegetables Store by Group 4
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+<script>
+    let thisPage = 1;
+    let limit = 3;
+    let list = document.querySelectorAll('.list .item');
+
+    function loadItem() {
+        let beginGet = limit * (thisPage - 1);
+        let endGet = limit * thisPage - 1;
+        list.forEach((item, key) => {
+            if (key >= beginGet && key <= endGet) {
+                item.style.display = 'block';
+
+            }
+            else {
+                item.style.display = 'none';
+            }
+        })
+        listPage();
+
+    }
+    loadItem();
+    function listPage() {
+        let count = Math.ceil(list.length / limit);
+        document.querySelector('.listPage').innerHTML = '';
+
+        if (thisPage != 1) {
+            let prev = document.createElement('li');
+            prev.innerHTML = '<i class="fa-solid fa-angles-left"></i>';
+            prev.setAttribute('onclick', "changePage(" + (thisPage - 1) + ")");
+            document.querySelector('.listPage').appendChild(prev);
+        }
+
+        for (i = 1; i <= count; i++) {
+            let newPage = document.createElement('li');
+            newPage.innerText = i;
+            if (i == thisPage) {
+                newPage.classList.add('active');
+            }
+            newPage.setAttribute('onclick', "changePage(" + i + ")");
+            document.querySelector('.listPage').appendChild(newPage);
+        }
+        if (thisPage != count) {
+            let next = document.createElement('li');
+            next.innerHTML = '<i class="fa-solid fa-angles-right"></i>';
+            next.setAttribute('onclick', "changePage(" + (thisPage + 1) + ")");
+            document.querySelector('.listPage').appendChild(next);
+        }
+    }
+    function changePage(i) {
+        thisPage = i;
+        loadItem();
+    }
+
+    <!--Quantity button-->
+    function increaseCount(a, b) {
+        var input = b.previousElementSibling;
+        var value = parseInt(input.value, 10);
+        value = isNaN(value) ? 0 : value;
+        value++;
+        input.value = value;
+    }
+
+    function decreaseCount(a, b) {
+        var input = b.nextElementSibling;
+        var value = parseInt(input.value, 10);
+        if (value > 1) {
+            value = isNaN(value) ? 0 : value;
+            value--;
+            input.value = value;
+        }
+    }
+</script>
+
+</html>

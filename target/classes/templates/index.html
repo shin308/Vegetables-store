@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome to My App</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+</head>
+<body>
+<div class="container-fluid text-center">
+    <h1>Welcome!!!</h1>
+    <a class="h2" th:href="@{/category}">Management Category</a>
+    <div class="form-group row mb-3">
+        <ul th:each="category:${categoryList}">
+            <li>[[${category.categoryName}]]</li>
+        </ul>
+    </div>
+</div>
+
+</body>
+</html>

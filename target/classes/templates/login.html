@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/5a213e1813.js" crossorigin="anonymous"></script>
+</head>
+<style>
+    body{
+        text-align: center;
+    }
+    #container{
+        height: 550px;
+        width: 500px;
+        border: 1px solid #5CB85C;
+        margin: 150px auto;
+        padding: 10px 60px;
+        border-radius: 5px;
+    }
+    .mb-3{
+        text-align: left;
+    }
+    button{
+        width: 200px;
+        height: 50px;
+        margin: 40px 0 30px 0;
+        border: 0;
+    }
+    h2{
+        margin-bottom: 50px;
+        color: #5CB85C;
+    }
+</style>
+
+<body>
+    <div id="container">
+        <img src="https://img.freepik.com/premium-vector/organic-icon-100-percent-organic-product-label_349999-1003.jpg?w=2000" alt="brand_icon" width="170">
+        <h2>LOGIN</h2>
+        <form>
+            <div class="form-floating mb-3">
+                <input type="email" class="form-control" id="floatingInput">
+                <label for="floatingInput">Email address</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="password" class="form-control" id="floatingPassword">
+                <label for="floatingPassword">Password</label>
+            </div>
+            <a style="float: left;" href="#">Forget password?</a>
+            <br>
+            <button type="submit" class="btn btn-success" style="background-color: #5CB85C;">Login</button>
+        </form>
+        <h6>Need an account? <a href="./signup.html">Sign up</a></h6>
+    </div>
+</body>
+
+</html>

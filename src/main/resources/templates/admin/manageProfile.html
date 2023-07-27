@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Trang Quản Trị</title>
+    <link rel='stylesheet' href='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css'>
+    <link rel='stylesheet' href='http://cdnjs.cloudflare.com/ajax/libs/animate.css/3.2.3/animate.min.css'>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" th:href="@{/css/admin.css}" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" th:href="@{/admin}">Laptop Shop - Trang Quản Trị</a>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a th:href="@{/admin/profile}">
+                        <span class="glyphicon glyphicon-user">&nbsp;</span>Xin chào: <span th:text="${loggedInUser.lastName}"></span>
+                        <span th:text="${loggedInUser.firstName}"></span>
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/logout}"><span class="glyphicon glyphicon-log-out"></span> Đăng xuất</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="col-md-3">
+
+        <div id="sidebar">
+            <div class="container-fluid tmargin">
+                <div class="input-group">
+                    <!--
+                    <input type="text" class="form-control" placeholder="Search..." />
+                    <span class="input-group-btn">
+                        <button class="btn btn-default">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                    </span>
+                    -->
+                </div>
+            </div>
+
+            <ul class="nav navbar-nav side-bar">
+                <li class="side-bar main-menu">
+                    <a th:href="@{/admin/list-account}">
+                        <span class="glyphicon glyphicon-th-list">&nbsp;</span>Quản lý Tài khoản
+                    </a>
+                </li>
+
+                <li class="side-bar">
+                    <a th:href="@{/admin/profile}">
+                        <span class="glyphicon glyphicon-user">&nbsp;</span>Thông tin cá nhân
+                    </a>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+    <!-- Management account -->
+    <div class="col-md-9 animated bounce">
+        <h3 class="page-header">Thông tin cá nhân</h3>
+
+        <button class="btn btn-success btnCapNhatThongTin">Cập nhật thông tin</button>
+        &nbsp;&nbsp;&nbsp;
+        <button class="btn btn-primary btnDoiMatKhau">Đổi mật khẩu</button>
+        <hr />
+
+        <form class="form-profile">
+            <div class="form-group row">
+                <div class="col-sm-10">
+                    <input type="hidden" class="form-control-plaintext nguoiDungId" th:value="${user.id}" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="staticEmail" class="col-sm-2 col-form-label">Họ Tên</label>
+                <div class="col-sm-10">
+<!--                    <input type="text" readonly class="form-control-plaintext" th:value="${user.firstName} ${user.lastName}" />-->
+                    <span th:text="${user.lastName}"></span> <span th:text="${user.firstName}"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="staticEmail" class="col-sm-2 col-form-label">Email đăng ký</label>
+                <div class="col-sm-10">
+<!--                    <input type="text" readonly class="form-control-plaintext" th:value="${user.email}" />-->
+                    <span th:text="${user.email}"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="staticEmail" class="col-sm-2 col-form-label">Số điện thoại</label>
+                <div class="col-sm-10">
+<!--                    <input type="text" readonly class="form-control-plaintext" th:value="${user.phone}" />-->
+                    <span th:text="${user.phone}"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="staticEmail" class="col-sm-2 col-form-label">Địa chỉ</label>
+                <div class="col-sm-10">
+<!--                    <input type="text" readonly class="form-control-plaintext" th:value="${user.address}" />-->
+                    <span th:text="${user.address}"></span>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="col-md-6">
+<!--    <form class="formCapNhat" th:action="@{${contextPath}/admin/profile/update}" method="post">-->
+<!--        <div>-->
+<!--            <div class="modal fade" id="capNhatModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">-->
+<!--                <div class="modal-dialog" role="document">-->
+<!--                    <div class="modal-content">-->
+<!--                        <div class="modal-header">-->
+<!--                            <h5 class="modal-title" id="exampleModalLabel">Cập nhật thông tin cá nhân</h5>-->
+<!--                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+<!--                                <span aria-hidden="true">&times;</span>-->
+<!--                            </button>-->
+<!--                        </div>-->
+<!--                        <div class="modal-body">-->
+<!--&lt;!&ndash;                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />&ndash;&gt;-->
+<!--                            <div class="form-group">-->
+<!--                                <input type="hidden" class="form-control" th:field="*{id}" name="id" />-->
+<!--                            </div>-->
+<!--                            <div class="form-group">-->
+<!--                                <label for="name">Tên</label>-->
+<!--                                <input type="text" class="form-control" th:field="*{firstName}" name="firstName" required="required" />-->
+<!--                            </div>-->
+<!--                            <div class="form-group">-->
+<!--                                <label for="name">Họ</label>-->
+<!--                                <input type="text" class="form-control" th:field="*{lastName}" name="lastName" required="required" />-->
+<!--                            </div>-->
+<!--                            <div class="form-group">-->
+<!--                                <label for="name">Số điện thoại</label>-->
+<!--                                <input type="text" class="form-control" th:field="*{phone}" name="phone" required="required" />-->
+<!--                            </div>-->
+<!--                            <div class="form-group">-->
+<!--                                <label for="name">Địa chỉ</label>-->
+<!--                                <input type="text" class="form-control" th:field="*{address}" name="address" required="required" />-->
+<!--                            </div>-->
+<!--                            <div class="modal-footer">-->
+<!--                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>-->
+<!--                                <input class="btn btn-primary" id="btnSubmit" type="submit" value="Xác nhận" />-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </form>-->
+
+</div>
+
+<!--    <div th:replace="includes/header :: header">content here</div>-->
+
+<!--    <div th:replace="includes/sidebar :: sidebar"></div>-->
+
+<!--    <div th:replace="includes/footer :: footer"></div>-->
+
+<script th:src="@{/js/profileAdminAjax.js}"></script>
+<script
+        src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script
+        src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script
+        src="https://cdnjs.cloudflare.com/ajax/libs/jquery.serializeJSON/2.9.0/jquery.serializejson.js"></script>
+</body>
+</html>

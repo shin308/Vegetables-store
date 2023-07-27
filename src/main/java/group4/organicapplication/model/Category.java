@@ -3,12 +3,12 @@ package group4.organicapplication.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "category")
+@Table(name = "Category")
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer categoryID;
-    @Column(nullable = false,length = 50,name = "category_name")
+    @Column(nullable = false,length = 50,name = "categoryName")
     private String categoryName;
 
     public Integer getCategoryID() {

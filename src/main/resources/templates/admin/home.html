@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Trang Quản Trị</title>
+    <link rel='stylesheet' href='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css'>
+    <link rel='stylesheet' href='http://cdnjs.cloudflare.com/ajax/libs/animate.css/3.2.3/animate.min.css'>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" th:href="@{/css/admin.css}" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+<body>
+
+<!--<div th:replace = "includes/header :: header-admin"></div>-->
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" th:href="@{/admin}">Laptop Shop - Trang Quản Trị</a>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a th:href="@{/admin/profile}">
+                        <span class="glyphicon glyphicon-user">&nbsp;</span>Xin chào: <span th:text="${loggedInUser.lastName}"></span>
+                        <span th:text="${loggedInUser.firstName}"></span>
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/logout}"><span class="glyphicon glyphicon-log-out"></span> Đăng xuất</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="col-md-3">
+
+        <div id="sidebar">
+            <div class="container-fluid tmargin">
+                <div class="input-group">
+                    <!--
+                    <input type="text" class="form-control" placeholder="Search..." />
+                    <span class="input-group-btn">
+                        <button class="btn btn-default">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                    </span>
+                    -->
+                </div>
+            </div>
+
+            <ul class="nav navbar-nav side-bar">
+                <li class="side-bar main-menu">
+                    <a th:href="@{/admin/list-account}">
+                        <span class="glyphicon glyphicon-th-list">&nbsp;</span>Quản lý Tài khoản
+                    </a>
+                </li>
+
+                <li class="side-bar">
+                    <a th:href="@{/admin/profile}">
+                        <span class="glyphicon glyphicon-user">&nbsp;</span>Thông tin cá nhân
+                    </a>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!--    <div th:replace="includes/header :: header">content here</div>-->
+
+<!--    <div th:replace="includes/sidebar :: sidebar"></div>-->
+
+<!--    <div th:replace="includes/footer :: footer"></div>-->
+
+<script th:src="@{/js/admin.js}"></script>
+<script
+        src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script
+        src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</body>
+</html>

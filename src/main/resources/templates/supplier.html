@@ -1,13 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Suppliers</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+          integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+
+
     <script src="https://kit.fontawesome.com/5a213e1813.js" crossorigin="anonymous"></script>
+
 </head>
 <style>
     ul>li {
@@ -73,165 +76,165 @@
 </style>
 
 <body>
-    <div id="edit" class="shadow-sm border">
-        <h6 style="height: 50px; background-color:black; color:white; padding:15px; border-radius:10px 10px 0 0;">
-            Cập nhật thông tin nhà cung cấp ID: <span>1</span>
-        </h6>
-        <form>
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="floatingInput">
-                <label for="floatingInput">Tên nhà cung cấp</label>
-            </div>
-            <div class="form-floating mb-3">
-                <input type="tel" class="form-control" id="floatingPassword">
-                <label for="floatingInput">Số điện thoại</label>
-            </div>
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="floatingInput">
-                <label for="floatingInput">Địa chỉ</label>
-            </div>
-            <div style="float: right; margin-top:20px;">
-                <button type="submit" class="btn btn-primary">Lưu</button>
-                <button type="submit" class="btn btn-secondary" onclick="closeEdit()">Huỷ</button>
-            </div>
+<div id="edit" class="shadow-sm border">
+    <h6 style="height: 50px; background-color:black; color:white; padding:15px; border-radius:10px 10px 0 0;">
+        Cập nhật thông tin nhà cung cấp ID: <span id="supplierIDSpan">1</span>
+    </h6>
+    <form action="/suppliers" method="put">
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="supplierNameEdit" name="supplierNameEdit">
+            <label for="supplierNameEdit">Tên nhà cung cấp</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input type="tel" class="form-control" id="supplierPhoneEdit" name="supplierPhoneEdit">
+            <label for="supplierPhoneEdit">Số điện thoại</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="supplierAddressEdit" name="supplierAddressEdit">
+            <label for="supplierAddressEdit">Địa chỉ</label>
+        </div>
+        <div style="float: right; margin-top:20px;">
+            <button type="button" class="btn btn-primary" onclick="submitEditForm()">Lưu</button>
+            <button type="button" class="btn btn-secondary" onclick="closeEdit()">Huỷ</button>
+        </div>
 
-        </form>
-    </div>
+    </form>
+</div>
 
-    <div id="addNew" class="shadow-sm border">
-        <h6 style="height: 50px; background-color:black; color:white; padding:15px; border-radius:10px 10px 0 0;">
-            Thêm nhà cung cấp mới
-        </h6>
-        <form>
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="floatingInput">
-                <label for="floatingInput">Tên nhà cung cấp</label>
-            </div>
-            <div class="form-floating mb-3">
-                <input type="tel" class="form-control" id="floatingPassword">
-                <label for="floatingInput">Số điện thoại</label>
-            </div>
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="floatingInput">
-                <label for="floatingInput">Địa chỉ</label>
-            </div>
-            <div style="float: right; margin-top:20px;">
-                <button type="submit" class="btn btn-primary">Lưu</button>
-                <button type="submit" class="btn btn-secondary" onclick="closeAddNew()">Huỷ</button>
-            </div>
+<div id="addNew" class="shadow-sm border">
+    <h6 style="height: 50px; background-color:black; color:white; padding:15px; border-radius:10px 10px 0 0;">
+        Thêm nhà cung cấp mới
+    </h6>
+    <form action="/suppliers" method="post">
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="supplierName" name="supplierName" required >
+            <label for="supplierName">Tên nhà cung cấp</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input type="tel" class="form-control" id="phone" name="phone" required pattern="[0-9]{10}" title="Vui lòng nhập số gồm 10 chữ số và không chứa chữ cái!">
+            <label for="phone">Số điện thoại</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="address" name="address">
+            <label for="address">Địa chỉ</label>
+        </div>
+        <div style="float: right; margin-top:20px;">
+            <button type="submit" class="btn btn-primary">Lưu</button>
+            <button type="button" class="btn btn-secondary" onclick="closeAddNew()">Hủy</button>
+        </div>
+    </form>
 
-        </form>
-    </div>
+</div>
 
 
-    <header>
-        <nav class="navbar navbar-expand-lg bg-body-tertiary">
-            <div class="container-fluid shadow-sm" style="height: 100px;">
-                <a class="navbar-brand" href="#"><img
-                        src="https://img.freepik.com/premium-vector/organic-icon-100-percent-organic-product-label_349999-1003.jpg?w=2000"
-                        alt="brand_icon" width="150"></a>
-                <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                    <ul class="navbar-nav">
+<header>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid shadow-sm" style="height: 100px;">
+            <a class="navbar-brand" href="#"><img
+                    src="https://img.freepik.com/premium-vector/organic-icon-100-percent-organic-product-label_349999-1003.jpg?w=2000"
+                    alt="brand_icon" width="150"></a>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav">
 
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{/product}">SẢN PHẨM</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{/sale}">BÁN HÀNG</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{/order}">ĐƠN HÀNG</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{/category}">DANH MỤC</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{/supplier}">NHÀ CUNG CẤP</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{/import}">NHẬP HÀNG</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{/account}">QUẢN LÝ TÀI KHOẢN</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">THỐNG KÊ</a>
-                        </li>
-                        <li class="nav-item" style="margin-left: 400px;">
-                            <a class="nav-link" href="#"><i class="fa-solid fa-basket-shopping"></i> GIỎ HÀNG</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#"><i class="fa-regular fa-user"></i> ADMIN</a>
-                        </li>
-                    </ul>
-                </div>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/product}">SẢN PHẨM</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/sale}">BÁN HÀNG</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/order}">ĐƠN HÀNG</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/category}">DANH MỤC</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/suppliers}">NHÀ CUNG CẤP</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/import}">NHẬP HÀNG</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/account}">QUẢN LÝ TÀI KHOẢN</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">THỐNG KÊ</a>
+                    </li>
+                    <li class="nav-item" style="margin-left: 400px;">
+                        <a class="nav-link" href="#"><i class="fa-solid fa-basket-shopping"></i> GIỎ HÀNG</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fa-regular fa-user"></i> ADMIN</a>
+                    </li>
+                </ul>
             </div>
-        </nav>
-    </header>
+        </div>
+    </nav>
+</header>
 
-    <div style="margin: 30px;">
-        <div style="display: flex; background-color:#8FC742; color:white;">
-            <div style="height:80px; padding:25px 100px;">
-                <h4>Quản lý nhà cung cấp</h4>
-            </div>
-            <div id="search">
-                <form class="d-flex" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
-                        style="height:50px;">
-                    <button class="btn btn-success" type="submit"
+<div style="margin: 30px;">
+    <div style="display: flex; background-color:#8FC742; color:white;">
+        <div style="height:80px; padding:25px 100px;">
+            <h4>Quản lý nhà cung cấp</h4>
+        </div>
+        <div id="search">
+            <form class="d-flex" role="search" th:action="@{/suppliers}" method="get">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
+                       style="height:50px;" name="searchName">
+                <button class="btn btn-success" type="submit"
                         style=" margin-left:-100px; height:45px; width:87px; margin-top:3px; background-color:#8FC742; border:0;">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                    </button>
-                </form>
-            </div>
-            <button type="button" class="add shadow-sm" onclick="openAddNew()">Thêm mới<i style="float: right; font-size: 40px;"
-                    class="fa-solid fa-square-plus"></i></button>
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </form>
         </div>
-
-
-        <table class="table text-center mt-3 align-middle border">
-            <thead class="table-secondary" style="background-color: #8FC742; height:50px;">
-                <tr>
-                    <th scope="col-1">Mã nhà cung cấp</th>
-                    <th scope="col-2">Tên nhà cung cấp</th>
-                    <th scope="col-5">Số điện thoại</th>
-                    <th scope="col-1">Địa chỉ</th>
-                    <th scope="col-2">Chức năng</th>
-                </tr>
-            </thead>
-            <tbody class="list">
-                <tr class="item">
-                    <td scope="row">1</td>
-                    <td>Organica 1</td>
-                    <td>0348348996</td>
-                    <td>25 Gia Quất, Thượng Thanh, Long Biên, Hà Nội</td>
-                    <td>
-                        <button type="button" class="btn btn-primary" onclick="openEdit()">Sửa</button>
-                        <button type="button" class="btn btn-danger">Xoá</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <ul class="listPage">
-            <li class="active">1</li>
-            <li>2</li>
-            <li>3</li>
-        </ul>
-
+        <button type="button" class="add shadow-sm" onclick="openAddNew()">Thêm mới<i style="float: right; font-size: 40px;"
+                                                                                       class="fa-solid fa-square-plus"></i></button>
     </div>
 
-    <footer class="position-absolute bottom-0 end-0  shadow-lg p-4"
+
+    <table class="table text-center mt-3 align-middle border">
+        <thead class="table-secondary" style="background-color: #8FC742; height:50px;">
+        <tr>
+            <th scope="col-1">Mã nhà cung cấp</th>
+            <th scope="col-2">Tên nhà cung cấp</th>
+            <th scope="col-5">Số điện thoại</th>
+            <th scope="col-1">Địa chỉ</th>
+            <th scope="col-2">Chức năng</th>
+        </tr>
+        </thead>
+        <tbody class="list">
+        <tr class="item" th:each="supplier : ${suppliers}">
+            <td th:text="${supplier.supplierID}"></td>
+            <td th:text="${supplier.supplierName}"></td>
+            <td th:text="${supplier.address}"></td>
+            <td th:text="${supplier.phone}"></td>
+            <td>
+                <button type="button" class="btn btn-primary" th:onclick="'openEdit(' + ${supplier.supplierID} + ')'">Sửa</button>
+                <button type="button" class="btn btn-danger" th:onclick="'deleteSupplier(' + ${supplier.supplierID} + ')'">Xoá</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <ul class="listPage">
+        <li class="active">1</li>
+        <li>2</li>
+        <li>3</li>
+    </ul>
+
+</div>
+
+<footer class="position-absolute bottom-0 end-0  shadow-lg p-4"
         style="height: 70px; width:100%; background-color:black; color:white;">
-        <div class="footer-bottom clearfix">
-            <div class="container">
-                <div class="row">
-                    &copy; 2023 - Vegetables Store by Group 4
-                </div>
+    <div class="footer-bottom clearfix">
+        <div class="container">
+            <div class="row">
+                &copy; 2023 - Vegetables Store by Group 4
             </div>
         </div>
-    </footer>
+    </div>
+</footer>
 </body>
-<script>
+<script th:inline="javascript">
     let thisPage = 1;
     let limit = 5;
     let list = document.querySelectorAll('.list .item');
@@ -295,15 +298,93 @@
         x.style.display = "none";
     }
 
-    function openEdit() {
-        let x = document.getElementById("edit");
-        x.style.display = "block";
+  async function openEdit(supplierID) {
+
+    try {
+
+        const response = await fetch(`/suppliers/${supplierID}`, {
+            method: "GET"
+        });
+
+
+        const data = await response.json();
+        console.log(data)
+
+        // Đổ thông tin nhà cung cấp vào form sửa
+      document.getElementById("supplierIDSpan").textContent = data.supplierID;
+      document.getElementById("supplierNameEdit").value = data.supplierName;
+      document.getElementById("supplierPhoneEdit").value = data.phone;
+      document.getElementById("supplierAddressEdit").value = data.address;
+
+        // Hiển thị form sửa
+        document.getElementById("edit").style.display = "block";
+    } catch (error) {
+        console.error('Lỗi:', error.message);
     }
+}
+
+async function submitEditForm() {
+    // Lấy thông tin từ form sửa
+    const supplierID =  document.getElementById("supplierIDSpan").textContent;
+    const supplierName = document.getElementById("supplierNameEdit").value;
+    const phone = document.getElementById("supplierPhoneEdit").value;
+    const address = document.getElementById("supplierAddressEdit").value;
+
+
+    try {
+        const response = await fetch(`/suppliers/${supplierID}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                supplierName: supplierName,
+                phone: phone,
+                address: address
+            })
+        });
+
+        // Tắt form sửa
+        document.getElementById("edit").style.display = "none";
+
+    } catch (error) {
+        console.error('Lỗi:', error.message);
+    }
+     location.reload();
+}
+
 
     function closeEdit() {
         let x = document.getElementById("edit");
         x.style.display = "none";
+
     }
+
+
+  async function deleteSupplier(supplierID) {
+      const apiUrl = '/suppliers/' + supplierID;
+
+      const confirmed = confirm('Bạn có chắc chắn muốn xóa nhà cung cấp này?');
+
+      if (confirmed) {
+        try {
+          const response = await fetch(apiUrl, {
+            method: 'DELETE'
+          });
+
+          if (!response.ok) {
+            throw new Error('Đã xảy ra lỗi khi xóa nhà cung cấp từ API!');
+          }
+          location.reload();
+
+        } catch (error) {
+          console.error('Lỗi:', error.message);
+          alert('Đã xảy ra lỗi khi xóa nhà cung cấp từ API!');
+        }
+      } else {
+
+      }
+}
 </script>
 
 </html>

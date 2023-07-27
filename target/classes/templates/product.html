@@ -181,33 +181,89 @@
             Cập nhật thông tin sản phẩm ID: <span>1</span>
         </h6>
         <form>
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="floatingInput1">
-                <label for="floatingInput1">Tên nhà cung cấp</label>
+            <div class="form-floating mb-3" style="display: flex;">
+                <img class="border" src="../images/image 10.png" alt="" width="100">
+                <input type="file" id="imageUser" name="imageUser" style="margin: 70px 10px 0 10px;">
             </div>
-            <div style="float: right; margin-top:20px;">
-                <button type="submit" class="btn btn-primary">Lưu</button>
-                <button type="submit" class="btn btn-secondary" onclick="closeEdit()">Huỷ</button>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="floatingInput">
+                <label for="floatingInput">Tên sản phẩm</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="floatingInput">
+                <label for="floatingInput">Khối lượng</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="floatingInput">
+                <label for="floatingInput">Số lượng</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="floatingInput">
+                <label for="floatingInput">Giá bán</label>
             </div>
 
+            <div class="form-floating mb-3">
+                <textarea class="form-control" id="floatingInput" rows="3"></textarea>
+                <label for="floatingInput">Mô tả</label>
+            </div>
+            <div>
+                <label for="typeP" class="me-3">Loại sản phẩm: </label>
+                <select id="typeP" name="roles">
+                    <option value="none">Không</option>
+                    <option value="fruits">Trái cây</option>
+                    <option value="leaf">Rau ăn lá</option>
+                </select>
+            </div>
+            <div style="float: right;">
+                <button type="submit" class="btn btn-primary">Lưu</button>
+                <button type="submit" class="btn btn-secondary" onclick="closeAddNew()">Huỷ</button>
+            </div>
         </form>
     </div>
-    
-    
+
+
     <div id="addNew" class="shadow-sm border">
         <h6 style="height: 50px; background-color:black; color:white; padding:15px; border-radius:10px 10px 0 0;">
             Thêm sản phẩm mới
         </h6>
         <form>
+            <div class="form-floating mb-3" style="display: flex;">
+                <img class="border" src="../images/image 10.png" alt="" width="100">
+                <input type="file" id="imageUser" name="imageUser" style="margin: 70px 10px 0 10px;">
+            </div>
             <div class="form-floating mb-3">
                 <input type="text" class="form-control" id="floatingInput">
-                <label for="floatingInput">Tên danh mục</label>
+                <label for="floatingInput">Tên sản phẩm</label>
             </div>
-            <div style="float: right; margin-top:20px;">
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="floatingInput">
+                <label for="floatingInput">Khối lượng</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="floatingInput">
+                <label for="floatingInput">Số lượng</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="floatingInput">
+                <label for="floatingInput">Giá bán</label>
+            </div>
+
+            <div class="form-floating mb-3">
+                <textarea class="form-control" id="floatingInput" rows="3"></textarea>
+                <label for="floatingInput">Mô tả</label>
+            </div>
+            <div>
+                <label for="typeP" class="me-3">Loại sản phẩm: </label>
+                <select id="typeP" name="roles">
+                    <option value="none">Không</option>
+                    <option value="fruits">Trái cây</option>
+                    <option value="leaf">Rau ăn lá</option>
+                </select>
+            </div>
+            <div style="float: right;">
                 <button type="submit" class="btn btn-primary">Lưu</button>
                 <button type="submit" class="btn btn-secondary" onclick="closeAddNew()">Huỷ</button>
             </div>
-    
         </form>
     </div>
 

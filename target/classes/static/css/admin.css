@@ -1,0 +1,57 @@
+body {
+  padding-top: 80px;
+}
+
+#sidebar {
+  position: fixed;
+  top: 50px;
+  left: 220px;
+  width: 220px;
+  margin-left: -220px;
+  border: none;
+  border-radius: 0;
+  overflow-y: auto;
+  background-color: #222;
+  bottom: 0;
+  overflow-x: hidden;
+  padding-bottom: 40px;
+}
+
+.side-bar > li > a{
+  color: #eee;
+  width: 220px;
+}
+
+th {text-align:center}
+
+.link > a {
+  color: #eee;
+  width: 220px;
+  
+}
+.side-bar li a:hover,
+.side-bar li a:focus {
+  background-color: #333;
+}
+
+.tmargin {
+  margin-top: 15px;
+}
+
+.navbar-right .dropdown-menu {left:0;right:auto;}
+.navbar-collapse .navbar-nav.navbar-right:last-child {
+    margin-right: 0;
+}
+
+
+ span.error{
+    color: red;
+    margin-left: 5px;
+  }
+  
+  
+canvas{
+  
+  width:900px !important;
+  height:450px !important;
+}

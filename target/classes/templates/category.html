@@ -124,9 +124,9 @@
       <h4>Quản lý sản phẩm</h4>
     </div>
     <div id="search">
-      <form class="d-flex" role="search">
+      <form class="d-flex" role="search" th:action="@{/category}" method="get">
         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
-               style="height:50px;">
+               style="height:50px;" name="searchCategory">
         <button class="btn btn-success" type="submit"
                 style=" margin-left:-100px; height:45px; width:87px; margin-top:3px; background-color:#8FC742; border:0;">
           <i class="fa-solid fa-magnifying-glass"></i>

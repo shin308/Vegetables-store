@@ -42,7 +42,7 @@ public class SecurityConfiguration {
 	}
 
 	@Autowired
-    protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         //auth.authenticationProvider(authenticationProvider());
 		auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }

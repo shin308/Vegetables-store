@@ -32,12 +32,11 @@
             			<a class="navbar-brand" th:href="@{/register}"> Đăng ký</a>
         			</span>
 					<span th:case="${true}">
-            			<a class="navbar-brand" th:href="@{/account}">Tài khoản</a>
+            			<a class="navbar-brand" th:href="@{/manage-user-account}">Tài khoản</a>
             			<a class="navbar-brand" th:href="@{/logout}"> Đăng xuất</a>
-            			<span> Welcome
-                			<span class="navbar-brand" th:text="${loggedInUser.lastName}"></span>
-                			<span class="navbar-brand" th:text="${loggedInUser.firstName}"></span>
-            			</span>
+						Welcome:
+						<span class="navbar-brand" th:text="${loggedInUser.lastName}"></span>
+						<span class="navbar-brand" th:text="${loggedInUser.firstName}"></span>
         			</span>
 					<span th:case="*">Should never happen, but who knows</span>
 					<span><a class="navbar-brand" th:href="@{/category}">Management Category</a></span>

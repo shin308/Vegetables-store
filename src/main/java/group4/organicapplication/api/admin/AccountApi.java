@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/account")
-public class AccountApi {
+public class    AccountApi {
     @Autowired
     private UserService userService;
 
@@ -59,6 +59,7 @@ public class AccountApi {
     public void deleteAccount(@PathVariable long id) {
         userService.deleteById(id);
     }
+
     public void setErrorsForResponseObject(BindingResult result, ResponseObject object) {
 
         Map<String, String> errors = result.getFieldErrors().stream()

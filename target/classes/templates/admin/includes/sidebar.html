@@ -1,0 +1,36 @@
+<div class="container-fluid">
+    <div class="col-md-3">
+
+        <div id="sidebar">
+            <div class="container-fluid tmargin">
+                <div class="input-group">
+                    <!--
+                    <input type="text" class="form-control" placeholder="Search..." />
+                    <span class="input-group-btn">
+                        <button class="btn btn-default">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                    </span>
+                    -->
+                </div>
+            </div>
+
+            <ul class="nav navbar-nav side-bar">
+                <li class="side-bar main-menu">
+                    <a th:href="@{/admin/list-account}">
+                        <span class="glyphicon glyphicon-th-list">&nbsp;</span>Quản lý Tài khoản
+                    </a>
+                </li>
+
+                <li class="side-bar">
+                    <a th:href="@{/admin/profile}">
+                        <span class="glyphicon glyphicon-user">&nbsp;</span>Thông tin cá nhân
+                    </a>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+
+    <script th:src="@{/js/admin.js}"></script>
+</div>

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Purchase</title>
+    <link rel="stylesheet" href="./styles/index.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/5a213e1813.js" crossorigin="anonymous"></script>
+</head>
+<style>
+    ul>li {
+        margin: 0 10px;
+    }
+
+    footer {
+        position: fixed;
+        z-index: 2;
+        width: 100%;
+    }
+
+    header {
+        position: fixed;
+        z-index: 2;
+        width: 100%;
+    }
+
+    #listProduct {
+        margin: 0px 70px 100px 70px;
+        border-radius: 10px;
+        display: grid;
+        grid-template-columns: auto auto auto;
+        padding: 30px;
+        gap: 50px;
+    }
+
+    .item {
+        background-color: white;
+        text-align: center;
+        border-radius: 5px;
+        border: 1px solid #8FC742;
+        height: 290px;
+        padding-top: 30px;
+    }
+
+    .addCart {
+        width: 80%;
+        height: 42px;
+        border: 0;
+        border-radius: 5px;
+        background-color: #8FC742;
+        color: white;
+        margin-top: 30px;
+    }
+    .counter {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .counter input {
+        width: 50px;
+        line-height: 30px;
+        font-size: 20px;
+        text-align: center;
+        appearance: none;
+        border: 0.5px solid gray;
+    }
+
+    .counter span {
+        display: block;
+        font-size: 25px;
+        padding: 0 10px;
+        cursor: pointer;
+        user-select: none;
+    }
+    .row1{
+        display: grid;
+        grid-template-columns: auto auto;
+    }
+    .row1 > h6{
+        text-align: right;
+    }
+
+</style>
+
+<body>
+<header class="sticky top-0">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid shadow-sm" style="height: 100px;">
+            <a class="navbar-brand" href="./index.html"><img
+                    src="https://img.freepik.com/premium-vector/organic-icon-100-percent-organic-product-label_349999-1003.jpg?w=2000"
+                    alt="brand_icon" width="150"></a>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="./index.html#productAll">SẢN PHẨM</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle dropbtn" href="javascript:void(0)" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false">DANH MỤC</a>
+                        <div class="dropdown-content">
+                            <a href="./index.html#fruits">Trái cây</a>
+                            <a href="./index.html#leaf">Rau ăn lá</a>
+                            <a href="./index.html#">Rau ăn củ</a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./order_user.html">ĐƠN HÀNG</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="./index.html#aboutMe">VỀ CHÚNG TÔI</a>
+                    </li>
+
+                    <div class="ms-5" style="width:700px;">
+                        <form class="d-flex" role="search">
+                            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
+                                   style="height:50px;">
+                            <button class="btn btn-success" type="submit"
+                                    style=" margin-left:-100px; height:45px; width:87px; margin-top:3px; background-color:#8FC742; border:0;">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </button>
+                        </form>
+                    </div>
+                </ul>
+            </div>
+            <a class="nav-link me-3" href="cart.html"><i class="fa-solid fa-basket-shopping"></i> GIỎ HÀNG</a>
+            <div class="dropdown me-5">
+                <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    User
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="#">Thông tin cá nhân</a></li>
+                    <li><a class="dropdown-item" href="#">Sửa thông tin cá nhân</a></li>
+                    <li><a class="dropdown-item" href="#">Đổi mật khẩu</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="#">Đăng xuất</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+</header>
+
+<div class="row" style="padding:150px">
+    <div class="col p-5">
+        <h3 class="mb-5">Địa chỉ đặt hàng</h3>
+        <div class="mb-3 row">
+            <label for="staticName" class="col-sm-2 col-form-label">Họ tên</label>
+            <div class="col-sm-10">
+                <input type="text" readonly class="form-control-plaintext" id="staticName" value="Nguyễn Văn A">
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label for="staticPhone" class="col-sm-2 col-form-label">Số điện thoại</label>
+            <div class="col-sm-10">
+                <input type="tel" readonly class="form-control-plaintext" id="staticPhone" value="0934374838">
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label for="staticEmail" class="col-sm-2 col-form-label">Email</label>
+            <div class="col-sm-10">
+                <input type="text" readonly class="form-control-plaintext" id="staticEmail"
+                       value="email@example.com">
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label for="staticAddress" class="col-sm-2 col-form-label">Địa chỉ</label>
+            <div class="col-sm-10">
+                <input type="text" readonly class="form-control-plaintext" id="staticAddress"
+                       value="137 Hoàng Diệu, Hải Châu, TP Đà Nẵng">
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label for="inputNotes" class="col-sm-2 col-form-label">Ghi chú</label>
+            <div class="col-sm-10">
+                <textarea class="form-control" id="inputNotes" rows="3"></textarea>
+            </div>
+        </div>
+        <a href="cart.html"><button class="btn btn-light w-50">Quay lại giỏ hàng</button></a>
+
+    </div>
+    <div class="col me-5">
+        <table class="table text-center align-middle border">
+            <thead>
+            <tr>
+                <th scope="col-1">STT</th>
+                <th scope="col-1"></th>
+                <th scope="col-6">Tên sản phẩm</th>
+                <th scope="col-1">Số lượng</th>
+                <th scope="col-1">Giá bán</th>
+                <th scope="col-1">Thành tiền</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th scope="row">1</th>
+                <th><img src="./images/image 10.png" alt="" width="50"></th>
+                <td>Cà chua</td>
+                <td>1</td>
+                <td>15.000</td>
+                <td>15.000</td>
+            </tr>
+            <tr>
+                <th scope="row">2</th>
+                <th><img src="./images/image 10.png" alt="" width="50"></th>
+                <td>Cà chua</td>
+                <td>1</td>
+                <td>15.000</td>
+                <td>15.000</td>
+
+            </tr>
+            <tr>
+                <th scope="row">3</th>
+                <th><img src="./images/image 10.png" alt="" width="50"></th>
+                <td>Cà chua</td>
+                <td>1</td>
+                <td>15.000</td>
+                <td>15.000</td>
+
+            </tr>
+            </tbody>
+        </table>
+
+        <div style="padding: 20px 30px; border:#8FC742 1px solid;">
+            <div class="row1">
+                <h5>Tổng số lượng</h5>
+                <h6>3</h6>
+            </div>
+            <div class="row1">
+                <h5>Tạm tính</h5>
+                <h6>45000</h6>
+            </div>
+            <div class="row1">
+                <h5>Phí vận chuyển</h5>
+                <h6>15000</h6>
+            </div>
+            <hr>
+            <div class="row1">
+                <h5>Thành tiền</h5>
+                <h6>60000</h6>
+            </div>
+        </div>
+
+        <button class="btn btn-success w-100 mt-3">Đặt hàng</button>
+    </div>
+</div>
+
+<footer class="bottom-0 end-0  shadow-lg p-4"
+        style="height: 70px; width:100%; background-color:black; color:white;">
+    <div class="footer-bottom clearfix">
+        <div class="container">
+            <div class="row">
+                &copy; 2023 - Vegetables Store by Group 4
+            </div>
+        </div>
+    </div>
+</footer>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+</html>

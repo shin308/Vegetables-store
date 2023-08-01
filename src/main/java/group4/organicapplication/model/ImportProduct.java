@@ -5,9 +5,10 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
-@Table(name = "Importproduct")
+@Table(name = "ImportProduct")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

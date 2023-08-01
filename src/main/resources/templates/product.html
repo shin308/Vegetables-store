@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
@@ -17,10 +17,13 @@
     }
 
     #search {
-        width: 658px;
+        width: 1000px;
         margin: auto 20px;
     }
 
+    #dropdownSupplier {
+        margin: auto 20px;
+    }
     .add {
         width: 160px;
         height: 50px;
@@ -134,14 +137,27 @@
             <h4>Quản lý sản phẩm</h4>
         </div>
         <div id="search">
-            <form class="d-flex" role="search">
+            <form class="d-flex" role="search" onsubmit="searchProduct()">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
-                       style="height:50px;">
+                       style="height:50px;" name="searchName">
+
                 <button class="btn btn-success" type="submit"
                         style=" margin-left:-100px; height:45px; width:87px; margin-top:3px; background-color:#8FC742; border:0;">
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </button>
             </form>
+        </div>
+        <div class="form-floating w-50" id="dropdownSupplier">
+            <select class="form-select" id="supplierDropdown" onchange="getProductBySupplierId()" >
+
+                <option th:value="0">Tất cả</option>
+                <th:block th:each="supplier : ${suppliers}">
+
+                    <option th:value="${supplier.supplierID}" th:text="${supplier.supplierName}"></option>
+                </th:block>
+            </select>
+            <label>Lọc theo nhà cung cấp</label>
+
         </div>
         <button type="button" class="add shadow-sm" onclick="openAddNew()">Thêm mới<i style="float: right; font-size: 40px;"
                                                                                        class="fa-solid fa-square-plus"></i></button>
@@ -161,7 +177,7 @@
         </tr>
         </thead>
         <tbody class="list">
-        <th:block th:each="product:${productList}">
+        <th:block th:each="product:${products}">
             <tr class="item">
                 <td>[[${product.productID}]]</td>
                 <td><img src="https://hcm.fstorage.vn/images/2022/cai-chip-500g_261fc71a-d25a-4cb5-b2cd-8c2018b67292-og.jpg" width="70"></td>
@@ -364,6 +380,37 @@
     function closeEdit() {
         let x = document.getElementById("edit");
         x.style.display = "none";
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const supplierID = localStorage.getItem("selectedSupplierID");
+        if (supplierID) {
+            const supplierDropdown = document.getElementById("supplierDropdown");
+            supplierDropdown.value = supplierID;
+        }
+    });
+    function getProductBySupplierId() {
+        let supplierID = document.getElementById("supplierDropdown").value;
+        localStorage.setItem("selectedSupplierID", supplierID);
+
+        if (supplierID) {
+            const url = new URL(window.location.href);
+            const searchParams = url.searchParams;
+            if (searchParams.has('searchName')) {
+                searchParams.delete('searchName'); // Xóa tham số searchName nếu có
+            }
+            url.searchParams.set('supplierID', supplierID);
+            window.location.href = url;
+        }
+        saveSelectedSupplierID(supplierID);
+    }
+    function searchProduct() {
+        const url = new URL(window.location.href);
+        const searchParams = url.searchParams;
+        // Kiểm tra và xóa tham số supplierID nếu có
+        if (searchParams.has('supplierID')) {
+            searchParams.delete('supplierID');
+        }
     }
 </script>
 

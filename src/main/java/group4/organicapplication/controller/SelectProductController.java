@@ -13,10 +13,4 @@ import java.util.List;
 public class SelectProductController {
     @Autowired private SelectProductService service;
 
-    @GetMapping("/product")
-    public String showProductPage(Model model){
-        List<Product> productList = service.selectAll();
-        model.addAttribute("productList",productList);
-        return "product";
-    }
 }

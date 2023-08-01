@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-@Table(name = "Importbill")
+@Table(name = "ImportBill")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

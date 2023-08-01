@@ -48,13 +48,13 @@ public class CategoryController {
         return "redirect:/category";
     }
 
-    @GetMapping("/category/{categoryID}")
+    @GetMapping("/category/edit/{categoryID}")
     public String showEditForm(@PathVariable("categoryID") Integer categoryID, Model model){
         try {
             Category category = service.get(categoryID);
             model.addAttribute("category",category);
             model.addAttribute("pageTitle","Cập nhật thông tin danh mục ID: "+categoryID);
-            return "redirect:/category";
+            return "category_form";
         } catch (CategoryNotFoundException e) {
             return "redirect:/category";
         }

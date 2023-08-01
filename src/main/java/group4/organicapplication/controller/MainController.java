@@ -31,6 +31,8 @@ public class MainController {
 
     @Autowired private SelectProductService productService;
 
+    @Autowired private CategoryService categoryService;
+
     @ModelAttribute("loggedInUser")
     public User loggedInUser(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -42,6 +44,9 @@ public class MainController {
 
     @GetMapping("/")
     public String showHomePage(Model model){
+        List<Category> categoryList = categoryService.listAll();
+        model.addAttribute(("categoryList"),categoryList);
+
         List<Product> productList = productService.selectAll();
         model.addAttribute("productList",productList);
         return "client/home";

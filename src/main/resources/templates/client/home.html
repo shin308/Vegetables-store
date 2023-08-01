@@ -8,7 +8,8 @@
 		  href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
 		  integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
 		  crossorigin="anonymous">
-
+	<script src="https://kit.fontawesome.com/5a213e1813.js" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <style>
 	ul>li {
@@ -57,7 +58,7 @@
 <body>
 <!-- create navigation bar ( header) -->
 <nav class="navbar navbar-inverse navbar-fixed-top">
-	<div class="container">
+	<div class="container-fluid shadow-sm">
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle collapsed"
 					data-toggle="collapse" data-target="#navbar" aria-expanded="false"
@@ -76,15 +77,29 @@
             			<a class="navbar-brand" th:href="@{/register}"> Đăng ký</a>
         			</span>
 					<span th:case="${true}">
+						<a class="navbar-brand" th:href="@{/category}">Management Category</a>
             			<a class="navbar-brand" th:href="@{/account}">Tài khoản</a>
             			<a class="navbar-brand" th:href="@{/logout}"> Đăng xuất</a>
-            			<span> Welcome
-                			<span class="navbar-brand" th:text="${loggedInUser.lastName}"></span>
-                			<span class="navbar-brand" th:text="${loggedInUser.firstName}"></span>
+            			<span>
+							<span class="navbar-brand">
+								<a class="nav-link dropdown-toggle dropbtn" href="javascript:void(0)" role="button"
+								   data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-regular fa-user"></i>
+									[[${loggedInUser.lastName}]] [[${loggedInUser.firstName}]]
+								</a>
+							</span>
             			</span>
+						<span>
+							<span class="navbar-brand">
+								<select>
+									<option value="all">Danh Mục</option>
+									<th:block th:each="category:${categoryList}">
+										<option value="${category.categoryID}">[[${category.categoryName}]]</option>
+									</th:block>
+								</select>
+							</span>
+						</span>
         			</span>
 					<span th:case="*">Should never happen, but who knows</span>
-					<span><a class="navbar-brand" th:href="@{/category}">Management Category</a></span>
 				</div>
 			</ul>
 		</div>
@@ -178,16 +193,19 @@
 	<div class="mt-5">
 		<h2  id="productAll">Tất cả sản phẩm</h2>
 		<hr>
-		<div id="listProduct">
-			<th:block th:each="product:${productList}">
-				<div class="item">
-					<a th:href="@{/productInfo}"><img th:src="@{'images/'+ ${product.img}}" width="150"></a>
-					<h5>[[${product.productName}]]</h5>
-					<h4>[[${product.price}]] </h4><h4>[[${product.unit}]]</h4>
-					<button class="addCart">Thêm vào giỏ</button>
-				</div>
-			</th:block>
-		</div>
+		<th:block th:each="category:${categoryList}">
+			<h4>[[${category.categoryName}]]</h4>
+			<div id="listProduct">
+				<th:block th:each="product:${productList}">
+					<div class="item">
+						<a th:href="@{/productInfo}"><img th:src="@{'images/'+ ${product.img}}" width="150"></a>
+						<h5>[[${product.productName}]]</h5>
+						<h4>[[${product.price}]] VNĐ</h4><h4>[[${product.unit}]]</h4>
+						<button class="addCart">Thêm vào giỏ</button>
+					</div>
+				</th:block>
+			</div>
+		</th:block>
 	</div>
 
 	<div id="aboutMe">

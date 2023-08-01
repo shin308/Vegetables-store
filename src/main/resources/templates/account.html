@@ -7,8 +7,9 @@
     <title>Accounts</title>
     <link rel="stylesheet" href="./styles/index.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+          integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/5a213e1813.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <style>
     ul>li {
@@ -59,26 +60,28 @@
         border-radius: 5px;
     }
 
-    #edit, #addNew {
+    #edit, #addNew{
         position: absolute;
-        z-index: 2;
-        background-color: white;
-        width: 450px;
-        height: 600px;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
+        z-index:2;
+        background-color:rgba(0, 0, 0, 0.5);
+        display: none;
+        width: 100%;
+        height: 100%;
+        justify-content: center;
+        align-items: center;
         border-radius: 10px;
         display: none;
+        left: 50%;
+        transform: translate(-50%, -50%);
     }
-
-    #edit > form, #addNew > form {
-        padding: 30px;
+    .active {
+        border: 0;
+        border-bottom: #8FC742 2px solid;
     }
 </style>
 
 <body>
-    <header>
+<header>
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid shadow-sm" style="height: 100px;">
             <a class="navbar-brand" href="#"><img
@@ -106,104 +109,101 @@
                         <a class="nav-link" th:href="@{/import}">NHẬP HÀNG</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/account}">QUẢN LÝ TÀI KHOẢN</a>
+                        <a class="nav-link active" th:href="@{/account}">QUẢN LÝ TÀI KHOẢN</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">THỐNG KÊ</a>
                     </li>
-                    <li class="nav-item" style="margin-left: 370px;">
-                        <a class="nav-link" href="#"><i class="fa-solid fa-basket-shopping"></i> GIỎ HÀNG</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle dropbtn" href="javascript:void(0)" role="button"
-                           data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-regular fa-user"></i> ADMIN</a>
-                        <div class="dropdown-content" style="width:300px;">
-                            <a href="#">Thông tin cá nhân</a>
-                            <a href="#">Sửa thông tin cá nhân</a>
-                            <a href="#">Đổi mật khẩu</a>
-                            <a href="./login.html">Đăng xuất</a>
-                        </div>
-                    </li>
+
+                </ul>
+            </div>
+            <div class="dropdown me-5">
+                <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    ADMIN
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="#">Thông tin cá nhân</a></li>
+                    <li><a class="dropdown-item" href="#">Sửa thông tin cá nhân</a></li>
+                    <li><a class="dropdown-item" href="#">Đổi mật khẩu</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="#">Đăng xuất</a></li>
                 </ul>
             </div>
         </div>
     </nav>
 </header>
 
-    <div style="margin: 30px;">
-        <div style="display: flex; background-color:#8FC742; color:white;">
-            <div style="height:80px; padding:25px 100px;">
-                <h4>Quản lý tài khoản</h4>
-            </div>
-            <div id="search">
-                <form class="d-flex" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
-                        style="height:50px;">
-                    <button class="btn btn-success" type="submit"
-                        style=" margin-left:-100px; height:45px; width:87px; margin-top:3px; background-color:#8FC742; border:0;">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                    </button>
-                </form>
-            </div>
-            <button type="button" class="add shadow-sm" onclick="openAddNew()">Thêm mới<i style="float: right; font-size: 40px;"
-                    class="fa-solid fa-square-plus"></i></button>
+<div style="margin: 30px;">
+    <div style="display: flex; background-color:#8FC742; color:white;">
+        <div style="height:80px; padding:25px 100px;">
+            <h4>Quản lý tài khoản</h4>
         </div>
-
-
-        <table class="table text-center mt-3 align-middle border">
-            <thead class="table-secondary" style="background-color: #8FC742; height:50px;">
-                <tr>
-                    <th scope="col-1">Mã tài khoản</th>
-                    <th scope="col-5">Tên người dùng</th>
-                    <th scope="col-2">Email</th>
-                    <th scope="col-1">Số điện thoại</th>
-                    <th scope="col-1">Địa chỉ</th>
-                    <th scope="col-2">Chức năng</th>
-                </tr>
-            </thead>
-            <tbody class="list">
-                <tr class="item">
-                    <td scope="row">1</td>
-                    <td>Nguyen Van B</td>
-                    <td>admin@gmail.com</td>
-                    <td>0347283822</td>
-                    <td>Đà Nẵng</td>
-                    <td>
-                        <button type="button" class="btn btn-primary" onclick="openEdit()">Sửa</button>
-                        <button type="button" class="btn btn-danger">Xoá</button>
-                    </td>
-                </tr>
-                
-
-            </tbody>
-        </table>
-            <ul class="listPage">
-                <li class="active">1</li>
-                <li>2</li>
-                <li>3</li>
-            </ul>
-
+        <div id="search">
+            <form class="d-flex" role="search">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
+                       style="height:50px;">
+                <button class="btn btn-success" type="submit"
+                        style=" margin-left:-100px; height:45px; width:87px; margin-top:3px; background-color:#8FC742; border:0;">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </form>
+        </div>
+        <button type="button" class="add shadow-sm" onclick="openAddNew()">Thêm mới<i style="float: right; font-size: 40px;"
+                                                                                       class="fa-solid fa-square-plus"></i></button>
     </div>
 
 
+    <table class="table text-center mt-3 align-middle border">
+        <thead class="table-secondary" style="background-color: #8FC742; height:50px;">
+        <tr>
+            <th scope="col-1">Mã tài khoản</th>
+            <th scope="col-5">Tên người dùng</th>
+            <th scope="col-2">Email</th>
+            <th scope="col-1">Số điện thoại</th>
+            <th scope="col-1">Địa chỉ</th>
+            <th scope="col-2">Chức năng</th>
+        </tr>
+        </thead>
+        <tbody class="list">
+        <tr class="item">
+            <td scope="row">1</td>
+            <td>Nguyen Van B</td>
+            <td>admin@gmail.com</td>
+            <td>0347283822</td>
+            <td>Đà Nẵng</td>
+            <td>
+                <button type="button" class="btn btn-primary" onclick="openEdit()">Sửa</button>
+                <button type="button" class="btn btn-danger">Xoá</button>
+            </td>
+        </tr>
 
 
-    <footer class="position-absolute bottom-0 end-0  shadow-lg p-4"
+        </tbody>
+    </table>
+    <ul class="listPage">
+        <li class="active">1</li>
+        <li>2</li>
+        <li>3</li>
+    </ul>
+
+</div>
+
+<footer class="position-absolute bottom-0 end-0  shadow-lg p-4"
         style="height: 70px; width:100%; background-color:black; color:white;">
-        <div class="footer-bottom clearfix">
-            <div class="container">
-                <div class="row">
-                    &copy; 2023 - Vegetables Store by Group 4
-                </div>
+    <div class="footer-bottom clearfix">
+        <div class="container">
+            <div class="row">
+                &copy; 2023 - Vegetables Store by Group 4
             </div>
         </div>
-    </footer>
-
-    <div id="edit" class="shadow-sm border">
+    </div>
+</footer>
+<div id="edit">
+    <div style="background-color: white; width:550px; border-radius:10px;" class="shadow-lg">
         <h6 style="height: 50px; background-color:black; color:white; padding:15px; border-radius:10px 10px 0 0;">
             Cập nhật thông tin tài khoản ID: <span>1</span>
         </h6>
-        <form>
+        <form style="padding: 20px">
             <div class="form-floating mb-3">
                 <input type="text" class="form-control" id="name">
                 <label for="name">Tên người dùng</label>
@@ -232,25 +232,27 @@
                     <option value="customer">KhachHang</option>
                 </select>
             </div>
-            
+
             <div style="float: right; margin-top:-30px;">
                 <button type="submit" class="btn btn-primary">Lưu</button>
                 <button type="submit" class="btn btn-secondary" onclick="closeAddNew()">Huỷ</button>
             </div>
-    
+
         </form>
     </div>
-    
-    
-    <div id="addNew" class="shadow-sm border">
+</div>
+
+
+<div id="addNew">
+    <div style="background-color: white; width:550px; border-radius:10px;" class="shadow-lg">
         <h6 style="height: 50px; background-color:black; color:white; padding:15px; border-radius:10px 10px 0 0;">
             Thêm tài khoản mới
         </h6>
-        <form>
+        <form style="padding: 20px;">
             <div class="form-floating mb-3">
                 <input type="file" id="imageUser" name="imageUser">
             </div>
-            
+
             <div class="form-floating mb-3">
                 <input type="text" class="form-control" id="name1">
                 <label for="name1">Tên người dùng</label>
@@ -279,14 +281,16 @@
                     <option value="customer">KhachHang</option>
                 </select>
             </div>
-            
+
             <div style="float: right; margin-top:-30px;">
                 <button type="submit" class="btn btn-primary">Lưu</button>
                 <button type="submit" class="btn btn-secondary" onclick="closeAddNew()">Huỷ</button>
             </div>
-    
+
         </form>
     </div>
+</div>
+
 </body>
 <script>
     let thisPage = 1;
@@ -344,7 +348,7 @@
     <!--Open form Add New-->
     function openAddNew() {
         let x = document.getElementById("addNew");
-        x.style.display = "block";
+        x.style.display = "flex";
     }
 
     function closeAddNew() {
@@ -354,13 +358,15 @@
 
     function openEdit() {
         let x = document.getElementById("edit");
-        x.style.display = "block";
+        x.style.display = "flex";
     }
 
     function closeEdit() {
         let x = document.getElementById("edit");
         x.style.display = "none";
     }
+
+
 </script>
 
 </html>

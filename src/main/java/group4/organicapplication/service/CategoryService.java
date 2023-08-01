@@ -35,4 +35,8 @@ public class CategoryService {
 //        }
         repo.deleteById(categoryID);
     }
+
+    public List<Category> findCategoryByName(String searchCategory) {
+        return repo.findByCategoryNameContainingIgnoreCase(searchCategory);
+    }
 }

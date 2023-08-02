@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:c="http://www.thymeleaf.org/extras/spring">
+<head>
+    <title>Sample Thymeleaf Conversion</title>
+
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/Frontend/css/style.css}" media="all" />
+    <link
+            href='//fonts.googleapis.com/css?family=Londrina+Solid|Coda+Caption:800|Open+Sans'
+            rel='stylesheet' type='text/css'>
+
+    <script th:src="@{/Frontend/js/jquery.min.js}"></script>
+    <script th:src="@{/Frontend/js/responsiveslides.min.js}"></script>
+    <script th:src="@{/js/client/accounting.js}"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+        <style>
+            /* reset */
+    html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,u,i,dl,dt,dd,ol,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{margin:0;padding:0;border:0;font-size:100%;font:inherit;vertical-align:baseline;}
+    article, aside, details, figcaption, figure,footer, header, hgroup, menu, nav, section {display: block;}
+    ol,ul{list-style:none;margin:0px;padding:0px;}
+    blockquote,q{quotes:none;}
+    blockquote:before,blockquote:after,q:before,q:after{content:'';content:none;}
+    table{border-collapse:collapse;border-spacing:0;}
+
+    /* start editing from here */
+    a{text-decoration:none;}
+    .txt-rt{text-align:right;}/* text align right */
+    .txt-lt{text-align:left;}/* text align left */
+    .txt-center{text-align:center;}/* text align center */
+    .float-rt{float:right;}/* float right */
+    .float-lt{float:left;}/* float left */
+    .clear{clear:both;}/* clear float */
+    .pos-relative{position:relative;}/* Position Relative */
+    .pos-absolute{position:absolute;}/* Position Absolute */
+    .vertical-base{	vertical-align:baseline;}/* vertical align baseline */
+    .vertical-top{	vertical-align:top;}/* vertical align top */
+    .underline{	padding-bottom:5px;	border-bottom: 1px solid #eee; margin:0 0 20px 0;}/* Add 5px bottom padding and a underline */
+
+    img{max-width:100%;}
+    /*end reset*/
+
+    .border-div{
+    	border-bottom:1px solid grey;
+    }
+    .border-p{
+    	border-bottom:1px solid grey;
+    	width:100%;
+
+    }
+
+    .table-cart-checkout{
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+
+    .table-cart-checkout td, .table-cart-checkout th {
+        border: 1px solid #ddd;
+        padding: 8px;
+         text-align: center;
+        vertical-align: middle;
+    }
+
+
+
+    .table-cart-checkout th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+
+       	background-color: #f2f2f2
+       	 text-align: center;
+        vertical-align: middle;
+    }
+
+    .fix-size-img{
+    	width: 100px;
+    	height: 100px;
+
+
+    }
+
+    .navbar-color{
+        padding: 12px 0px;
+        margin-top: 16px;
+    	background: rgb(196, 188, 188);
+
+    }
+    #main-navbar ul li a{
+
+    	display: block;
+        font-family: 'Open Sans', sans-serif;
+        font-size: 1em;
+
+        font-weight: bold;
+        padding: 10px 28px;
+        text-transform: uppercase;
+    }
+
+    #main-navbar ul{
+    	float:right;
+    	width: 80%;
+
+    }
+    #main-navbar a:hove{
+    	background-color::#3B3B3B3; color:#f00; text-align:center; height: 50px;  list-style-type: none;
+    }
+
+    .dropdown-content{
+    	text-align: justify;
+    	text-align: left;
+    }
+    body{
+    	background:#F9F9F9;
+    }
+    .wrap{
+    	width:80%;
+    	margin:0 auto;
+    }
+
+    .search-bar,.header-top-nav{
+    	float:right;
+    }
+    .search-bar input[type="text"]{
+    	width: 182px;
+    	height: 20px;
+    	margin-right: 0;
+    	color: #666565;
+    	background: #fff;
+    	padding: 3px 5px 3px 10px;
+    	border: 1px solid #e5e5e5;
+    	-webkit-box-sizing: content-box;
+    	-moz-box-sizing: content-box;
+    	box-sizing: content-box;
+    	margin: 0;
+    	outline: none;
+    }
+    .search-bar input[type="submit"]{
+    	margin-right: 0;
+    	color: #000;
+    	background: #fff;
+    	padding: 5px 9px 5px 10px;
+    	border: 1px solid #e5e5e5;
+    	margin: 0;
+    	border-left:none;
+    	cursor:pointer;
+    	background:#94CB32;
+    	font-weight: bold;
+    }
+    .search-bar input[type="submit"]:hover{
+    	background:#181818;
+    	color:#fff;
+    }
+    .search-bar{
+    	background:#fff;
+    	margin: 20px 0px 12.5px 0px;
+    	border-radius:0.3em;
+    }
+    .header-top-nav ul li{
+    	display:inline-block;
+    	border-right: 1px solid rgba(122, 120, 120, 0.15);
+    	padding: 0px 13px;
+    }
+
+    .header-top-nav ul li:last-child{
+    	border:none;
+    	padding-right:0px;
+    }
+    .header-top-nav ul li a,.header-top-nav{
+    	font-family: 'Open Sans', sans-serif;
+    	color:#575757;
+    	display:inline-block;
+    	font-size: 0.9em;
+    	font-weight: bold;
+    }
+    .header-top-nav ul li a:hover{
+    	color:#94CB32;
+    }
+    .header-top-nav ul li a span{
+    	color:#D70D87;
+    }
+    /*---top-header----*/
+    .top-header{
+    	background: #94CB32;
+    	padding: 12px 0px;
+    	margin-top: 16px;
+    }
+    .logo{
+    	float:left;
+    	margin-top: 4px;
+    }
+    .top-nav{
+    	float:right;
+    }
+    .top-nav ul li{
+    	display:inline-block;
+    }
+    .top-nav ul li a{
+    	display:block;
+    	font-family: 'Open Sans', sans-serif;
+    	font-size: 0.9em;
+    	color: #fff;
+    	font-weight: bold;
+    	padding: 10px 16px;
+    	text-transform: uppercase;
+    }
+    .top-nav ul li:last-child{
+    	padding-right:0px;
+    }
+    .top-nav ul li a:hover{
+    	color:#000;
+    }
+
+    .blog-grid-header ul li {
+    	font-family: 'Open Sans', sans-serif;
+    	font-size: 0.8em;
+    	padding: 7px 0px 0px 0px;
+    	color: #575757;
+    }
+    .blog-grid-header ul li{
+    	display:inline-block;
+    	margin-right: 5px;
+    }
+    .blog-grid-header ul li a img{
+    	vertical-align:middle;
+    }
+    .blog-grid-header ul li img{
+    	padding-right:5px;
+    }
+    .blog-grid-header ul li a{
+    	color:#575757;
+    }
+    .blog-grid-header ul li a:hover{
+    	color:#94CB32;
+    }
+    .navbar-brand{
+        font-size: 15px;
+    }
+</style>
+</head>
+<body>
+<div class="wrap">
+    <!---start-Header--->
+    <div class="header">
+        <div class="search-bar">
+            <form action="/search">
+                <input type="text" name="name"/><input type="submit" value="Search"/>
+            </form>
+        </div>
+        <div class="clear"></div>
+        <div class="header-top-nav ">
+<!--            <div th:switch="${#authentication} ? ${#authorization.expression('isAuthenticated()')} : ${false}">-->
+<!--                <div th:case="@{true}">-->
+<!--                    <ul>-->
+<!--                        <li>Xin chào: <span th:text="${loggedInUser.lastName}"></span>-->
+<!--                                <span th:text="${loggedInUser.firstName}"></span>-->
+<!--                        </li>-->
+<!--                        <li><a th:href="@{/account}">Tài khoản</a></li>-->
+<!--                        <li><a th:href="@{/logout}">Đăng xuất</a></li>-->
+<!--                    </ul>-->
+<!--                </div>-->
+<!--                <div th:case="@{false}">-->
+<!--                    <ul>-->
+<!--                        <li><a th:href="@{/register}">Đăng kí</a></li>-->
+<!--                        <li><a th:href="@{/login}">Đăng nhập</a></li>-->
+<!--                    </ul>-->
+<!--                </div>-->
+<!--                <div th:case="*">-->
+<!--                    <ul>-->
+<!--                        <li>Should never happen, but who knows</li>-->
+<!--                    </ul>-->
+<!--                </div>-->
+                <div th:switch="${#authentication} ? ${#authorization.expression('isAuthenticated()')} : ${false}">
+        			<span th:case="${false}">
+						<a class="navbar-brand" th:href="@{/login}">Đăng nhập</a>
+            			<a class="navbar-brand" th:href="@{/register}"> Đăng ký</a>
+        			</span>
+                    <span th:case="${true}">
+                        <span class="navbar-brand" th:text="${loggedInUser.lastName}"></span>
+                        <span class="navbar-brand" th:text="${loggedInUser.firstName}"></span>
+            			<a class="navbar-brand" th:href="@{/manage-user-account}">Tài khoản</a>
+                        <a class="navbar-brand" th:href="@{/logout}"> Đăng xuất</a>
+        			</span>
+                    <span th:case="*">Should never happen, but who knows</span>
+                </div>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+<div class="clear"></div>
+<div class="top-header">
+    <div class="wrap">
+        <!---start-logo--->
+        <div class="logo">
+            <a href="/"><img src="https://img.freepik.com/premium-vector/organic-icon-100-percent-organic-product-label_349999-1003.jpg?w=2000"
+                             alt="brand_icon" width="100" height="50" class="logo" title="logo"></a>
+
+        </div>
+        <!---end-logo--->
+        <!---start-top-nav--->
+        <div class="top-nav">
+            <ul>
+                <li><a th:href="@{/}">Trang chủ</a></li>
+                <li><a th:href="@{/category}">Management Category</a></li>
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+<!---End-top-nav--->
+<!---End-Header--->
+
+<script th:src="@{/js/client/header.js}" ></script>
+</body>

@@ -1,8 +1,10 @@
 package group4.organicapplication.controller;
 
 import group4.organicapplication.model.Category;
+import group4.organicapplication.model.Product;
 import group4.organicapplication.model.User;
 import group4.organicapplication.service.CategoryService;
+import group4.organicapplication.service.SelectProductService;
 import group4.organicapplication.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -27,8 +29,9 @@ public class MainController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private CategoryService service;
+    @Autowired private SelectProductService productService;
+
+    @Autowired private CategoryService categoryService;
 
     @ModelAttribute("loggedInUser")
     public User loggedInUser(){
@@ -41,6 +44,11 @@ public class MainController {
 
     @GetMapping("/")
     public String showHomePage(Model model){
+        List<Category> categoryList = categoryService.listAll();
+        model.addAttribute(("categoryList"),categoryList);
+
+        List<Product> productList = productService.selectAll();
+        model.addAttribute("productList",productList);
         return "client/home";
     }
 

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DdlMappings">
+    <mapping uuid="a08bf965-40e7-4872-abd8-bd0c240f91aa" name="Organic@localhost Mapping">
+      <data-sources db="0a2eead6-d40d-4a8f-8309-23367a2b12b5" />
+      <scope>
+        <node kind="database" qname="Organic" />
+      </scope>
+    </mapping>
+  </component>
+</project>

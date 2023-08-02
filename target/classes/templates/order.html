@@ -1,10 +1,330 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order_Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/5a213e1813.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 </head>
-<body>
+<style>
+    ul>li {
+        margin: 0 10px;
+    }
 
+    #search {
+        width: 658px;
+        margin: auto 20px;
+    }
+
+    .add {
+        width: 160px;
+        height: 50px;
+        border: 1px solid #8FC742;
+        border-radius: 5px;
+        color: #8FC742;
+        margin: 15px auto 0 500px;
+        font-size: 20px;
+        background-color: white;
+    }
+
+    .listPage {
+        padding: 10px;
+        text-align: center;
+        list-style: none;
+        margin: 0 auto;
+        position: absolute;
+        left: 50%;
+        top: 86%;
+        transform: translate(-50%, -50%);
+    }
+
+    .listPage li {
+        background-color: white;
+        padding: 10px 20px;
+        display: inline-block;
+        margin: 0 10px;
+        cursor: pointer;
+    }
+
+    .listPage .active {
+        background-color: #8FC742;
+        color: white;
+    }
+    select{
+        height: 35px;
+        border-radius: 5px;
+    }
+    .btn-fill{
+        background-color: #8FC742;
+        color: white;
+    }
+    .btn-bd{
+        background-color: white;
+        color: #8FC742;
+        border: 1px solid #8FC742;
+    }
+    .active {
+        border: 0;
+        border-bottom: #8FC742 2px solid;
+    }
+
+</style>
+
+<body>
+<header>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid shadow-sm" style="height: 100px;">
+            <a class="navbar-brand" href="#"><img
+                    src="https://img.freepik.com/premium-vector/organic-icon-100-percent-organic-product-label_349999-1003.jpg?w=2000"
+                    alt="brand_icon" width="150"></a>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav">
+
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/product}">SẢN PHẨM</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/sale}">BÁN HÀNG</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" th:href="@{/order}">ĐƠN HÀNG</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/category}">DANH MỤC</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/supplier}">NHÀ CUNG CẤP</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/import}">NHẬP HÀNG</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/account}">QUẢN LÝ TÀI KHOẢN</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./account.html">QUẢN LÝ TÀI KHOẢN</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">THỐNG KÊ</a>
+                    </li>
+
+                </ul>
+            </div>
+            <div class="dropdown me-5">
+                <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    ADMIN
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="#">Thông tin cá nhân</a></li>
+                    <li><a class="dropdown-item" href="#">Sửa thông tin cá nhân</a></li>
+                    <li><a class="dropdown-item" href="#">Đổi mật khẩu</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="#">Đăng xuất</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<div style="margin: 30px;">
+    <div style="display: flex; background-color:#8FC742; color:white;">
+        <div style="height:80px; padding:25px 100px;">
+            <h4>Quản lý đơn hàng</h4>
+        </div>
+        <div id="search">
+            <form class="d-flex" role="search">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
+                       style="height:50px;">
+                <button class="btn btn-success" type="submit"
+                        style=" margin-left:-100px; height:45px; width:87px; margin-top:3px; background-color:#8FC742; border:0;">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </form>
+        </div>
+        <a th:href="@{/sale}"><button type="button" class="add shadow-sm">Thêm mới<i style="float: right; font-size: 40px;"
+                                                                                      class="fa-solid fa-square-plus"></i></button></a>
+    </div>
+
+    <div style="margin-top: 30px;">
+        <button class="btn btn-fill btn-lg tablink" onclick="openOrder(event,'confirming')">Chờ xác nhận</button>
+        <button class="btn btn-bd btn-lg tablink" onclick="openOrder(event,'delivering')">Đang giao</button>
+        <button class="btn btn-bd btn-lg tablink" onclick="openOrder(event,'completed')">Đã hoàn tất</button>
+    </div>
+
+    <table id="confirming" class="table text-center mt-3 align-middle border order">
+        <thead class="table-secondary" style="background-color: #8FC742; height:50px;">
+        <tr>
+            <th scope="col-1">Mã đơn hàng</th>
+            <th scope="col-2">Tên khách hàng</th>
+            <th scope="col-5">Ngày đặt</th>
+            <th scope="col-1">Số lượng</th>
+            <th scope="col-1">Tình trạng</th>
+            <th scope="col-1">Tổng tiền</th>
+            <th scope="col-2">Chức năng</th>
+        </tr>
+        </thead>
+        <tbody class="list">
+        <tr class="item">
+            <td scope="row">1</td>
+            <td>Nguyen Thi Linh</td>
+            <td>22/04/2023</td>
+            <td>5</td>
+            <td>Chờ xác nhận</td>
+            <td>100.000đ</td>
+            <td>
+                <button type="button" class="btn btn-success">Xác nhận</button>
+                <button type="button" class="btn btn-primary">Xem</button>
+                <button type="button" class="btn btn-danger">Xoá</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <table id="delivering" class="table text-center mt-3 align-middle border order" style="display: none;">
+        <thead class="table-secondary" style="background-color: #8FC742; height:50px;">
+        <tr>
+            <th scope="col-1">Mã đơn hàng</th>
+            <th scope="col-2">Tên khách hàng</th>
+            <th scope="col-5">Ngày đặt</th>
+            <th scope="col-1">Số lượng</th>
+            <th scope="col-1">Tình trạng</th>
+            <th scope="col-1">Tổng tiền</th>
+            <th scope="col-2">Chức năng</th>
+        </tr>
+        </thead>
+        <tbody class="list">
+        <tr class="item">
+            <td scope="row">1</td>
+            <td>Nguyen Thi Linh</td>
+            <td>22/04/2023</td>
+            <td>5</td>
+            <td>Đang giao</td>
+            <td>100.000đ</td>
+            <td>
+                <button type="button" class="btn btn-primary">Xem</button>
+                <button type="button" class="btn btn-danger">Xoá</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <table id="completed" class="table text-center mt-3 align-middle border order" style="display: none;">
+        <thead class="table-secondary" style="background-color: #8FC742; height:50px;">
+        <tr>
+            <th scope="col-1">Mã đơn hàng</th>
+            <th scope="col-2">Tên khách hàng</th>
+            <th scope="col-5">Ngày đặt</th>
+            <th scope="col-1">Số lượng</th>
+            <th scope="col-1">Tình trạng</th>
+            <th scope="col-1">Tổng tiền</th>
+            <th scope="col-2">Chức năng</th>
+        </tr>
+        </thead>
+        <tbody class="list">
+        <tr class="item">
+            <td scope="row">1</td>
+            <td>Nguyen Thi Linh</td>
+            <td>22/04/2023</td>
+            <td>5</td>
+            <td>Hoàn tất</td>
+            <td>100.000đ</td>
+            <td>
+                <button type="button" class="btn btn-primary">Xem</button>
+                <button type="button" class="btn btn-danger">Xoá</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <ul class="listPage">
+        <li class="active">1</li>
+        <li>2</li>
+        <li>3</li>
+    </ul>
+
+</div>
+
+<footer class="position-absolute bottom-0 end-0  shadow-lg p-4"
+        style="height: 70px; width:100%; background-color:black; color:white;">
+    <div class="footer-bottom clearfix">
+        <div class="container">
+            <div class="row">
+                &copy; 2023 - Vegetables Store by Group 4
+            </div>
+        </div>
+    </div>
+</footer>
 </body>
+<script>
+    let thisPage = 1;
+    let limit = 5;
+    let list = document.querySelectorAll('.list .item');
+
+    function loadItem() {
+        let beginGet = limit * (thisPage - 1);
+        let endGet = limit * thisPage - 1;
+        list.forEach((item, key) => {
+            if (key >= beginGet && key <= endGet) {
+                item.style.display = 'table-row';
+
+            }
+            else {
+                item.style.display = 'none';
+            }
+        })
+        listPage();
+
+    }
+    loadItem();
+    function listPage() {
+        let count = Math.ceil(list.length / limit);
+        document.querySelector('.listPage').innerHTML = '';
+
+        if (thisPage != 1) {
+            let prev = document.createElement('li');
+            prev.innerHTML = '<i class="fa-solid fa-angles-left"></i>';
+            prev.setAttribute('onclick', "changePage(" + (thisPage - 1) + ")");
+            document.querySelector('.listPage').appendChild(prev);
+        }
+
+        for (i = 1; i <= count; i++) {
+            let newPage = document.createElement('li');
+            newPage.innerText = i;
+            if (i == thisPage) {
+                newPage.classList.add('active');
+            }
+            newPage.setAttribute('onclick', "changePage(" + i + ")");
+            document.querySelector('.listPage').appendChild(newPage);
+        }
+        if (thisPage != count) {
+            let next = document.createElement('li');
+            next.innerHTML = '<i class="fa-solid fa-angles-right"></i>';
+            next.setAttribute('onclick', "changePage(" + (thisPage + 1) + ")");
+            document.querySelector('.listPage').appendChild(next);
+        }
+    }
+    function changePage(i) {
+        thisPage = i;
+        loadItem();
+    }
+
+    <!--Nav-Tab-->
+    function openOrder(evt, orderName) {
+        var i, x, tablinks;
+        x = document.getElementsByClassName("order");
+        for (i = 0; i < x.length; i++) {
+            x[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablink");
+        for (i = 0; i < x.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" btn-fill", " btn-bd");
+        }
+        document.getElementById(orderName).style.display = "table";
+        evt.currentTarget.classList.remove("btn-bd");
+        evt.currentTarget.classList.add("btn-fill");
+    }
+</script>
+
 </html>

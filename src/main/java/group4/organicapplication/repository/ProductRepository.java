@@ -13,4 +13,7 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product, Integer> {
     @Query("SELECT p FROM Product p JOIN ImportBill ib ON p.productID = ib.product.productID JOIN ImportProduct ip ON ib.importProduct.importID = ip.importID WHERE ip.supplier.supplierID = :supplierId")
     List<Product> findProductsBySupplierId(int supplierId);
+
+
+    List<Product> findByProductNameContaining(String searchName);
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
@@ -7,8 +7,9 @@
     <title>Products</title>
     <link rel="stylesheet" href="./styles/index.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+          integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/5a213e1813.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <style>
     ul>li {
@@ -16,10 +17,13 @@
     }
 
     #search {
-        width: 658px;
+        width: 1000px;
         margin: auto 20px;
     }
 
+    #dropdownSupplier {
+        margin: auto 20px;
+    }
     .add {
         width: 160px;
         height: 50px;
@@ -54,27 +58,29 @@
         background-color: #8FC742;
         color: white;
     }
-
-    #edit, #addNew {
+    #edit, #addNew{
         position: absolute;
-        z-index: 2;
-        background-color: white;
-        width: 450px;
-        height: 250px;
+        z-index:2;
+        background-color:rgba(0, 0, 0, 0.5);
+        display: none;
+        width: 100%;
+        height: 100%;
+        justify-content: center;
+        align-items: center;
+        border-radius: 10px;
+        display: none;
         left: 50%;
         top: 50%;
         transform: translate(-50%, -50%);
-        border-radius: 10px;
-        display: none;
     }
-
-    #edit > form, #addNew > form {
-        padding: 30px;
+    .active {
+        border: 0;
+        border-bottom: #8FC742 2px solid;
     }
 </style>
 
 <body>
-    <header>
+<header>
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid shadow-sm" style="height: 100px;">
             <a class="navbar-brand" href="#"><img
@@ -82,9 +88,8 @@
                     alt="brand_icon" width="150"></a>
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
                 <ul class="navbar-nav">
-
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/product}">SẢN PHẨM</a>
+                        <a class="nav-link active" th:href="@{/product}">SẢN PHẨM</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/sale}">BÁN HÀNG</a>
@@ -107,112 +112,125 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#">THỐNG KÊ</a>
                     </li>
-                    <li class="nav-item" style="margin-left: 370px;">
-                        <a class="nav-link" href="#"><i class="fa-solid fa-basket-shopping"></i> GIỎ HÀNG</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle dropbtn" href="javascript:void(0)" role="button"
-                           data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-regular fa-user"></i> User</a>
-                        <div class="dropdown-content" style="width:300px;">
-                            <a href="#">Thông tin cá nhân</a>
-                            <a href="#">Sửa thông tin cá nhân</a>
-                            <a href="#">Đổi mật khẩu</a>
-                            <a href="./login.html">Đăng xuất</a>
-                        </div>
-                    </li>
+
+                </ul>
+            </div>
+            <div class="dropdown me-5">
+                <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    ADMIN
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="#">Thông tin cá nhân</a></li>
+                    <li><a class="dropdown-item" href="#">Sửa thông tin cá nhân</a></li>
+                    <li><a class="dropdown-item" href="#">Đổi mật khẩu</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="#">Đăng xuất</a></li>
                 </ul>
             </div>
         </div>
     </nav>
 </header>
 
-    <div style="margin: 30px;">
-        <div style="display: flex; background-color:#8FC742; color:white;">
-            <div style="height:80px; padding:25px 100px;">
-                <h4>Quản lý sản phẩm</h4>
-            </div>
-            <div id="search">
-                <form class="d-flex" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
-                        style="height:50px;">
-                    <button class="btn btn-success" type="submit"
-                        style=" margin-left:-100px; height:45px; width:87px; margin-top:3px; background-color:#8FC742; border:0;">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                    </button>
-                </form>
-            </div>
-            <button type="button" class="add shadow-sm" onclick="openAddNew()">Thêm mới<i style="float: right; font-size: 40px;"
-                    class="fa-solid fa-square-plus"></i></button>
+<div style="margin: 30px;">
+    <div style="display: flex; background-color:#8FC742; color:white;">
+        <div style="height:80px; padding:25px 100px;">
+            <h4>Quản lý sản phẩm</h4>
         </div>
+        <div id="search">
+            <form class="d-flex" role="search" onsubmit="searchProduct()">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
+                       style="height:50px;" name="searchName">
 
+                <button class="btn btn-success" type="submit"
+                        style=" margin-left:-100px; height:45px; width:87px; margin-top:3px; background-color:#8FC742; border:0;">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </form>
+        </div>
+        <div class="form-floating w-50" id="dropdownSupplier">
+            <select class="form-select" id="supplierDropdown" onchange="getProductBySupplierId()" >
 
-        <table class="table text-center mt-3 align-middle border">
-            <thead class="table-secondary" style="background-color: #8FC742; height:50px;">
-                <tr>
-                    <th scope="col-1">Mã sản phẩm</th>
-                    <th scope="col-2">Hình ảnh</th>
-                    <th scope="col-5">Tên sản phẩm</th>
-                    <th scope="col-1">Loại</th>
-                    <th scope="col-1">Số lượng</th>
-                    <th scope="col-1">Giá bán</th>
-                    <th scope="col-2">Chức năng</th>
-                </tr>
-            </thead>
-            <tbody class="list">
-                <th:block th:each="product:${productList}">
-                    <tr class="item">
-                        <td>[[${product.productID}]]</td>
-                        <td><img src="https://hcm.fstorage.vn/images/2022/cai-chip-500g_261fc71a-d25a-4cb5-b2cd-8c2018b67292-og.jpg" width="70"></td>
-                        <td>[[${product.productName}]]</td>
-                        <td>[[${product.unit}]]</td>
-                        <td>[[${product.quantity}]]</td>
-                        <td>[[${product.price}]]</td>
-                        <td>
-                            <a th:href="@{/productInfo}"><button type="button" class="btn btn-success">Xem</button></a>
-                            <button type="button" class="btn btn-primary" onclick="openEdit()">Sửa</button>
-                            <button type="button" class="btn btn-danger">Xoá</button>
-                        </td>
-                    </tr>
+                <option th:value="0">Tất cả</option>
+                <th:block th:each="supplier : ${suppliers}">
+
+                    <option th:value="${supplier.supplierID}" th:text="${supplier.supplierName}"></option>
                 </th:block>
-            </tbody>
-        </table>
-            <ul class="listPage">
-                <li class="active">1</li>
-                <li>2</li>
-                <li>3</li>
-            </ul>
+            </select>
+            <label>Lọc theo nhà cung cấp</label>
 
+        </div>
+        <button type="button" class="add shadow-sm" onclick="openAddNew()">Thêm mới<i style="float: right; font-size: 40px;"
+                                                                                       class="fa-solid fa-square-plus"></i></button>
     </div>
 
-    <div id="edit" class="shadow-sm border">
+
+    <table class="table text-center mt-3 align-middle border">
+        <thead class="table-secondary" style="background-color: #8FC742; height:50px;">
+        <tr>
+            <th scope="col-1">Mã sản phẩm</th>
+            <th scope="col-2">Hình ảnh</th>
+            <th scope="col-5">Tên sản phẩm</th>
+            <th scope="col-1">Loại</th>
+            <th scope="col-1">Số lượng</th>
+            <th scope="col-1">Giá bán</th>
+            <th scope="col-2">Chức năng</th>
+        </tr>
+        </thead>
+        <tbody class="list">
+        <th:block th:each="product:${products}">
+            <tr class="item">
+                <td>[[${product.productID}]]</td>
+                <td><img src="https://hcm.fstorage.vn/images/2022/cai-chip-500g_261fc71a-d25a-4cb5-b2cd-8c2018b67292-og.jpg" width="70"></td>
+                <td>[[${product.productName}]]</td>
+                <td>[[${product.unit}]]</td>
+                <td>[[${product.quantity}]]</td>
+                <td>[[${product.price}]]</td>
+                <td>
+                    <a th:href="@{/productInfo}"><button type="button" class="btn btn-success">Xem</button></a>
+                    <button type="button" class="btn btn-primary" onclick="openEdit()">Sửa</button>
+                    <button type="button" class="btn btn-danger">Xoá</button>
+                </td>
+            </tr>
+        </th:block>
+        </tbody>
+    </table>
+    <ul class="listPage">
+        <li class="active">1</li>
+        <li>2</li>
+        <li>3</li>
+    </ul>
+
+</div>
+<div id="edit">
+    <div style="background-color: white; width:550px; border-radius:10px;" class="shadow-lg">
         <h6 style="height: 50px; background-color:black; color:white; padding:15px; border-radius:10px 10px 0 0;">
             Cập nhật thông tin sản phẩm ID: <span>1</span>
         </h6>
-        <form>
+        <form style="padding: 20px;">
             <div class="form-floating mb-3" style="display: flex;">
-                <img class="border" src="../images/image 10.png" alt="" width="100">
+                <img class="border" src="/static/images/image 10.png" alt="" width="100">
                 <input type="file" id="imageUser" name="imageUser" style="margin: 70px 10px 0 10px;">
             </div>
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="floatingInput">
-                <label for="floatingInput">Tên sản phẩm</label>
+                <input type="text" class="form-control" id="productName">
+                <label for="productName">Tên sản phẩm</label>
             </div>
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="floatingInput">
-                <label for="floatingInput">Khối lượng</label>
+                <input type="text" class="form-control" id="unit">
+                <label for="unit">Khối lượng</label>
             </div>
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="floatingInput">
-                <label for="floatingInput">Số lượng</label>
+                <input type="text" class="form-control" id="quantity">
+                <label for="quantity">Số lượng</label>
             </div>
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="floatingInput">
-                <label for="floatingInput">Giá bán</label>
+                <input type="text" class="form-control" id="price">
+                <label for="price">Giá bán</label>
             </div>
 
             <div class="form-floating mb-3">
-                <textarea class="form-control" id="floatingInput" rows="3"></textarea>
-                <label for="floatingInput">Mô tả</label>
+                <textarea class="form-control" id="description" rows="3"></textarea>
+                <label for="description">Mô tả</label>
             </div>
             <div>
                 <label for="typeP" class="me-3">Loại sản phẩm: </label>
@@ -222,69 +240,73 @@
                     <option value="leaf">Rau ăn lá</option>
                 </select>
             </div>
-            <div style="float: right;">
+            <div style="float: right; margin-bottom:20px;">
                 <button type="submit" class="btn btn-primary">Lưu</button>
-                <button type="submit" class="btn btn-secondary" onclick="closeAddNew()">Huỷ</button>
+                <button type="submit" class="btn btn-secondary" onclick="closeEdit()">Huỷ</button>
             </div>
         </form>
     </div>
+</div>
 
 
-    <div id="addNew" class="shadow-sm border">
+<div id="addNew">
+    <div style="background-color: white; width:550px; border-radius:10px;" class="shadow-lg">
         <h6 style="height: 50px; background-color:black; color:white; padding:15px; border-radius:10px 10px 0 0;">
             Thêm sản phẩm mới
         </h6>
-        <form>
+        <form style="padding: 20px;">
             <div class="form-floating mb-3" style="display: flex;">
-                <img class="border" src="../images/image 10.png" alt="" width="100">
-                <input type="file" id="imageUser" name="imageUser" style="margin: 70px 10px 0 10px;">
+                <img class="border" src="/static/images/image 10.png" alt="" width="100">
+                <input type="file" id="imageUser1" name="imageUser" style="margin: 70px 10px 0 10px;">
             </div>
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="floatingInput">
-                <label for="floatingInput">Tên sản phẩm</label>
+                <input type="text" class="form-control" id="productName1">
+                <label for="productName1">Tên sản phẩm</label>
             </div>
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="floatingInput">
-                <label for="floatingInput">Khối lượng</label>
+                <input type="text" class="form-control" id="unit1">
+                <label for="unit1">Khối lượng</label>
             </div>
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="floatingInput">
-                <label for="floatingInput">Số lượng</label>
+                <input type="text" class="form-control" id="quantity1">
+                <label for="quantity1">Số lượng</label>
             </div>
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="floatingInput">
-                <label for="floatingInput">Giá bán</label>
+                <input type="text" class="form-control" id="price1">
+                <label for="price1">Giá bán</label>
             </div>
 
             <div class="form-floating mb-3">
-                <textarea class="form-control" id="floatingInput" rows="3"></textarea>
-                <label for="floatingInput">Mô tả</label>
+                <textarea class="form-control" id="description1" rows="3"></textarea>
+                <label for="description1">Mô tả</label>
             </div>
             <div>
-                <label for="typeP" class="me-3">Loại sản phẩm: </label>
-                <select id="typeP" name="roles">
+                <label for="typeP1" class="me-3">Loại sản phẩm: </label>
+                <select id="typeP1" name="roles">
                     <option value="none">Không</option>
                     <option value="fruits">Trái cây</option>
                     <option value="leaf">Rau ăn lá</option>
                 </select>
             </div>
-            <div style="float: right;">
+            <div style="float: right; margin-bottom:20px;">
                 <button type="submit" class="btn btn-primary">Lưu</button>
                 <button type="submit" class="btn btn-secondary" onclick="closeAddNew()">Huỷ</button>
             </div>
         </form>
     </div>
+</div>
 
-    <footer class="position-absolute bottom-0 end-0  shadow-lg p-4"
+
+<footer class="position-absolute bottom-0 end-0  shadow-lg p-4"
         style="height: 70px; width:100%; background-color:black; color:white;">
-        <div class="footer-bottom clearfix">
-            <div class="container">
-                <div class="row">
-                    &copy; 2023 - Vegetables Store by Group 4
-                </div>
+    <div class="footer-bottom clearfix">
+        <div class="container">
+            <div class="row">
+                &copy; 2023 - Vegetables Store by Group 4
             </div>
         </div>
-    </footer>
+    </div>
+</footer>
 </body>
 <script>
     let thisPage = 1;
@@ -342,7 +364,7 @@
     <!--Open form Add New-->
     function openAddNew() {
         let x = document.getElementById("addNew");
-        x.style.display = "block";
+        x.style.display = "flex";
     }
 
     function closeAddNew() {
@@ -352,12 +374,43 @@
 
     function openEdit() {
         let x = document.getElementById("edit");
-        x.style.display = "block";
+        x.style.display = "flex";
     }
 
     function closeEdit() {
         let x = document.getElementById("edit");
         x.style.display = "none";
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const supplierID = localStorage.getItem("selectedSupplierID");
+        if (supplierID) {
+            const supplierDropdown = document.getElementById("supplierDropdown");
+            supplierDropdown.value = supplierID;
+        }
+    });
+    function getProductBySupplierId() {
+        let supplierID = document.getElementById("supplierDropdown").value;
+        localStorage.setItem("selectedSupplierID", supplierID);
+
+        if (supplierID) {
+            const url = new URL(window.location.href);
+            const searchParams = url.searchParams;
+            if (searchParams.has('searchName')) {
+                searchParams.delete('searchName'); // Xóa tham số searchName nếu có
+            }
+            url.searchParams.set('supplierID', supplierID);
+            window.location.href = url;
+        }
+        saveSelectedSupplierID(supplierID);
+    }
+    function searchProduct() {
+        const url = new URL(window.location.href);
+        const searchParams = url.searchParams;
+        // Kiểm tra và xóa tham số supplierID nếu có
+        if (searchParams.has('supplierID')) {
+            searchParams.delete('supplierID');
+        }
     }
 </script>
 

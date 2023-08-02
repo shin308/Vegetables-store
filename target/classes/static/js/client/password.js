@@ -31,7 +31,7 @@ function changePass()
 			type: "POST",	
 			data: data,	
 			contentType : "application/json",
-			url: "http://localhost:8080/updatePassword",
+			url: "http://localhost:8080/laptopshop/updatePassword",
 			success: function(result){
 				if(result.status == "old")
 				{
@@ -40,7 +40,7 @@ function changePass()
 					return;
 				}else{
 					alert("Mật khẩu đã thay đổi");
-					window.location.href = "/manage-user-account";
+					window.location.href = "/laptopshop/account";
 				}
 				
 			},

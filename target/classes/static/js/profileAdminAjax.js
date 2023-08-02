@@ -1,7 +1,7 @@
 $(document).ready(function(){
 	
 	// click event button Cap nhật thông tin
-	$('.updateProfile').on("click", function(event) {
+	$('.btnCapNhatThongTin').on("click", function(event) {
 		event.preventDefault();
 		var nguoiDungId = $(".nguoiDungId").val();
 		
@@ -24,7 +24,7 @@ $(document).ready(function(){
     	});
     }
     
-	$('.changePassword').on("click", function(event) {
+	$('.btnDoiMatKhau').on("click", function(event) {
 		event.preventDefault();
 		removeElementsByClass("error");
 		$('.formDoiMatKhau #doiMKModal').modal();
@@ -44,13 +44,13 @@ $(document).ready(function(){
 	     		async:false,
 	 			type : "POST",
 	 			contentType : "application/json",
-	 			url : "http://localhost:8080/api/profile/changePassword",
+	 			url : "http://localhost:8080/api/profile/doiMatKhau",
 	 			data : JSON.stringify(data),
 	 			success : function(response) {
 	 				if(response.status == "success"){
 	 					$('#doiMKModal').modal('hide');
 	 					alert("Đổi mật khẩu thành công. Bạn phải đăng nhập lại để xác nhận");
-	 					location.href = "http://localhost:8080/logout";
+	 					location.href = "http://localhost:8080/vegetable-shop/logout";
 	 				} else {
 	 			    	$('input').next().remove();
 	 		            $.each(response.errorMessages, function(key,value){

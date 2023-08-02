@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -18,8 +19,17 @@ public class CategoryController {
     @Autowired private CategoryService service;
 
     @GetMapping("/category")
-    public String showCategoryList(Model model){
-        List<Category> categoryList = service.listAll();
+    public String showCategoryList(@RequestParam(value = "searchCategory", required = false)String searchCategory,Model model){
+        List<Category> categoryList;
+
+        if (searchCategory != null && !searchCategory.isEmpty()) {
+            categoryList = service.findCategoryByName(searchCategory);
+        } else {
+            // Nếu không có tên để tìm kiếm, hiển thị tất cả nhà cung cấp
+            categoryList = service.listAll();
+        }
+
+//        model.addAttribute("category", categoryList);
         model.addAttribute("category",new Category());
         model.addAttribute("categoryList", categoryList);
         return "category";
@@ -57,6 +67,21 @@ public class CategoryController {
         } catch (CategoryNotFoundException e) {
             return "redirect:/category";
         }
+        return "redirect:/category";
+    }
+
+    @GetMapping("/category/search")
+    public String SearchCategory(@RequestParam(value = "searchCategory", required = false)String searchCategory,Model model){
+        List<Category> category;
+
+        if (searchCategory != null && !searchCategory.isEmpty()) {
+            category = service.findCategoryByName(searchCategory);
+        } else {
+            // Nếu không có tên để tìm kiếm, hiển thị tất cả nhà cung cấp
+            category = service.listAll();
+        }
+
+        model.addAttribute("category", category);
         return "redirect:/category";
     }
 }

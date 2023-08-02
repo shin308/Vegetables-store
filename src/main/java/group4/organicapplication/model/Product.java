@@ -19,7 +19,7 @@ public class Product {
     @JoinColumn(name = "categoryID")
     private Category category;
 
-    @Column(name = "productName", nullable = false)
+    @Column(name = "productName", columnDefinition = "nvarchar(100) not null")
     private String productName;
 
     @Column(name = "img")
@@ -34,7 +34,7 @@ public class Product {
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
 
-    @Column(name = "description", length = 300)
+    @Column(name = "description", columnDefinition = "nvarchar(300)")
     private String description;
 
 }

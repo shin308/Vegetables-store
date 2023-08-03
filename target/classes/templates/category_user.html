@@ -77,8 +77,8 @@
     <a class="navbar-brand" th:href="@{/}"><img id="imgBr"
                                                 src="https://img.freepik.com/premium-vector/organic-icon-100-percent-organic-product-label_349999-1003.jpg?w=2000"
                                                 alt="brand_icon" width="100px"></a>
-    <form class="d-flex" id="search" role="search">
-      <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+    <form class="d-flex" id="search" role="search" th:action="@{/}" method="get">
+      <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="searchProductName">
       <button class="btn btn-outline-success" type="submit">Search</button>
     </form>
 
@@ -110,7 +110,7 @@
             style="--bs-badge-font-size: 0.5em;">10</span></i>GIỎ HÀNG</a>
     <div th:switch="${#authentication} ? ${#authorization.expression('isAuthenticated()')} : ${false}">
 			<span th:case="${false}">
-					<a class="navbar-brand me-1" th:href="@{/login}">Đăng nhập</a>|<a class="navbar-brand ms-1" th:href="@{/register}">Đăng ký</a>
+					<a class="navbar-brand me-1 fs-6" th:href="@{/login}">Đăng nhập</a>|<a class="navbar-brand ms-1 fs-6" th:href="@{/register}">Đăng ký</a>
 				</span>
       <span th:case="${true}">
                     <div class="dropdown">

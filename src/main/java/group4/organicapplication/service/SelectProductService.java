@@ -14,4 +14,8 @@ public class SelectProductService {
     public List<Product> selectAll(){
         return (List<Product>) repo.findAll();
     }
+
+    public List<Product> findProductByName(String searchProductName) {
+        return repo.findByProductNameContainingIgnoreCase(searchProductName);
+    }
 }

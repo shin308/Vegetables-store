@@ -2,7 +2,9 @@ package group4.organicapplication.service;
 
 import group4.organicapplication.exception.CategoryNotFoundException;
 import group4.organicapplication.model.Category;
+import group4.organicapplication.model.Product;
 import group4.organicapplication.repository.CategoryRepository;
+import group4.organicapplication.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +14,8 @@ import java.util.Optional;
 @Service
 public class CategoryService {
     @Autowired private CategoryRepository repo;
+
+    @Autowired private ProductRepository productRepository;
     public List<Category> listAll(){
         return (List<Category>) repo.findAll();
     }
@@ -29,10 +33,9 @@ public class CategoryService {
     }
 
     public void delete(Integer categoryID) throws CategoryNotFoundException {
-//        long count = repo.countByID(categoryID);
-//        if ( count == 0){
-//            throw new CategoryNotFoundException("Could not find any category with ID: "+categoryID);
-//        }
+        List<Product>products = productRepository.findByCategoryId(categoryID);
+        productRepository.deleteAll(products);
+
         repo.deleteById(categoryID);
     }
 

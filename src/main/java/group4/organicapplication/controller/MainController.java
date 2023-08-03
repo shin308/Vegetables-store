@@ -44,14 +44,22 @@ public class MainController {
     }
 
     @GetMapping("/")
-    public String showHomePage(Model model){
+    public String showHomePage(@RequestParam(value = "searchProductName", required = false)String searchProductName,Model model){
         List<Category> categoryList = categoryService.listAll();
         model.addAttribute(("categoryList"),categoryList);
 
-        List<Product> productList = selectProductService.selectAll();
+        List<Product> productList;
+        if (searchProductName != null && !searchProductName.isEmpty()) {
+            productList = selectProductService.findProductByName(searchProductName);
+        } else {
+            // Nếu không có tên để tìm kiếm, hiển thị tất cả nhà cung cấp
+            productList = selectProductService.selectAll();
+        }
         model.addAttribute("productList",productList);
         return "client/home";
     }
+
+
 
     @GetMapping("/{categoryID}")
     public  String selectProductByCategory(@PathVariable("categoryID") Integer categoryID,Model model){
@@ -99,6 +107,11 @@ public class MainController {
     @GetMapping("/order")
     public String showOrderPage(){
         return "order";
+    }
+
+    @GetMapping("/order_user")
+    public String showorderUserPage(){
+        return "order_user";
     }
 
     @GetMapping("/supplier")

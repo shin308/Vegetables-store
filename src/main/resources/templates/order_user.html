@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
   <meta charset="UTF-8">
@@ -39,29 +39,31 @@
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="index.html#productAll">SẢN PHẨM</a>
+            <a class="nav-link" aria-current="page" href="#productAll">SẢN PHẨM</a>
           </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle dropbtn" href="javascript:void(0)" role="button"
-               data-bs-toggle="dropdown" aria-expanded="false">DANH MỤC</a>
-            <div class="dropdown-content">
-              <a href="index.html#fruits">Trái cây</a>
-              <a href="index.html#leaf">Rau ăn lá</a>
-              <a href="index.html#">Rau ăn củ</a>
-            </div>
-          </li>
+          <div class="dropdown nav-item">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              DANH MỤC
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" th:href="@{/}">Tất Cả Sản Phẩm</a></li>
+              <th:block th:each="category:${categoryList}">
+                <li><a class="dropdown-item" th:href="@{'/' + ${category.categoryID}}">[[${category.categoryName}]]</a></li>
+              </th:block>
+            </ul>
+          </div>
           <li class="nav-item">
-            <a class="nav-link" href="order_user.html">ĐƠN HÀNG</a>
+            <a class="nav-link" th:href="@{/order_user}">ĐƠN HÀNG</a>
           </li>
 
           <li class="nav-item">
-            <a class="nav-link" href="index.html#aboutMe">VỀ CHÚNG TÔI</a>
+            <a class="nav-link" href="#aboutMe">VỀ CHÚNG TÔI</a>
           </li>
 
-          <div class="ms-5" style="width:700px;">
-            <form class="d-flex" role="search">
+          <div class="ms-5" style="width:600px;">
+            <form class="d-flex" role="search" th:action="@{/}" method="get">
               <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
-                     style="height:50px;">
+                     style="height:50px;" name="searchProductName">
               <button class="btn btn-success" type="submit"
                       style=" margin-left:-100px; height:45px; width:87px; margin-top:3px; background-color:#8FC742; border:0;">
                 <i class="fa-solid fa-magnifying-glass"></i>
@@ -70,19 +72,31 @@
           </div>
         </ul>
       </div>
-      <a class="nav-link me-3" href="./cart.html"><i class="fa-solid fa-basket-shopping"></i> GIỎ HÀNG</a>
-      <div class="dropdown me-5">
-        <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-          User
-        </button>
-        <ul class="dropdown-menu dropdown-menu-end">
-          <li><a class="dropdown-item" href="#">Thông tin cá nhân</a></li>
-          <li><a class="dropdown-item" href="#">Sửa thông tin cá nhân</a></li>
-          <li><a class="dropdown-item" href="#">Đổi mật khẩu</a></li>
-          <li><hr class="dropdown-divider"></li>
-          <li><a class="dropdown-item" href="#">Đăng xuất</a></li>
-        </ul>
+      <a class="nav-link me-5" th:href="@{/cart}"><i class="fa-solid fa-basket-shopping"></i> GIỎ HÀNG</a>
+
+      <div th:switch="${#authentication} ? ${#authorization.expression('isAuthenticated()')} : ${false}">
+				<span th:case="${false}">
+					<a class="navbar-brand me-1" th:href="@{/login}">Đăng nhập</a>|<a class="navbar-brand ms-1" th:href="@{/register}">Đăng ký</a>
+				</span>
+        <span th:case="${true}">
+                    <div class="dropdown me-5">
+                        <button class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    		<span th:text="${loggedInUser.lastName}"></span>
+							<span> </span>
+							<span th:text="${loggedInUser.firstName}"></span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" th:href="@{/account}">Thông tin cá nhân</a></li>
+                            <li><a class="dropdown-item" href="#">Sửa thông tin cá nhân</a></li>
+                            <li><a class="dropdown-item" href="#">Đổi mật khẩu</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a></li>
+                        </ul>
+
+					</div>
+				</span>
       </div>
+
     </div>
   </nav>
 

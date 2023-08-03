@@ -68,19 +68,4 @@ public class CategoryController {
         }
         return "redirect:/category";
     }
-
-    @GetMapping("/category/search")
-    public String SearchCategory(@RequestParam(value = "searchCategory", required = false)String searchCategory,Model model){
-        List<Category> category;
-
-        if (searchCategory != null && !searchCategory.isEmpty()) {
-            category = service.findCategoryByName(searchCategory);
-        } else {
-            // Nếu không có tên để tìm kiếm, hiển thị tất cả nhà cung cấp
-            category = service.listAll();
-        }
-
-        model.addAttribute("category", category);
-        return "redirect:/category";
-    }
 }

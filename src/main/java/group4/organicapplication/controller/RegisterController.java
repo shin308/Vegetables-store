@@ -44,6 +44,6 @@ public class RegisterController {
 
         securityService.autoLogin(nguoiDung.getEmail(), nguoiDung.getConfirmPassword());
 
-        return "redirect:/";
+        return "redirect:/login";
     }
 }

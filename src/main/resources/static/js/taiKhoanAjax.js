@@ -12,7 +12,7 @@ $(document).ready(function() {
 			url: "http://localhost:8080/api/account/all" + '?page=' + page,
 			success: function(result){
 				$.each(result.content, function(i, taiKhoan){
-					var taiKhoanRow = '<tr>' +
+					var taiKhoanRow = '<tr class="item">' +
 					                  '<td>' + taiKhoan.id+ '</td>' +
 					                  '<td>' + taiKhoan.lastName + '</td>' +
 					                  '<td>' + taiKhoan.firstName + '</td>' +

@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Registration and Login App</title>
+	<title>VEGETABLES STORE</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet"
 		  href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -78,8 +78,8 @@
         			</span>
 					<span th:case="${true}">
 						<a class="navbar-brand" th:href="@{/category}">Management Category</a>
-            			<a class="navbar-brand" th:href="@{/account}">Tài khoản</a>
-            			<a class="navbar-brand" th:href="@{/logout}"> Đăng xuất</a>
+            			<a class="navbar-brand" th:href="@{/manage-user-account}">Tài khoản</a>
+            			<a class="navbar-brand" th:href="@{/login?logout}"> Đăng xuất</a>
             			<span>
 							<span class="navbar-brand">
 								<a class="nav-link dropdown-toggle dropbtn" href="javascript:void(0)" role="button"

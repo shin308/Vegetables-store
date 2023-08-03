@@ -1,22 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Accounts</title>
+    <title>Admin - Manage Accounts</title>
+
     <link rel="stylesheet" href="./styles/index.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/5a213e1813.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
-</head>
-<style>
-    ul>li {
-        margin: 0 10px;
-    }
 
-    #search {
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+
+    <style>
+     #search {
         width: 658px;
         margin: auto 20px;
     }
@@ -79,6 +78,7 @@
         border-bottom: #8FC742 2px solid;
     }
 </style>
+</head>
 
 <body>
 <header>
@@ -109,33 +109,47 @@
                         <a class="nav-link" th:href="@{/import}">NHẬP HÀNG</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" th:href="@{/account}">QUẢN LÝ TÀI KHOẢN</a>
+                        <a class="nav-link active" th:href="@{/admin/list-account}">QUẢN LÝ TÀI KHOẢN</a>
                     </li>
+
                     <li class="nav-item">
                         <a class="nav-link" href="#">THỐNG KÊ</a>
                     </li>
 
                 </ul>
             </div>
+
+<!--            <div class="dropdown me-5">-->
+<!--                <button class="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown"  aria-expanded="false">-->
+<!--                    Hi, <span th:text="${loggedInUser.lastName}"></span>-->
+<!--                    <span th:text="${loggedInUser.firstName}"></span>-->
+<!--                </button>-->
+<!--                <ul class="dropdown-menu dropdown-menu-end">-->
+<!--                    <li><a class="dropdown-item"  th:href="@{/admin/profile}">Thông tin cá nhân</a></li>-->
+<!--                    <li><hr class="dropdown-divider"></li>-->
+<!--                    <li><a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a></li>-->
+<!--                </ul>-->
+<!--            </div>-->
+
             <div class="dropdown me-5">
                 <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    ADMIN
+                    Hi, <span th:text="${loggedInUser.lastName}"></span>
+                    <span th:text="${loggedInUser.firstName}"></span>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end">
-                    <li><a class="dropdown-item" href="#">Thông tin cá nhân</a></li>
-                    <li><a class="dropdown-item" href="#">Sửa thông tin cá nhân</a></li>
-                    <li><a class="dropdown-item" href="#">Đổi mật khẩu</a></li>
+                    <li><a class="dropdown-item" th:href="@{/admin/profile}">Thông tin cá nhân</a></li>
                     <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="#">Đăng xuất</a></li>
+                    <li><a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a></li>
                 </ul>
             </div>
+
         </div>
     </nav>
 </header>
 
 <div style="margin: 30px;">
     <div style="display: flex; background-color:#8FC742; color:white;">
-        <div style="height:80px; padding:25px 100px;">
+        <div style="height:80px; padding:50px 10px;">
             <h4>Quản lý tài khoản</h4>
         </div>
         <div id="search">
@@ -148,43 +162,46 @@
                 </button>
             </form>
         </div>
-        <button type="button" class="add shadow-sm" onclick="openAddNew()">Thêm mới<i style="float: right; font-size: 40px;"
-                                                                                       class="fa-solid fa-square-plus"></i></button>
+
+        <div class="form-floating w-40" id="dropdownRole">
+            <div class="form-group form-inline">
+                <label><strong>Lọc tài khoản:</strong> </label>
+                <select id="vaiTro" class="form-control form-select">
+                    <option th:each="role : ${listRole}" th:value="${role.roleName}" th:text="${role.roleName}"></option>
+                </select>
+            </div>
+        </div>
+
+        <button type="button" class="add shadow-sm btnThemTaiKhoan"
+                data-bs-toggle="modal" data-bs-target="#taiKhoanModal">
+            Thêm mới
+            <i style="float: right; font-size: 40px;" class="fa-solid fa-square-plus"></i>
+        </button>
+
     </div>
 
 
-    <table class="table text-center mt-3 align-middle border">
+    <table class="table text-center mt-3 align-middle border taiKhoanTable">
         <thead class="table-secondary" style="background-color: #8FC742; height:50px;">
         <tr>
             <th scope="col-1">Mã tài khoản</th>
-            <th scope="col-5">Tên người dùng</th>
+            <th scope="col-5">Tên</th>
+            <th scope="col-5">Họ</th>
             <th scope="col-2">Email</th>
             <th scope="col-1">Số điện thoại</th>
             <th scope="col-1">Địa chỉ</th>
-            <th scope="col-2">Chức năng</th>
+            <th scope="col-2">Vai trò</th>
         </tr>
         </thead>
         <tbody class="list">
-        <tr class="item">
-            <td scope="row">1</td>
-            <td>Nguyen Van B</td>
-            <td>admin@gmail.com</td>
-            <td>0347283822</td>
-            <td>Đà Nẵng</td>
-            <td>
-                <button type="button" class="btn btn-primary" onclick="openEdit()">Sửa</button>
-                <button type="button" class="btn btn-danger">Xoá</button>
-            </td>
-        </tr>
-
 
         </tbody>
     </table>
-    <ul class="listPage">
-        <li class="active">1</li>
-        <li>2</li>
-        <li>3</li>
-    </ul>
+<!--    <ul class="listPage">-->
+<!--        <li class="active">1</li>-->
+<!--        <li>2</li>-->
+<!--        <li>3</li>-->
+<!--    </ul>-->
 
 </div>
 
@@ -198,100 +215,80 @@
         </div>
     </div>
 </footer>
-<div id="edit">
-    <div style="background-color: white; width:550px; border-radius:10px;" class="shadow-lg">
-        <h6 style="height: 50px; background-color:black; color:white; padding:15px; border-radius:10px 10px 0 0;">
-            Cập nhật thông tin tài khoản ID: <span>1</span>
-        </h6>
-        <form style="padding: 20px">
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="name">
-                <label for="name">Tên người dùng</label>
-            </div>
-            <div class="form-floating mb-3">
-                <input type="tel" class="form-control" id="phone">
-                <label for="phone">Số điện thoại</label>
-            </div>
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="address">
-                <label for="address">Địa chỉ</label>
-            </div>
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="email">
-                <label for="email">Email</label>
-            </div>
-            <div class="form-floating mb-3">
-                <input type="password" class="form-control" id="password">
-                <label for="password">Password</label>
-            </div>
-            <div>
-                <label for="roles">Roles: </label>
-                <select id="roles" name="roles">
-                    <option value="admin">Admin</option>
-                    <option value="user">NhanVien</option>
-                    <option value="customer">KhachHang</option>
-                </select>
-            </div>
 
-            <div style="float: right; margin-top:-30px;">
-                <button type="submit" class="btn btn-primary">Lưu</button>
-                <button type="submit" class="btn btn-secondary" onclick="closeAddNew()">Huỷ</button>
-            </div>
+<!-- MODAL ADD USER -->
+<div class="row col-md-9">
+    <form class="taiKhoanForm" id="form">
+        <div>
+            <div class="modal" id="taiKhoanModal" tabindex="-1"
+                 role="dialog" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true" data-backdrop="static" data-keyboard="false">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Tạo mới tài
+                                khoản</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <!-- <input type="hidden" class="form-control" name="id" /> -->
+                            </div>
+                            <div class="form-group">
+                                <label for="name">Email</label>
+                                <input type="email" class="form-control" name="email" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="name">Mật khẩu:(8-32 ký tự)</label>
+                                <input type="password" class="form-control" name="password" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="name">Nhắc lại mật khẩu:</label>
+                                <input type="password" class="form-control" name="confirmPassword" required />
+                            </div>
 
-        </form>
-    </div>
+                            <div class="form-group">
+                                <label for="name">Chọn vai trò:</label>
+                                <div th:each="role : ${listRole}">
+                                    <label class="radio-inline">
+                                        <input type="radio"
+                                               name="roleName"
+                                               th:value="${role.roleName}"
+                                               checked="checked" />
+                                        <span th:text="${role.roleName}"></span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="name">Họ :</label>
+                                <input type="text" class="form-control" name="lastName" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="name">Tên :</label>
+                                <input type="text" class="form-control" name="firstName" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="name">Số điện thoại:</label>
+                                <input type="text" class="form-control" name="phone" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="name">Địa chỉ:</label>
+                                <input type="text" class="form-control" name="address" required />
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Hủy</button>
+                            <input class="btn btn-primary" id="btnSubmit" type="button" value="Xác nhận" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
 </div>
 
-
-<div id="addNew">
-    <div style="background-color: white; width:550px; border-radius:10px;" class="shadow-lg">
-        <h6 style="height: 50px; background-color:black; color:white; padding:15px; border-radius:10px 10px 0 0;">
-            Thêm tài khoản mới
-        </h6>
-        <form style="padding: 20px;">
-            <div class="form-floating mb-3">
-                <input type="file" id="imageUser" name="imageUser">
-            </div>
-
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="name1">
-                <label for="name1">Tên người dùng</label>
-            </div>
-            <div class="form-floating mb-3">
-                <input type="tel" class="form-control" id="phone1">
-                <label for="phone1">Số điện thoại</label>
-            </div>
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="address1">
-                <label for="address1">Địa chỉ</label>
-            </div>
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="email1">
-                <label for="email1">Email</label>
-            </div>
-            <div class="form-floating mb-3">
-                <input type="password" class="form-control" id="password1">
-                <label for="password1">Password</label>
-            </div>
-            <div>
-                <label for="roles">Roles: </label>
-                <select id="roles1" name="roles">
-                    <option value="admin">Admin</option>
-                    <option value="user">NhanVien</option>
-                    <option value="customer">KhachHang</option>
-                </select>
-            </div>
-
-            <div style="float: right; margin-top:-30px;">
-                <button type="submit" class="btn btn-primary">Lưu</button>
-                <button type="submit" class="btn btn-secondary" onclick="closeAddNew()">Huỷ</button>
-            </div>
-
-        </form>
-    </div>
-</div>
-
-</body>
 <script>
     let thisPage = 1;
     let limit = 5;
@@ -365,8 +362,16 @@
         let x = document.getElementById("edit");
         x.style.display = "none";
     }
-
-
 </script>
 
+<script
+        src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script
+        src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script
+        src="https://cdnjs.cloudflare.com/ajax/libs/jquery.serializeJSON/2.9.0/jquery.serializejson.js"></script>
+
+<script th:src="@{/js/taiKhoanAjax.js}"></script>
+
+</body>
 </html>

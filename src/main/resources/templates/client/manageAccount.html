@@ -5,11 +5,13 @@
     <meta charset="UTF-8">
     <title>Thay đổi thông tin tài khoản</title>
     <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
-    <link rel="stylesheet" type="text/css" th:href="@{/Frontend/css/style.css}" media="all" />
+<!--    <link rel="stylesheet" type="text/css" th:href="@{/Frontend/css/style.css}" media="all" />-->
+    <script src="https://kit.fontawesome.com/5a213e1813.js" crossorigin="anonymous"></script>
     <link
             href='//fonts.googleapis.com/css?family=Londrina+Solid|Coda+Caption:800|Open+Sans'
             rel='stylesheet' type='text/css'>
@@ -19,8 +21,8 @@
     <script th:src="@{/js/client/accounting.js}"></script>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 
-    <script th:src="@{/js/client/information.js}"></script>
-    <script th:src="@{/js/client/password.js}"></script>
+    <script th:src="@{/js/client/changeInformationUser.js}"></script>
+    <script th:src="@{/js/client/changePasswordUser.js}"></script>
 
 <!--    <script th:inline="javascript">-->
 <!--        $(document).ready(function() {-->
@@ -35,7 +37,7 @@
 
 <body>
 <nav class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container">
+    <div class="container-fluid shadow-sm">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed"
                     data-toggle="collapse" data-target="#navbar" aria-expanded="false"
@@ -54,19 +56,37 @@
             			<a class="navbar-brand" th:href="@{/register}"> Đăng ký</a>
         			</span>
                     <span th:case="${true}">
+						<a class="navbar-brand" th:href="@{/category}">Management Category</a>
             			<a class="navbar-brand" th:href="@{/manage-user-account}">Tài khoản</a>
             			<a class="navbar-brand" th:href="@{/logout}"> Đăng xuất</a>
-						Welcome:
-						<span class="navbar-brand" th:text="${loggedInUser.lastName}"></span>
-						<span class="navbar-brand" th:text="${loggedInUser.firstName}"></span>
+            			<span>
+							<span class="navbar-brand">
+								<a class="nav-link dropdown-toggle dropbtn" href="javascript:void(0)" role="button"
+                                   data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-regular fa-user"></i>
+									[[${loggedInUser.lastName}]] [[${loggedInUser.firstName}]]
+								</a>
+							</span>
+            			</span>
+						<span>
+							<span class="navbar-brand">
+								<select>
+									<option value="all">Danh Mục</option>
+									<th:block th:each="category:${categoryList}">
+										<option value="${category.categoryID}">[[${category.categoryName}]]</option>
+									</th:block>
+								</select>
+							</span>
+						</span>
         			</span>
                     <span th:case="*">Should never happen, but who knows</span>
-                    <span><a class="navbar-brand" th:href="@{/category}">Management Category</a></span>
                 </div>
             </ul>
         </div>
     </div>
 </nav>
+
+<br>
+<br>
 
 <div class="container">
     <div class="row">

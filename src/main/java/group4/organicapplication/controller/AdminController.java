@@ -29,13 +29,13 @@ public class AdminController {
 
     @GetMapping
     public String adminPage(Model model){
-        return "admin/home";
+        return "admin/index";
     }
 
     @GetMapping("/list-account")
     public String managerAccountPage(Model model) {
         model.addAttribute("listRole", roleService.findAllRole());
-        return "admin/manageAccount";
+        return "account";
     }
 
     @GetMapping("/profile")
@@ -50,7 +50,7 @@ public class AdminController {
         currentUser.setAddress(nd.getAddress());
         currentUser.setLastName(nd.getLastName());
         currentUser.setFirstName(nd.getFirstName());
-        currentUser.setPassword(nd.getPhone());
+        currentUser.setPhone(nd.getPhone());
         userService.updateUser(currentUser);
         return "redirect:/admin/profile";
     }

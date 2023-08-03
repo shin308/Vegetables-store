@@ -37,7 +37,7 @@ public class ClientAccountController {
         User currentUser = getSessionUser(re);
         model.addAttribute("user", currentUser);
 
-        return "client/account";
+        return "client/manageAccount";
     }
     @GetMapping("/changeInformation")
     public String clientChangeInformationPage(HttpServletRequest res,Model model) {

@@ -40,7 +40,7 @@ function changePass()
 					return;
 				}else{
 					alert("Mật khẩu đã thay đổi");
-					window.location.href = "/manage-user-account";
+					window.location.href = "/logout";
 				}
 				
 			},

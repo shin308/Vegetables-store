@@ -26,7 +26,7 @@ public class Product {
     private String img;
 
     @Column(name = "price", nullable = false)
-    private Double price;
+    private Integer price;
 
     @Column(name = "unit", nullable = false)
     private String unit;

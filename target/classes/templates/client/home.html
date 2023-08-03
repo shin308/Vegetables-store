@@ -2,14 +2,12 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Registration and Login App</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet"
-		  href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-		  integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-		  crossorigin="anonymous">
+	<title>HOME PAGE</title>
+	<link rel="stylesheet" href="/templates/styles/index.css">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+		  integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
 	<script src="https://kit.fontawesome.com/5a213e1813.js" crossorigin="anonymous"></script>
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <style>
 	ul>li {
@@ -28,14 +26,13 @@
 			 width: 100%;
 		 } -->
 
-	#listProduct {
-		height: 350px;
+	.listProduct {
 		margin: 0px 70px 20px 70px;
 		border-radius: 10px;
 		display: grid;
-		grid-template-columns: auto auto auto auto auto;
+		grid-template-columns: 16% 16% 16% 16% 16%;
 		padding: 30px 50px;
-		gap: 80px;
+		gap: 5%;
 	}
 
 	.item {
@@ -43,6 +40,7 @@
 		text-align: center;
 		border-radius: 5px;
 		border: 1px solid #8FC742;
+		padding: 20px 0;
 	}
 
 	.addCart {
@@ -57,155 +55,115 @@
 </style>
 <body>
 <!-- create navigation bar ( header) -->
-<nav class="navbar navbar-inverse navbar-fixed-top">
-	<div class="container-fluid shadow-sm">
-		<div class="navbar-header">
-			<button type="button" class="navbar-toggle collapsed"
-					data-toggle="collapse" data-target="#navbar" aria-expanded="false"
-					aria-controls="navbar">
-				<span class="sr-only">Toggle navigation</span> <span
-					class="icon-bar"></span> <span class="icon-bar"></span> <span
-					class="icon-bar"></span>
-			</button>
-			<a class="navbar-brand" href="#" th:href="@{/}">Vegetable Store</a>
+<header class="sticky top-0">
+	<nav class="navbar navbar-expand-lg bg-body-tertiary">
+		<div class="container-fluid shadow-sm" style="height: 100px;">
+			<a class="navbar-brand" th:href="@{/}"><img
+					src="https://img.freepik.com/premium-vector/organic-icon-100-percent-organic-product-label_349999-1003.jpg?w=2000"
+					alt="brand_icon" width="150"></a>
+			<div class="collapse navbar-collapse" id="navbarNavDropdown">
+				<ul class="navbar-nav">
+					<li class="nav-item">
+						<a class="nav-link" aria-current="page" href="#productAll">SẢN PHẨM</a>
+					</li>
+					<div class="dropdown nav-item">
+						<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+							DANH MỤC
+						</a>
+						<ul class="dropdown-menu">
+							<li><a class="dropdown-item" th:href="@{/}">Tất Cả Sản Phẩm</a></li>
+							<th:block th:each="category:${categoryList}">
+								<li><a class="dropdown-item" th:href="@{'/' + ${category.categoryID}}">[[${category.categoryName}]]</a></li>
+							</th:block>
+						</ul>
+					</div>
+					<li class="nav-item">
+						<a class="nav-link" th:href="@{/order_user}">ĐƠN HÀNG</a>
+					</li>
+
+					<li class="nav-item">
+						<a class="nav-link" href="#aboutMe">VỀ CHÚNG TÔI</a>
+					</li>
+
+					<div class="ms-5" style="width:600px;">
+						<form class="d-flex" role="search">
+							<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
+								   style="height:50px;">
+							<button class="btn btn-success" type="submit"
+									style=" margin-left:-100px; height:45px; width:87px; margin-top:3px; background-color:#8FC742; border:0;">
+								<i class="fa-solid fa-magnifying-glass"></i>
+							</button>
+						</form>
+					</div>
+				</ul>
+			</div>
+			<a class="nav-link me-5" th:href="@{/cart}"><i class="fa-solid fa-basket-shopping"></i> GIỎ HÀNG</a>
+
+			<div th:switch="${#authentication} ? ${#authorization.expression('isAuthenticated()')} : ${false}">
+				<span th:case="${false}">
+					<a class="navbar-brand me-1" th:href="@{/login}">Đăng nhập</a>|<a class="navbar-brand ms-1" th:href="@{/register}">Đăng ký</a>
+				</span>
+				<span th:case="${true}">
+                    <div class="dropdown me-5">
+                        <button class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    		<span th:text="${loggedInUser.lastName}"></span>
+							<span> </span>
+							<span th:text="${loggedInUser.firstName}"></span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" th:href="@{/account}">Thông tin cá nhân</a></li>
+                            <li><a class="dropdown-item" href="#">Sửa thông tin cá nhân</a></li>
+                            <li><a class="dropdown-item" href="#">Đổi mật khẩu</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a></li>
+                        </ul>
+
+					</div>
+				</span>
+			</div>
+
 		</div>
-		<div id="navbar" class="collapse navbar-collapse">
-			<ul class="nav navbar-nav">
-				<div th:switch="${#authentication} ? ${#authorization.expression('isAuthenticated()')} : ${false}">
-        			<span th:case="${false}">
-						<a class="navbar-brand" th:href="@{/login}">Đăng nhập</a>
-            			<a class="navbar-brand" th:href="@{/register}"> Đăng ký</a>
-        			</span>
-					<span th:case="${true}">
-						<a class="navbar-brand" th:href="@{/category}">Management Category</a>
-            			<a class="navbar-brand" th:href="@{/account}">Tài khoản</a>
-            			<a class="navbar-brand" th:href="@{/logout}"> Đăng xuất</a>
-            			<span>
-							<span class="navbar-brand">
-								<a class="nav-link dropdown-toggle dropbtn" href="javascript:void(0)" role="button"
-								   data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-regular fa-user"></i>
-									[[${loggedInUser.lastName}]] [[${loggedInUser.firstName}]]
-								</a>
-							</span>
-            			</span>
-						<span>
-							<span class="navbar-brand">
-								<select>
-									<option value="all">Danh Mục</option>
-									<th:block th:each="category:${categoryList}">
-										<option value="${category.categoryID}">[[${category.categoryName}]]</option>
-									</th:block>
-								</select>
-							</span>
-						</span>
-        			</span>
-					<span th:case="*">Should never happen, but who knows</span>
-				</div>
-			</ul>
+	</nav>
+
+</header>
+
+<div class="p-5 mt-5">
+	<div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+		<div class="carousel-inner">
+			<div class="carousel-item active">
+				<img src="https://misolhouse.com/assets/uploads/5da2e19d495e4aac8bb87a6d3a8f1094.jpg" class="d-block w-100" height="600">
+			</div>
+			<div class="carousel-item ">
+				<img src="https://img6.thuthuatphanmem.vn/uploads/2022/03/16/background-chup-anh-mon-an-dep_024945521.jpg" class="d-block w-100" height="600">
+			</div>
+			<div class="carousel-item">
+				<img src="https://misolhouse.com/assets/uploads/a63e8054d3a9159356dae3e7d560da91.jpg" class="d-block w-100" height="600">
+			</div>
+
 		</div>
+		<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+			<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+			<span class="visually-hidden">Previous</span>
+		</button>
+		<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+			<span class="carousel-control-next-icon" aria-hidden="true"></span>
+			<span class="visually-hidden">Next</span>
+		</button>
 	</div>
-</nav>
-<br>
-<br>
-
-<!--<header class="sticky top-0">-->
-<!--	<nav class="navbar navbar-expand-lg bg-body-tertiary">-->
-<!--		<div class="container-fluid shadow-sm" style="height: 100px;">-->
-<!--			<a class="navbar-brand" th:href="@{/}"><img-->
-<!--					src="https://img.freepik.com/premium-vector/organic-icon-100-percent-organic-product-label_349999-1003.jpg?w=2000"-->
-<!--					alt="brand_icon" width="150"></a>-->
-<!--			<div class="collapse navbar-collapse" id="navbarNavDropdown">-->
-<!--				<ul class="navbar-nav">-->
-<!--					<li class="nav-item">-->
-<!--						<a class="nav-link" aria-current="page" href="#productAll">SẢN PHẨM</a>-->
-<!--					</li>-->
-<!--					<li class="nav-item dropdown">-->
-<!--						<a class="nav-link dropdown-toggle dropbtn" href="javascript:void(0)" role="button"-->
-<!--						   data-bs-toggle="dropdown" aria-expanded="false">DANH MỤC</a>-->
-<!--						<div class="dropdown-content">-->
-<!--							<a href="#fruits">Trái cây</a>-->
-<!--							<a href="#leaf">Rau ăn lá</a>-->
-<!--							<a href="#">Rau ăn củ</a>-->
-<!--						</div>-->
-<!--					</li>-->
-<!--					<li class="nav-item">-->
-<!--						<a class="nav-link" href="#">ĐƠN HÀNG</a>-->
-<!--					</li>-->
-
-<!--					<li class="nav-item">-->
-<!--						<a class="nav-link" href="#aboutMe">VỀ CHÚNG TÔI</a>-->
-<!--					</li>-->
-
-<!--					<div class="ms-5" style="width:700px;">-->
-<!--						<form class="d-flex" role="search">-->
-<!--							<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"-->
-<!--								   style="height:50px;">-->
-<!--							<button class="btn btn-success" type="submit"-->
-<!--									style=" margin-left:-100px; height:45px; width:87px; margin-top:3px; background-color:#8FC742; border:0;">-->
-<!--								<i class="fa-solid fa-magnifying-glass"></i>-->
-<!--							</button>-->
-<!--						</form>-->
-<!--					</div>-->
-
-<!--					<li class="nav-item" style="margin-left: 150px;">-->
-<!--						<a class="nav-link" href="#"><i class="fa-solid fa-basket-shopping"></i> GIỎ HÀNG</a>-->
-<!--					</li>-->
-<!--					<li class="nav-item dropdown">-->
-<!--						<a class="nav-link dropdown-toggle dropbtn" href="javascript:void(0)" role="button"-->
-<!--						   data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-regular fa-user"></i> User</a>-->
-<!--						<div class="dropdown-content" style="width:300px;">-->
-<!--							<a href="#">Thông tin cá nhân</a>-->
-<!--							<a href="#">Sửa thông tin cá nhân</a>-->
-<!--							<a href="#">Đổi mật khẩu</a>-->
-<!--							<a href="./login.html">Đăng xuất</a>-->
-<!--						</div>-->
-<!--					</li>-->
-<!--				</ul>-->
-<!--			</div>-->
-<!--		</div>-->
-<!--	</nav>-->
-
-<!--</header>-->
-
-<div class="p-5">
-<!--	<div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">-->
-<!--		<div class="carousel-inner">-->
-<!--			<div class="carousel-item active">-->
-<!--				<img src="./images/nen4.jpg" class="d-block w-100" alt="...">-->
-<!--			</div>-->
-<!--			<div class="carousel-item">-->
-<!--				<img src="./images/image 3.png" class="d-block w-100" alt="...">-->
-<!--			</div>-->
-<!--			<div class="carousel-item">-->
-<!--				<img src="./images/nen4.jpg" class="d-block w-100" alt="...">-->
-<!--			</div>-->
-<!--		</div>-->
-<!--		<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">-->
-<!--			<span class="carousel-control-prev-icon" aria-hidden="true"></span>-->
-<!--			<span class="visually-hidden">Previous</span>-->
-<!--		</button>-->
-<!--		<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">-->
-<!--			<span class="carousel-control-next-icon" aria-hidden="true"></span>-->
-<!--			<span class="visually-hidden">Next</span>-->
-<!--		</button>-->
-<!--	</div>-->
 
 	<div class="mt-5">
-		<h2  id="productAll">Tất cả sản phẩm</h2>
+		<h2 id="productAll">Tất cả sản phẩm</h2>
 		<hr>
-		<th:block th:each="category:${categoryList}">
-			<h4>[[${category.categoryName}]]</h4>
-			<div id="listProduct">
-				<th:block th:each="product:${productList}">
-					<div class="item">
-						<a th:href="@{/productInfo}"><img th:src="@{'images/'+ ${product.img}}" width="150"></a>
-						<h5>[[${product.productName}]]</h5>
-						<h4>[[${product.price}]] VNĐ</h4><h4>[[${product.unit}]]</h4>
-						<button class="addCart">Thêm vào giỏ</button>
-					</div>
-				</th:block>
-			</div>
-		</th:block>
+		<div class="listProduct">
+			<th:block th:each="product:${productList}">
+				<div class="item">
+					<a th:href="@{'/productInfo/' + ${product.productID}}"><img th:src="@{'images/'+ ${product.img}}" width="150"></a>
+					<h5>[[${product.productName}]]</h5>
+					<h5><span>[[${product.price}]] VNĐ</span> / <span>[[${product.unit}]]</span></h5>
+					<button class="addCart">Thêm vào giỏ</button>
+				</div>
+			</th:block>
+		</div>
 	</div>
 
 	<div id="aboutMe">
@@ -216,7 +174,6 @@
 		</div>
 	</div>
 </div>
-
 
 <footer class="bottom-0 end-0  shadow-lg p-4"
 		style="height: 70px; width:100%; background-color:black; color:white;">
@@ -230,4 +187,7 @@
 </footer>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+<script>
+
+</script>
 </html>

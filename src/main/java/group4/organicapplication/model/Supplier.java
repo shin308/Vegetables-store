@@ -19,10 +19,10 @@ public class Supplier {
     @Column(name = "supplierID")
     private Integer supplierID;
 
-    @Column(name = "supplierName", nullable = false)
+    @Column(name = "supplierName", columnDefinition = "nvarchar(200) not null")
     private String supplierName;
 
-    @Column(name = "address")
+    @Column(name = "address", columnDefinition = "nvarchar(200)")
     private String address;
 
     @Column(name = "phone", unique = true)

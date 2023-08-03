@@ -8,7 +8,7 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer categoryID;
-    @Column(nullable = false,length = 50,name = "categoryName")
+    @Column(name = "categoryName", columnDefinition = "nvarchar(50) not null")
     private String categoryName;
 
     public Integer getCategoryID() {

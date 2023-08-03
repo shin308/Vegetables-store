@@ -1,58 +1,52 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cart</title>
-    <link rel="stylesheet" href="./styles/index.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/5a213e1813.js" crossorigin="anonymous"></script>
 </head>
 <style>
-    ul>li {
-        margin: 0 10px;
-    }
-
-    footer {
-        position: fixed;
-        z-index: 2;
-        width: 100%;
-    }
-
-    header {
-        position: fixed;
-        z-index: 2;
-        width: 100%;
-    }
-
-    #listProduct {
-        margin: 0px 70px 100px 70px;
-        border-radius: 10px;
-        display: grid;
-        grid-template-columns: auto auto auto;
-        padding: 30px;
-        gap: 50px;
-    }
-
     .item {
         background-color: white;
         text-align: center;
-        border-radius: 5px;
+        border-radius: 10px;
         border: 1px solid #8FC742;
-        height: 290px;
-        padding-top: 30px;
+        margin: 0 5% 15px 5%;
+        padding: 15px;
+        max-width: 160px;
+        min-width: 160px;
     }
 
     .addCart {
-        width: 80%;
-        height: 42px;
+        width: 100%;
+        height: 30px;
         border: 0;
         border-radius: 5px;
         background-color: #8FC742;
         color: white;
-        margin-top: 30px;
+    }
+    .listPage {
+        padding: 10px;
+        text-align: center;
+        list-style: none;
+        margin: 0 auto;
+    }
+
+    .listPage li {
+        background-color: white;
+        padding: 10px 20px;
+        display: inline-block;
+        margin: 0 10px;
+        cursor: pointer;
+    }
+
+    .listPage .active {
+        background-color: #8FC742;
+        color: white;
     }
     .counter {
         display: flex;
@@ -61,9 +55,9 @@
     }
 
     .counter input {
-        width: 50px;
-        line-height: 30px;
-        font-size: 20px;
+        width: 30px;
+        line-height: 20px;
+        font-size: 15px;
         text-align: center;
         appearance: none;
         border: 0.5px solid gray;
@@ -71,160 +65,157 @@
 
     .counter span {
         display: block;
-        font-size: 25px;
+        font-size: 15px;
         padding: 0 10px;
         cursor: pointer;
         user-select: none;
+    }
+    #search {
+        width: 40%;
     }
     .row1{
         display: grid;
         grid-template-columns: auto auto;
     }
-    .row1 > h6{
+    .row1 > p{
         text-align: right;
+    }
+    @media only screen and (max-width: 915px) {
+        #search {
+            width:66%;
+        }
+        #imgBr{
+            width: 70px;
+            margin-left: 10px;
+        }
     }
 
 </style>
 
 <body>
-<header class="sticky top-0">
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid shadow-sm" style="height: 100px;">
-            <a class="navbar-brand" href="./index.html"><img
-                    src="https://img.freepik.com/premium-vector/organic-icon-100-percent-organic-product-label_349999-1003.jpg?w=2000"
-                    alt="brand_icon" width="150"></a>
-            <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="./index.html#productAll">SẢN PHẨM</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle dropbtn" href="javascript:void(0)" role="button"
-                           data-bs-toggle="dropdown" aria-expanded="false">DANH MỤC</a>
-                        <div class="dropdown-content">
-                            <a href="./index.html#fruits">Trái cây</a>
-                            <a href="./index.html#leaf">Rau ăn lá</a>
-                            <a href="./index.html#">Rau ăn củ</a>
-                        </div>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="order_user.html">ĐƠN HÀNG</a>
-                    </li>
+<nav class="navbar navbar-expand-lg bg-body-tertiary sticky-top shadow-sm">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02"
+                aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" th:href="@{/}"><img id="imgBr"
+                                              src="https://img.freepik.com/premium-vector/organic-icon-100-percent-organic-product-label_349999-1003.jpg?w=2000"
+                                              alt="brand_icon" width="100px"></a>
+        <form class="d-flex" id="search" role="search">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
 
-                    <li class="nav-item">
-                        <a class="nav-link" href="./index.html#aboutMe">VỀ CHÚNG TÔI</a>
-                    </li>
+        <div class="collapse navbar-collapse ms-3" id="navbarTogglerDemo02">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
-                    <div class="ms-5" style="width:700px;">
-                        <form class="d-flex" role="search">
-                            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
-                                   style="height:50px;">
-                            <button class="btn btn-success" type="submit"
-                                    style=" margin-left:-100px; height:45px; width:87px; margin-top:3px; background-color:#8FC742; border:0;">
-                                <i class="fa-solid fa-magnifying-glass"></i>
-                            </button>
-                        </form>
-                    </div>
-                </ul>
-            </div>
-            <a class="nav-link me-3" href="./cart.html"><i class="fa-solid fa-basket-shopping"></i> GIỎ HÀNG</a>
-            <div class="dropdown me-5">
-                <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    User
-                </button>
-                <ul class="dropdown-menu dropdown-menu-end">
-                    <li><a class="dropdown-item" href="#">Thông tin cá nhân</a></li>
-                    <li><a class="dropdown-item" href="#">Sửa thông tin cá nhân</a></li>
-                    <li><a class="dropdown-item" href="#">Đổi mật khẩu</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="#">Đăng xuất</a></li>
-                </ul>
-            </div>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" th:href="@{/#productAll}">SẢN PHẨM</a>
+                </li>
+                <div class="dropdown nav-item">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        DANH MỤC
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" th:href="@{/#productAll}">Tất Cả Sản Phẩm</a></li>
+                        <th:block th:each="category:${categoryList}">
+                            <li><a class="dropdown-item" th:href="@{'/' + ${category.categoryID}}">[[${category.categoryName}]]</a></li>
+                        </th:block>
+                    </ul>
+                </div>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/order_user}">ĐƠN HÀNG</a>
+                </li>
+            </ul>
+
         </div>
-    </nav>
+        <a class="nav-link" style="margin: 0 2%;" th:href="@{/cart}"><i class="fa-solid fa-basket-shopping"><span
+                class="translate-middle badge border border-light rounded-circle bg-danger"
+                style="--bs-badge-font-size: 0.5em;">10</span></i>GIỎ HÀNG</a>
+        <div th:switch="${#authentication} ? ${#authorization.expression('isAuthenticated()')} : ${false}">
+			<span th:case="${false}">
+					<a class="navbar-brand me-1 fs-6" th:href="@{/login}">Đăng nhập</a>|<a class="navbar-brand ms-1 fs-6" th:href="@{/register}">Đăng ký</a>
+				</span>
+            <span th:case="${true}">
+                    <div class="dropdown">
+                        <button class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    		<span th:text="${loggedInUser.lastName}"></span>
+							<span> </span>
+							<span th:text="${loggedInUser.firstName}"></span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" th:href="@{/account}">Thông tin cá nhân</a></li>
+                            <li><a class="dropdown-item" href="#">Sửa thông tin cá nhân</a></li>
+                            <li><a class="dropdown-item" href="#">Đổi mật khẩu</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a></li>
+                        </ul>
 
-</header>
-
-<div class="row" style="margin: 150px 0;">
-    <div class="col">
-        <div style="width: 80%;margin: 0 auto;">
-            <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
-                       style="height:50px;">
-                <button class="btn btn-success" type="submit"
-                        style=" margin-left:-100px; height:45px; width:87px; margin-top:3px; background-color:#8FC742; border:0;">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                </button>
-            </form>
+					</div>
+				</span>
         </div>
-
-        <div id="listProduct">
-            <div class="item">
-                <img src="/static/images/image9.png" width="100">
-                <h5>Củ dền</h5>
-                <h4>15.000đ / 0.5kg</h4>
-                <button class="addCart">Thêm vào giỏ</button>
-            </div>
-            <div class="item">
-                <img src="/static/images/image 5.png" width="100">
-                <h5>Cà chua</h5>
-                <h4>15.000đ / 0.5kg</h4>
-                <button class="addCart">Thêm vào giỏ</button>
-            </div>
-            <div class="item">
-                <img src="/static/images/image 10.png" width="100">
-                <h5>Cherry đỏ</h5>
-                <h4>15.000đ / 0.5kg</h4>
-                <button class="addCart">Thêm vào giỏ</button>
-            </div>
-            <div class="item">
-                <img src="/static/images/image 7.png" width="100">
-                <h5>Hành tây</h5>
-                <h4>15.000đ / 0.5kg</h4>
-                <button class="addCart">Thêm vào giỏ</button>
-            </div>
-            <div class="item">
-                <img src="/static/images/image 8.png" width="100">
-                <h5>Cam</h5>
-                <h4>15.000đ / 0.5kg</h4>
-                <button class="addCart">Thêm vào giỏ</button>
-            </div>
-            <div class="item">
-                <img src="/static/images/image9.png" width="100">
-                <h5>Củ dền</h5>
-                <h4>15.000đ / 0.5kg</h4>
-                <button class="addCart">Thêm vào giỏ</button>
-            </div>
-            <div class="item">
-                <img src="/static/images/image 5.png" width="100">
-                <h5>Cà chua</h5>
-                <h4>15.000đ / 0.5kg</h4>
-                <button class="addCart">Thêm vào giỏ</button>
-            </div>
-            <div class="item">
-                <img src="/static/images/image 10.png" width="100">
-                <h5>Cherry đỏ</h5>
-                <h4>15.000đ / 0.5kg</h4>
-                <button class="addCart">Thêm vào giỏ</button>
-            </div>
-            <div class="item">
-                <img src="/static/images/image 7.png" width="100">
-                <h5>Hành tây</h5>
-                <h4>15.000đ / 0.5kg</h4>
-                <button class="addCart">Thêm vào giỏ</button>
-            </div>
-        </div>
-
 
     </div>
-    <div class="col me-5">
+</nav>
+
+<div class="row px-5 py-4">
+    <div class="col pt-3">
+        <div class="row list">
+            <div class="col item">
+                <img src="/images/image 5.png" width="80px" height="80px">
+                <h6>Cà chua Cà chua Cà chua</h6>
+                <div style="position: sticky; top:100%;">
+                    <p>15.000đ / 0.5kg</p>
+                    <button class="addCart">Thêm vào giỏ</button>
+                </div>
+
+            </div>
+            <div class="col item">
+                <img src="/images/image 5.png" width="80px" height="80px">
+                <h6>Cà chua</h6>
+                <div style="position: sticky; top:100%;">
+                    <p>15.000đ / 0.5kg</p>
+                    <button class="addCart">Thêm vào giỏ</button>
+                </div>
+            </div>
+            <div class="col item">
+                <img src="/images/image 5.png" width="80px" height="80px">
+                <h6>Cà chua Cà chua Cà chua</h6>
+                <div style="position: sticky; top:100%;">
+                    <p>15.000đ / 0.5kg</p>
+                    <button class="addCart">Thêm vào giỏ</button>
+                </div>
+
+            </div>
+            <div class="col item">
+                <img src="/images/image 5.png" width="80px" height="80px">
+                <h6>Cà chua</h6>
+                <div style="position: sticky; top:100%;">
+                    <p>15.000đ / 0.5kg</p>
+                    <button class="addCart">Thêm vào giỏ</button>
+                </div>
+            </div>
+        </div>
+        <div style="width:100%; position:sticky; top:100%;">
+            <ul class="listPage">
+                <li class="active">1</li>
+                <li>2</li>
+                <li>3</li>
+            </ul>
+        </div>
+
+    </div>
+    <div class="col">
+        <h4>Giỏ hàng</h4>
+        <hr>
         <table class="table text-center align-middle border">
             <thead>
             <tr>
                 <th scope="col-1">STT</th>
                 <th scope="col-1"></th>
-                <th scope="col-6">Tên sản phẩm</th>
-                <th scope="col-1">Số lượng</th>
+                <th scope="col-5">Tên sản phẩm</th>
+                <th scope="col-2">Số lượng</th>
                 <th scope="col-1">Giá bán</th>
                 <th scope="col-1">Thành tiền</th>
                 <th scope="col-1"></th>
@@ -233,7 +224,7 @@
             <tbody>
             <tr>
                 <th scope="row">1</th>
-                <th><img src="/static/images/image 10.png" alt="" width="50"></th>
+                <th><img src="/images/image 10.png" alt="" width="50"></th>
                 <td>Cà chua</td>
                 <td>
                     <div class="counter">
@@ -248,7 +239,7 @@
             </tr>
             <tr>
                 <th scope="row">2</th>
-                <th><img src="/static/images/image 10.png" alt="" width="50"></th>
+                <th><img src="/images/image 10.png" alt="" width="50"></th>
                 <td>Cà chua</td>
                 <td>
                     <div class="counter">
@@ -264,7 +255,7 @@
             </tr>
             <tr>
                 <th scope="row">3</th>
-                <th><img src="/static/images/image 10.png" alt="" width="50"></th>
+                <th><img src="/images/image 10.png" alt="" width="50"></th>
                 <td>Cà chua</td>
                 <td>
                     <div class="counter">
@@ -281,37 +272,80 @@
             </tbody>
         </table>
 
-        <div style="padding: 20px 30px; border:#8FC742 1px solid;">
+        <div  class="border px-4 pt-3">
             <div class="row1">
-                <h5>Tổng số lượng</h5>
-                <h6>3</h6>
+                <h6>Tổng số lượng</h6>
+                <p>3</p>
             </div>
             <div class="row1">
-                <h5>Tạm tính</h5>
-                <h6>45000</h6>
+                <h6>Tạm tính</h6>
+                <p>45000</p>
             </div>
             <hr>
             <div class="row1">
-                <h5>Thành tiền</h5>
-                <h6>45000</h6>
+                <h6>Thành tiền</h6>
+                <p>60000</p>
             </div>
         </div>
 
 
-        <a href="purchase.html"><button class="btn btn-success mt-5 w-100">Mua hàng</button></a>
+        <a href="./purchase.html"><button class="btn btn-success mt-5 w-100">Mua hàng</button></a>
     </div>
 </div>
-
-<footer class="bottom-0 end-0  shadow-lg p-4"
-        style="height: 70px; width:100%; background-color:black; color:white;">
-    <div class="footer-bottom clearfix">
-        <div class="container">
-            <div class="row">
-                &copy; 2023 - Vegetables Store by Group 4
-            </div>
-        </div>
-    </div>
-</footer>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+<script>
+    let thisPage = 1;
+    let limit = 9;
+    let list = document.querySelectorAll('.list .item');
+
+    function loadItem() {
+        let beginGet = limit * (thisPage - 1);
+        let endGet = limit * thisPage - 1;
+        list.forEach((item, key) => {
+            if (key >= beginGet && key <= endGet) {
+                item.style.display = 'block';
+
+            }
+            else {
+                item.style.display = 'none';
+            }
+        })
+        listPage();
+
+    }
+    loadItem();
+    function listPage() {
+        let count = Math.ceil(list.length / limit);
+        document.querySelector('.listPage').innerHTML = '';
+
+        if (thisPage != 1) {
+            let prev = document.createElement('li');
+            prev.innerHTML = '<i class="fa-solid fa-angles-left"></i>';
+            prev.setAttribute('onclick', "changePage(" + (thisPage - 1) + ")");
+            document.querySelector('.listPage').appendChild(prev);
+        }
+
+        for (i = 1; i <= count; i++) {
+            let newPage = document.createElement('li');
+            newPage.innerText = i;
+            if (i == thisPage) {
+                newPage.classList.add('active');
+            }
+            newPage.setAttribute('onclick', "changePage(" + i + ")");
+            document.querySelector('.listPage').appendChild(newPage);
+        }
+        if (thisPage != count) {
+            let next = document.createElement('li');
+            next.innerHTML = '<i class="fa-solid fa-angles-right"></i>';
+            next.setAttribute('onclick', "changePage(" + (thisPage + 1) + ")");
+            document.querySelector('.listPage').appendChild(next);
+        }
+    }
+    function changePage(i) {
+        thisPage = i;
+        loadItem();
+    }
+
+</script>
 </html>

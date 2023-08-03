@@ -8,17 +8,17 @@ import jakarta.persistence.*;
 import java.util.Set;
 
 @Entity
-@Table(name =  "[user]", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
+@Table(name = "[user]", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
 public class User {
 	
 	@Id
 	@GeneratedValue(strategy =  GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(name = "first_name")
+	@Column(name = "first_name", columnDefinition = "nvarchar(50)")
 	private String firstName;
 	
-	@Column(name = "last_name")
+	@Column(name = "last_name", columnDefinition = "nvarchar(50)")
 	private String lastName;
 	
 	private String email;
@@ -28,6 +28,7 @@ public class User {
 	@Transient
 	@JsonIgnore
 	private String confirmPassword;
+	@Column(name = "address", columnDefinition = "nvarchar(200)")
 	private String address;
 	private String phone;
 

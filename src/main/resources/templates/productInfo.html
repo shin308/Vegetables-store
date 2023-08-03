@@ -152,22 +152,22 @@
     </nav>
 </header>
 
-    <div style="margin: 120px 30px; position:absolute;">
+    <div style="margin: 120px 30px; position:absolute;" th:object="${productInfo}">
         <div style="display: flex; background-color:#8FC742; color:white;">
             <div style="height:60px; padding:15px 80px;">
-                <h5>Quản lý sản phẩm / Cà chua</h5>
+                <h5>Quản lý sản phẩm / [[*{productName}]]</h5>
             </div>
         </div>
 
         <div id="content">
-            <div >
+            <div th:object="${productInfo}">
                 <div id="productInfo" class="row mt-3 mb-3">
                     <div class="col-5">
-                        <img style="transform: translate(25%, 0%); border: 1px solid #8FC742;"
-                             src="/static/images/image 5.png" width="300">
+                        <img style="transform: translate(25%, 0%); border: 1px solid #8FC742; margin: auto 20px;"
+                             th:src="@{'images/'+ ${productInfo.img}}" width="300">
                     </div>
                     <div class="col-4">
-                        <h2 class="mt-3 mb-5">Cà chua</h2>
+                        <h2 class="mt-3 mb-5">[[*{productName}]]</h2>
                         <div class="row">
                             <div class="col">
                                 <h5 class="mb-4">Giá bán</h5>
@@ -175,7 +175,7 @@
                                 <h5 class="mb-4">Số lượng</h5>
                             </div>
                             <div class="col" style="text-align: right;">
-                                <h5 class="mb-4">20.000</h5>
+                                <h5 class="mb-4">[[*{price}]] VNĐ</h5>
                                 <h5 class="mb-4">Còn hàng</h5>
                                 <div class="mb-4">
                                     <div class="counter">
@@ -205,31 +205,13 @@
                     <h5>Mô tả sản phẩm</h5>
                     <div class="description">
                         <p>
-                            Cà chua đỏ Loại 1 WinEco chứa nhiều các chất dinh dưỡng và vitamin, bao gồm lượng vitamin A,
-                            vitamin C và vitamin K một cách ấn tượng, bên cạnh đó lượng vitamin B6, folate và thiamin cũng
-                            rất đáng kể. Cà chua cũng là nguồn kali, mangan, magiê, phốt pho và đồng. Hơn nữa trong cà chua
-                            cũng chứa chất xơ và protein, cũng như một số hợp chất hữu cơ như lycopene góp phần vào lợi ích
-                            sức khoẻ tổng thể.
-                            <br>
-                            Ngoài ra, Cà chua đỏ Loại 1 WinEco có chứa một lượng lớn lycopene, một chất chống oxy hoá có
-                            hiệu quả cao trong việc thu nhặt ung thư gây ra các gốc tự do. Lợi ích này thậm chí có thể thu
-                            được từ các sản phẩm cà chua được xử lý nhiệt như số tương cà. Lycopene trong cà chua phòng
-                            chống ung thư và có hiệu quả đặc biệt trong việc chống lại ung thư tuyến tiền liệt, ung thư cổ
-                            tử cung, ung thư dạ dày và trực tràng, cũng như ung thư họng và thực quản. Nó cũng bảo vệ chống
-                            ung thư vú và ung thư miệng, theo các nghiên cứu của Trường Y tế Công cộng Harvard.
-                            <br>
-                            Lưu ý:
-                            <br>
-                            - Hạn sử dụng thực tế quý khách vui lòng xem trên bao bì.
-                            <br>
-                            - Hình sản phẩm chỉ mang tính chất minh họa, hình thực tế bao bì của sản phẩm tùy thời điểm sẽ
-                            khác so với thực tế.
+                            [[*{description}]]
                         </p>
                     </div>
                 </div>
             </div>
             <div id="review" class="mt-3 mb-3">
-                <div style="background-color: #8FC742; width:35%; height:50px; padding:13px; display:inline-block;">
+                <div style="background-color: #8FC742; width:50%; height:50px; padding:13px; display:inline-block;">
                     <h5>Đánh giá của khách hàng</h5>
                 </div>
                 <div class="list border" style="width:90%; padding:15px 15px 0 15px; height:630px;">
@@ -240,11 +222,13 @@
                                 <h6>LinhNT</h6>
                                 <p>2023/06/04</p>
                             </div>
-                            <div class="col-3" style="color: yellow;"><i class="fa-solid fa-star"></i>
+                            <div class="col-4" style="color: yellow;">
                                 <i class="fa-solid fa-star"></i>
                                 <i class="fa-solid fa-star"></i>
                                 <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i></div>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                            </div>
                         </div>
                         <div class="row mb-1">
                             <div class="col-1 me-3"></div>

@@ -2,6 +2,9 @@ package group4.organicapplication.model;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "Category")
 public class Category {

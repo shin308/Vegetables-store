@@ -16,4 +16,8 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
 
     List<Product> findByProductNameContaining(String searchName);
+
+    //mơi thêm
+    @Query("SELECT p FROM Product p WHERE p.category.categoryID = :categoryID")
+    List<Product> findByCategoryId(Integer categoryID);
 }

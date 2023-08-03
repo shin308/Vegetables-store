@@ -2,6 +2,8 @@ package group4.organicapplication.service;
 
 import group4.organicapplication.exception.CategoryNotFoundException;
 import group4.organicapplication.model.Category;
+import group4.organicapplication.model.Product;
+import group4.organicapplication.model.Supplier;
 import group4.organicapplication.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,4 +41,5 @@ public class CategoryService {
     public List<Category> findCategoryByName(String searchCategory) {
         return repo.findByCategoryNameContainingIgnoreCase(searchCategory);
     }
+
 }

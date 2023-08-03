@@ -83,7 +83,7 @@
 <header>
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid shadow-sm" style="height: 100px;">
-            <a class="navbar-brand" href="#"><img
+            <a class="navbar-brand" th:href="@{/}"><img
                     src="https://img.freepik.com/premium-vector/organic-icon-100-percent-organic-product-label_349999-1003.jpg?w=2000"
                     alt="brand_icon" width="150"></a>
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
@@ -180,13 +180,13 @@
         <th:block th:each="product:${products}">
             <tr class="item">
                 <td>[[${product.productID}]]</td>
-                <td><img src="https://hcm.fstorage.vn/images/2022/cai-chip-500g_261fc71a-d25a-4cb5-b2cd-8c2018b67292-og.jpg" width="70"></td>
+                <td><img th:src="@{'images/'+ ${product.img}}" width="70"></td>
                 <td>[[${product.productName}]]</td>
                 <td>[[${product.unit}]]</td>
                 <td>[[${product.quantity}]]</td>
                 <td>[[${product.price}]]</td>
                 <td>
-                    <a th:href="@{/productInfo}"><button type="button" class="btn btn-success">Xem</button></a>
+                    <a th:href="@{'/productInfo/' + ${product.productID}}"><button type="button" class="btn btn-success">Xem</button></a>
                     <button type="button" class="btn btn-primary" onclick="openEdit()">Sửa</button>
                     <button type="button" class="btn btn-danger">Xoá</button>
                 </td>
@@ -297,16 +297,16 @@
 </div>
 
 
-<footer class="position-absolute bottom-0 end-0  shadow-lg p-4"
-        style="height: 70px; width:100%; background-color:black; color:white;">
-    <div class="footer-bottom clearfix">
-        <div class="container">
-            <div class="row">
-                &copy; 2023 - Vegetables Store by Group 4
-            </div>
-        </div>
-    </div>
-</footer>
+<!--<footer class="position-absolute bottom-0 end-0  shadow-lg p-4"-->
+<!--        style="height: 70px; width:100%; background-color:black; color:white;">-->
+<!--    <div class="footer-bottom clearfix">-->
+<!--        <div class="container">-->
+<!--            <div class="row">-->
+<!--                &copy; 2023 - Vegetables Store by Group 4-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</footer>-->
 </body>
 <script>
     let thisPage = 1;

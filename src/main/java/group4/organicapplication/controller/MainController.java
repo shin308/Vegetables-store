@@ -1,9 +1,11 @@
 package group4.organicapplication.controller;
 
+import group4.organicapplication.exception.CategoryNotFoundException;
 import group4.organicapplication.model.Category;
 import group4.organicapplication.model.Product;
 import group4.organicapplication.model.User;
 import group4.organicapplication.service.CategoryService;
+import group4.organicapplication.service.ProductService;
 import group4.organicapplication.service.SelectProductService;
 import group4.organicapplication.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,10 +17,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -29,9 +28,11 @@ public class MainController {
     @Autowired
     private UserService userService;
 
-    @Autowired private SelectProductService productService;
+    @Autowired private SelectProductService selectProductService;
 
     @Autowired private CategoryService categoryService;
+
+    @Autowired private ProductService productService;
 
     @ModelAttribute("loggedInUser")
     public User loggedInUser(){
@@ -47,9 +48,27 @@ public class MainController {
         List<Category> categoryList = categoryService.listAll();
         model.addAttribute(("categoryList"),categoryList);
 
-        List<Product> productList = productService.selectAll();
+        List<Product> productList = selectProductService.selectAll();
         model.addAttribute("productList",productList);
         return "client/home";
+    }
+
+    @GetMapping("/{categoryID}")
+    public  String selectProductByCategory(@PathVariable("categoryID") Integer categoryID,Model model){
+        List<Category> categoryList = categoryService.listAll();
+        model.addAttribute(("categoryList"),categoryList);
+
+        Category category = null;
+        try {
+            category = categoryService.get(categoryID);
+        } catch (CategoryNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        model.addAttribute("category",category);
+
+        List<Product> productByCategory = productService.getProductsByCategoryId(categoryID);
+        model.addAttribute("productByCategory",productByCategory);
+        return "category_user";
     }
 
     @GetMapping("/login")

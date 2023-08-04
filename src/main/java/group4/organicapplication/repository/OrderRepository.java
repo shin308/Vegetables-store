@@ -1,6 +1,7 @@
 package group4.organicapplication.repository;
 
 import group4.organicapplication.model.Orders;
+import group4.organicapplication.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

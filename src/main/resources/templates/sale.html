@@ -125,14 +125,13 @@
             </div>
             <div class="dropdown me-5">
                 <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    ADMIN
+                    Hi, <span th:text="${loggedInUser.lastName}"></span>
+                    <span th:text="${loggedInUser.firstName}"></span>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end">
-                    <li><a class="dropdown-item" href="#">Thông tin cá nhân</a></li>
-                    <li><a class="dropdown-item" href="#">Sửa thông tin cá nhân</a></li>
-                    <li><a class="dropdown-item" href="#">Đổi mật khẩu</a></li>
+                    <li><a class="dropdown-item" th:href="@{/admin/profile}">Thông tin cá nhân</a></li>
                     <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="#">Đăng xuất</a></li>
+                    <li><a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a></li>
                 </ul>
             </div>
         </div>

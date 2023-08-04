@@ -21,6 +21,10 @@ public class Orders {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "shipper_id")
+    private User shipper;
+
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+7")
     private Date orderDay;
@@ -107,6 +111,14 @@ public class Orders {
 
     public void setOrderDay(Date orderDay) {
         this.orderDay = orderDay;
+    }
+
+    public User getShipper() {
+        return shipper;
+    }
+
+    public void setShipper(User shipper) {
+        this.shipper = shipper;
     }
 
     public Orders() {

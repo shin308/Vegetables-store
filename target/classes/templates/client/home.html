@@ -179,7 +179,7 @@
 		<div class="row list">
 			<th:block th:each="product:${productList}">
 				<div class="col item">
-					<a th:href="@{'/productInfoUser/' + ${product.productID}}">
+					<a th:href="@{'/productInfo/' + ${product.productID}}">
 						<img  th:src="@{'images/'+ ${product.img}}" width="100px" height="100px">
 					</a>
 					<h6>[[${product.productName}]]</h6>

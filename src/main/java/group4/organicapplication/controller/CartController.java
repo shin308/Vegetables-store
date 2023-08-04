@@ -2,22 +2,29 @@ package group4.organicapplication.controller;
 
 
 import group4.organicapplication.model.CartItem;
+import group4.organicapplication.model.User;
 import group4.organicapplication.service.CartService;
 import group4.organicapplication.service.ProductService;
+import group4.organicapplication.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
 @Controller
-
 @RequestMapping("/")
+@SessionAttributes("loggedInUser")
 public class CartController {
     @Autowired
     private CartService cartService;
+    @Autowired
+    private UserService userService;
 
     @PostMapping("/cart/add")
     public ResponseEntity<String> addToCart(@RequestBody CartItem cartItem, HttpSession session) {
@@ -51,10 +58,13 @@ public class CartController {
         return ResponseEntity.ok().build();
     }
 
-
-
-
-
-
+    @ModelAttribute("loggedInUser")
+    public User loggedInUser() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return userService.findByEmail(auth.getName());
+    }
+    public User getSessionUser(HttpServletRequest request) {
+        return (User) request.getSession().getAttribute("loggedInUser");
+    }
 
 }

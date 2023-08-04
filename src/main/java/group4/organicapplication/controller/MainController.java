@@ -61,6 +61,7 @@ public class MainController {
         List<CartItem> cartItems = cartService.getCartItems();
         int totalQuantity = cartService.sumQuantity(cartItems);
         model.addAttribute("totalQuantity", totalQuantity);
+
         return "client/home";
     }
 

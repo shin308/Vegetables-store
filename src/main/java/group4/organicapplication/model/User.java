@@ -5,6 +5,7 @@ package group4.organicapplication.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -40,6 +41,10 @@ public class User {
 			inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
 	
 	private Set<Role> role;
+
+	@Transient
+	@JsonIgnore
+	private List<Orders> listOrder;
 	
 	public User() {
 		
@@ -123,6 +128,14 @@ public class User {
 	}
 	public void setConfirmPassword(String confirmPassword) {
 		this.confirmPassword = confirmPassword;
+	}
+
+	public List<Orders> getListOrder() {
+		return listOrder;
+	}
+
+	public void setListOrder(List<Orders> listOrder) {
+		this.listOrder = listOrder;
 	}
 
 	@Override

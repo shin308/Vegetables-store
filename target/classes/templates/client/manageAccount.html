@@ -4,25 +4,13 @@
 
     <meta charset="UTF-8">
     <title>Thay đổi thông tin tài khoản</title>
-    <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-          crossorigin="anonymous">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
 <!--    <link rel="stylesheet" type="text/css" th:href="@{/Frontend/css/style.css}" media="all" />-->
     <script src="https://kit.fontawesome.com/5a213e1813.js" crossorigin="anonymous"></script>
     <link
             href='//fonts.googleapis.com/css?family=Londrina+Solid|Coda+Caption:800|Open+Sans'
             rel='stylesheet' type='text/css'>
-
-    <script th:src="@{/Frontend/js/jquery.min.js}"></script>
-    <script th:src="@{/Frontend/js/responsiveslides.min.js}"></script>
-    <script th:src="@{/js/client/accounting.js}"></script>
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-
-    <script th:src="@{/js/client/changeInformationUser.js}"></script>
-    <script th:src="@{/js/client/changePasswordUser.js}"></script>
 
 <!--    <script th:inline="javascript">-->
 <!--        $(document).ready(function() {-->
@@ -33,54 +21,127 @@
 <!--            });-->
 <!--        });-->
 <!--    </script>-->
+    <style>
+	.listPage {
+		padding: 10px;
+		text-align: center;
+		list-style: none;
+		margin: 0 auto;
+	}
+
+	.listPage li {
+		background-color: white;
+		padding: 10px 20px;
+		display: inline-block;
+		margin: 0 10px;
+		cursor: pointer;
+	}
+
+	.listPage .active {
+		background-color: #8FC742;
+		color: white;
+	}
+
+
+	.item {
+		background-color: white;
+		text-align: center;
+		border-radius: 10px;
+		border: 1px solid #8FC742;
+		margin: 20px 15px;
+		padding: 20px;
+		max-width: 180px;
+		min-width: 180px;
+	}
+
+	.addCart {
+		width: 100%;
+		height: 30px;
+		border: 0;
+		border-radius: 5px;
+		background-color: #8FC742;
+		color: white;
+	}
+
+	#search {
+		width: 40%;
+	}
+
+	@media only screen and (max-width: 915px) {
+		#search {
+			width: 66%;
+		}
+
+		#imgBr {
+			width: 70px;
+			margin-left: 10px;
+		}
+	}
+</style>
 </head>
 
 <body>
-<nav class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container-fluid shadow-sm">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed"
-                    data-toggle="collapse" data-target="#navbar" aria-expanded="false"
-                    aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span> <span
-                    class="icon-bar"></span> <span class="icon-bar"></span> <span
-                    class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#" th:href="@{/}">Vegetable Store</a>
-        </div>
-        <div id="navbar" class="collapse navbar-collapse">
-            <ul class="nav navbar-nav">
-                <div th:switch="${#authentication} ? ${#authorization.expression('isAuthenticated()')} : ${false}">
-        			<span th:case="${false}">
-						<a class="navbar-brand" th:href="@{/login}">Đăng nhập</a>
-            			<a class="navbar-brand" th:href="@{/register}"> Đăng ký</a>
-        			</span>
-                    <span th:case="${true}">
-						<a class="navbar-brand" th:href="@{/category}">Management Category</a>
-            			<a class="navbar-brand" th:href="@{/manage-user-account}">Tài khoản</a>
-            			<a class="navbar-brand" th:href="@{/logout}"> Đăng xuất</a>
-            			<span>
-							<span class="navbar-brand">
-								<a class="nav-link dropdown-toggle dropbtn" href="javascript:void(0)" role="button"
-                                   data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-regular fa-user"></i>
-									[[${loggedInUser.lastName}]] [[${loggedInUser.firstName}]]
-								</a>
-							</span>
-            			</span>
-						<span>
-							<span class="navbar-brand">
-								<select>
-									<option value="all">Danh Mục</option>
-									<th:block th:each="category:${categoryList}">
-										<option value="${category.categoryID}">[[${category.categoryName}]]</option>
-									</th:block>
-								</select>
-							</span>
-						</span>
-        			</span>
-                    <span th:case="*">Should never happen, but who knows</span>
+<nav class="navbar navbar-expand-lg bg-body-tertiary sticky-top shadow-sm">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02"
+                aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" th:href="@{/}"><img id="imgBr"
+                                                    src="https://img.freepik.com/premium-vector/organic-icon-100-percent-organic-product-label_349999-1003.jpg?w=2000"
+                                                    alt="brand_icon" width="100px"></a>
+        <form class="d-flex" id="search" role="search" th:action="@{/}" method="get">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="searchProductName">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+
+        <div class="collapse navbar-collapse ms-3" id="navbarTogglerDemo02">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" th:href="@{/#productAll}">SẢN PHẨM</a>
+                </li>
+                <div class="dropdown nav-item">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        DANH MỤC
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" th:href="@{/#productAll}">Tất Cả Sản Phẩm</a></li>
+                        <th:block th:each="category:${categoryList}">
+                            <li><a class="dropdown-item" th:href="@{'/' + ${category.categoryID}}">[[${category.categoryName}]]</a></li>
+                        </th:block>
+                    </ul>
                 </div>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/order_user}">ĐƠN HÀNG</a>
+                </li>
             </ul>
+
+        </div>
+        <a class="nav-link" style="margin: 0 2%;" th:href="@{/cart}"><i class="fa-solid fa-basket-shopping"><span
+                class="translate-middle badge border border-light rounded-circle bg-danger"
+                style="--bs-badge-font-size: 0.5em;">10</span></i>GIỎ HÀNG</a>
+        <div th:switch="${#authentication} ? ${#authorization.expression('isAuthenticated()')} : ${false}">
+			<span th:case="${false}">
+					<a class="navbar-brand me-1 fs-6" th:href="@{/login}">Đăng nhập</a>|<a class="navbar-brand ms-1 fs-6" th:href="@{/register}">Đăng ký</a>
+				</span>
+            <span th:case="${true}">
+                    <div class="dropdown">
+                        <button class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    		<span th:text="${loggedInUser.lastName}"></span>
+							<span> </span>
+							<span th:text="${loggedInUser.firstName}"></span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" th:href="@{/manage-user-account}">Thông tin cá nhân</a></li>
+                            <!--                            <li><a class="dropdown-item" href="#">Sửa thông tin cá nhân</a></li>-->
+                            <!--                            <li><a class="dropdown-item" href="#">Đổi mật khẩu</a></li>-->
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a></li>
+                        </ul>
+
+					</div>
+				</span>
         </div>
     </div>
 </nav>
@@ -110,10 +171,10 @@
             <h3 style="line-height: 2;">
                 <span style="font-weight: bold"> Địa chỉ: </span><span th:text="${user.address}"></span>
             </h3>
-            <br> <a class="btn btn-primary" data-toggle="modal"
-                    data-target="#modalInformation">Cập nhật thông tin cá nhân</a>
-            &nbsp; &nbsp; &nbsp; <a class="btn btn-danger" data-toggle="modal"
-                                    data-target="#modalChangePassword">Đổi mật khẩu</a> <br> <br>
+            <br> <a class="btn btn-primary" data-bs-toggle="modal"
+                    data-bs-target="#modalInformation">Cập nhật thông tin cá nhân</a>
+            &nbsp; &nbsp; &nbsp; <a class="btn btn-danger" data-bs-toggle="modal"
+                                    data-bs-target="#modalChangePassword">Đổi mật khẩu</a> <br> <br>
             <br>
         </div>
         <div class="col-md-1"></div>
@@ -121,7 +182,7 @@
 </div>
 
 <!-- Modal cập nhật thông tin -->
-<div class="modal fade" id="modalInformation" tabindex="-1"
+<div class="modal" id="modalInformation" tabindex="-1"
      role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -129,9 +190,8 @@
                 <h5 class="modal-title" id="exampleModalLabel">
                     <b>Cập nhật thông tin tài khoản</b>
                 </h5>
-                <button type="button" class="close" data-dismiss="modal"
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
                         aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
                 </button>
             </div>
 
@@ -163,8 +223,8 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary"
-                        data-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-danger"
+                        data-bs-dismiss="modal">Hủy</button>
                 <button type="button" class="btn btn-primary"
                         onclick="changeInformation()">Cập nhật</button>
             </div>
@@ -176,7 +236,7 @@
 
 <!-- Modal đổi pass -->
 
-<div class="modal fade" id="modalChangePassword" tabindex="-1"
+<div class="modal" id="modalChangePassword" tabindex="-1"
      role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -184,9 +244,8 @@
                 <h5 class="modal-title" id="exampleModalLabel">
                     <b>Thay đổi mật khẩu</b>
                 </h5>
-                <button type="button" class="close" data-dismiss="modal"
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
                         aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
@@ -207,8 +266,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary"
-                        data-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-danger"
+                        data-bs-dismiss="modal">Hủy</button>
                 <button type="button" class="btn btn-primary"
                         onClick="changePass()">Đổi mật khẩu</button>
             </div>
@@ -218,5 +277,16 @@
 
 <!-- Modal đổi pass -->
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+
+<script th:src="@{/Frontend/js/jquery.min.js}"></script>
+<script th:src="@{/Frontend/js/responsiveslides.min.js}"></script>
+<script th:src="@{/js/client/accounting.js}"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+<script th:src="@{/js/client/changeInformationUser.js}"></script>
+<script th:src="@{/js/client/changePasswordUser.js}"></script>
 </body>
 </html>

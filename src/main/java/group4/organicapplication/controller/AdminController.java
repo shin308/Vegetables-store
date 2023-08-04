@@ -2,6 +2,7 @@ package group4.organicapplication.controller;
 
 import group4.organicapplication.model.Role;
 import group4.organicapplication.model.User;
+import group4.organicapplication.service.OrderService;
 import group4.organicapplication.service.RoleService;
 import group4.organicapplication.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,6 +27,9 @@ public class AdminController {
     @Autowired
     private RoleService roleService;
 
+    @Autowired
+    private OrderService orderService;
+
     @ModelAttribute("loggedInUser")
     public User loggedInUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -45,15 +49,15 @@ public class AdminController {
 
 //    @GetMapping("/don-hang")
 //    public String manageOrder(Model model) {
-//        Set<Role> vaiTro = new HashSet<>();
-//        vaiTro.add(vaiTroService.findByTenVaiTro("ROLE_SHIPPER"));
+//        Set<Role> role = new HashSet<>();
+//        role.add(roleService.findByRoleName("ROLE_SHIPPER"));
 //
-//        List<User> shippers = userService.(vaiTro);
+//        List<User> shippers = userService.getUserByRole(role);
 //        for (User shipper : shippers) {
-//            shipper.setListDonHang(donHangService.findByTrangThaiDonHangAndShipper("Đang giao", shipper));
+//            shipper.setListOrder(orderService.findByOrderStatus("Đang giao", shipper));
 //        }
 //        model.addAttribute("allShipper", shippers);
-//        return "admin/quanLyDonHang";
+//        return "admin/order";
 //    }
 
     @GetMapping("/profile")

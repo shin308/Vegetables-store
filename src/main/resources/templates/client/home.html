@@ -7,6 +7,7 @@
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
 		  integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
 	<script src="https://kit.fontawesome.com/5a213e1813.js" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
 </head>
 <style>
 	.listPage {
@@ -50,6 +51,18 @@
 		color: white;
 	}
 
+	.product-fly {
+		position: fixed;
+		width: 60px;
+		height: 60px;
+		background-size: cover;
+		border-radius: 50%;
+		background-repeat: no-repeat;
+		background-position: center;
+		z-index: 9999;
+		transition: top 1s ease-in-out, left 1s ease-in-out;
+	}
+
 	#search {
 		width: 40%;
 	}
@@ -74,8 +87,8 @@
 			<span class="navbar-toggler-icon"></span>
 		</button>
 		<a class="navbar-brand" th:href="@{/}"><img id="imgBr"
-											  src="https://img.freepik.com/premium-vector/organic-icon-100-percent-organic-product-label_349999-1003.jpg?w=2000"
-											  alt="brand_icon" width="100px"></a>
+													src="https://img.freepik.com/premium-vector/organic-icon-100-percent-organic-product-label_349999-1003.jpg?w=2000"
+													alt="brand_icon" width="100px"></a>
 		<form class="d-flex" id="search" role="search" th:action="@{/}" method="get">
 			<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="searchProductName">
 			<button class="btn btn-outline-success" type="submit">Search</button>
@@ -106,7 +119,7 @@
 		</div>
 		<a class="nav-link" style="margin: 0 2%;" th:href="@{/cart}"><i class="fa-solid fa-basket-shopping"><span
 				class="translate-middle badge border border-light rounded-circle bg-danger"
-				style="--bs-badge-font-size: 0.5em;">10</span></i>GIỎ HÀNG</a>
+				style="--bs-badge-font-size: 0.5em;" th:text="${totalQuantity}" id="cartBadge">10</span></i>GIỎ HÀNG</a>
 		<div th:switch="${#authentication} ? ${#authorization.expression('isAuthenticated()')} : ${false}">
 			<span th:case="${false}">
 					<a class="navbar-brand me-1 fs-6" th:href="@{/login}">Đăng nhập</a>|<a class="navbar-brand ms-1 fs-6" th:href="@{/register}">Đăng ký</a>
@@ -166,13 +179,13 @@
 		<div class="row list">
 			<th:block th:each="product:${productList}">
 				<div class="col item">
-					<a th:href="@{'/productInfoUser/' + ${product.productID}}">
+					<a th:href="@{'/productInfo/' + ${product.productID}}">
 						<img  th:src="@{'images/'+ ${product.img}}" width="100px" height="100px">
 					</a>
 					<h6>[[${product.productName}]]</h6>
 					<div style="position: sticky; top:100%;">
 						<p><span>[[${product.price}]] VNĐ</span> / <span>[[${product.unit}]]</span></p>
-						<button class="addCart">Thêm vào giỏ</button>
+						<button class="addCart" th:attr="onclick=|addToCart('${product.productID}', '${product.productName}', 1, ${product.price},'${product.img}', ${product.quantity})|">Thêm vào giỏ</button>
 					</div>
 				</div>
 			</th:block>
@@ -190,6 +203,7 @@
 </div>
 
 </body>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 <script>
 	let thisPage = 1;
@@ -242,6 +256,97 @@
 	function changePage(i) {
 		thisPage = i;
 		loadItem();
+	}
+
+	async function addToCart(productId, productName, quantity, unitPrice, imageProduct, limitQuantity) {
+
+		try {
+			const response = await fetch('/cart/add', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					productId: productId,
+					productName: productName,
+					quantity: quantity,
+					unitPrice: unitPrice,
+					imageProduct: imageProduct,
+					limitQuantity: limitQuantity
+
+				})
+			});
+
+			if (response.ok) {
+				console.log('Thêm vào giỏ hàng thành công!');
+				animateProductFly(imageProduct);
+
+			} else if (response.status === 400) {
+				const data = await response.text();
+
+				console.error(data); // Hiển thị thông báo lỗi "Hết hàng"
+				// var button = document.querySelector('.addCart');
+				// button.disabled = true;
+
+				Swal.fire({
+					icon: 'error',
+					title: 'Sản phẩm đã hết hàng!',
+					toast: true,
+					position: 'top-end',
+					showConfirmButton: false,
+					timer: 3000
+				});
+
+			} else {
+				console.error('Thêm vào giỏ hàng thất bại!');
+			}
+		} catch (error) {
+			console.error(error);
+		}
+
+	}
+	function animateProductFly(imageProduct) {
+		const productImage = document.querySelector(`img[src$='${imageProduct}']`);
+		if (productImage) {
+			// Tạo div để tạo hiệu ứng bay vào giỏ
+			const productFly = document.createElement('div');
+			productFly.classList.add('product-fly');
+			// đặt nền là ảnh product
+			productFly.style.backgroundImage = `url('/images/${imageProduct}')`;
+
+			// Lấy vị trí của ảnh product
+			const { left, top } = productImage.getBoundingClientRect();
+			// Đặt vị trí bay ban đầu là vị trí của ảnh
+			productFly.style.left = `${left}px`;
+			productFly.style.top = `${top}px`;
+
+			document.body.appendChild(productFly);
+
+			// Lấy vị trí của giỏ hàng
+			const cartPosition = document.querySelector('.fa-basket-shopping');
+			// Lấy kích thước vị trí của giỏ hàng
+			const cartRect = cartPosition.getBoundingClientRect();
+
+			// cho ảnh bay đến giỏ
+			setTimeout(() => {
+				productFly.style.left = `${cartRect.left}px`;
+				productFly.style.top = `${cartRect.top}px`;
+			}, 100);
+
+			var cartBadge = document.getElementById('cartBadge');
+			// Lấy giá trị số lượng trong badge
+			var quantity = parseInt(cartBadge.innerText);
+			// Tăng giá trị số lượng lên 1
+			quantity++;
+			// Cập nhật lại số lượng trong badge
+			cartBadge.innerText = quantity.toString();
+			// sau 1s xóa div hiệu ứng bay
+			setTimeout(() => {
+				productFly.remove();
+				// location.reload();
+
+			}, 1000);
+		}
 	}
 
 </script>

@@ -97,6 +97,16 @@ public class MainController {
         return "productInfo";
     }
 
+    @GetMapping("/productInfoUser/{productID}")
+    public String showProductInfoUser(@PathVariable("productID") Integer productID, Model model){
+        List<Category> categoryList = categoryService.listAll();
+        model.addAttribute(("categoryList"),categoryList);
+
+        Product productInfo = productService.get(productID);
+        model.addAttribute("productInfo",productInfo);
+        return "productInfo_user";
+    }
+
     @GetMapping("/sale")
     public String showSalePage(){
         return "sale";

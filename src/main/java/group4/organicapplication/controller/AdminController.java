@@ -1,5 +1,6 @@
 package group4.organicapplication.controller;
 
+import group4.organicapplication.model.Role;
 import group4.organicapplication.model.User;
 import group4.organicapplication.service.RoleService;
 import group4.organicapplication.service.UserService;
@@ -10,6 +11,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/admin")
@@ -37,6 +42,19 @@ public class AdminController {
         model.addAttribute("listRole", roleService.findAllRole());
         return "account";
     }
+
+//    @GetMapping("/don-hang")
+//    public String manageOrder(Model model) {
+//        Set<Role> vaiTro = new HashSet<>();
+//        vaiTro.add(vaiTroService.findByTenVaiTro("ROLE_SHIPPER"));
+//
+//        List<User> shippers = userService.(vaiTro);
+//        for (User shipper : shippers) {
+//            shipper.setListDonHang(donHangService.findByTrangThaiDonHangAndShipper("Đang giao", shipper));
+//        }
+//        model.addAttribute("allShipper", shippers);
+//        return "admin/quanLyDonHang";
+//    }
 
     @GetMapping("/profile")
     public String manageProfilrPage(Model model, HttpServletRequest request){

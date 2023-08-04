@@ -119,9 +119,9 @@
 							<span th:text="${loggedInUser.firstName}"></span>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" th:href="@{/account}">Thông tin cá nhân</a></li>
-                            <li><a class="dropdown-item" href="#">Sửa thông tin cá nhân</a></li>
-                            <li><a class="dropdown-item" href="#">Đổi mật khẩu</a></li>
+                            <li><a class="dropdown-item" th:href="@{/manage-user-account}">Thông tin cá nhân</a></li>
+<!--                            <li><a class="dropdown-item" href="#">Sửa thông tin cá nhân</a></li>-->
+<!--                            <li><a class="dropdown-item" href="#">Đổi mật khẩu</a></li>-->
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a></li>
                         </ul>
@@ -166,7 +166,7 @@
 		<div class="row list">
 			<th:block th:each="product:${productList}">
 				<div class="col item">
-					<a th:href="@{'/productInfo/' + ${product.productID}}">
+					<a th:href="@{'/productInfoUser/' + ${product.productID}}">
 						<img  th:src="@{'images/'+ ${product.img}}" width="100px" height="100px">
 					</a>
 					<h6>[[${product.productName}]]</h6>

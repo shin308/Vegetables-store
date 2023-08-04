@@ -47,18 +47,18 @@ public class AdminController {
         return "account";
     }
 
-//    @GetMapping("/don-hang")
-//    public String manageOrder(Model model) {
-//        Set<Role> role = new HashSet<>();
-//        role.add(roleService.findByRoleName("ROLE_SHIPPER"));
-//
-//        List<User> shippers = userService.getUserByRole(role);
-//        for (User shipper : shippers) {
-//            shipper.setListOrder(orderService.findByOrderStatus("Đang giao", shipper));
-//        }
-//        model.addAttribute("allShipper", shippers);
-//        return "admin/order";
-//    }
+    @GetMapping("/don-hang")
+    public String manageOrder(Model model) {
+        Set<Role> role = new HashSet<>();
+        role.add(roleService.findByRoleName("ROLE_SHIPPER"));
+
+        List<User> shippers = userService.getUserByRole(role);
+        for (User shipper : shippers) {
+            shipper.setListOrder(orderService.findByOrderStatusAndShipper("Đang giao", shipper));
+        }
+        model.addAttribute("allShipper", shippers);
+        return "admin/order";
+    }
 
     @GetMapping("/profile")
     public String manageProfilrPage(Model model, HttpServletRequest request){

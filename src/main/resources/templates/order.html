@@ -146,93 +146,95 @@
     </div>
 
     <div style="margin-top: 30px;">
-        <button class="btn btn-fill btn-lg tablink" onclick="openOrder(event,'confirming')">Chờ xác nhận</button>
-        <button class="btn btn-bd btn-lg tablink" onclick="openOrder(event,'delivering')">Đang giao</button>
-        <button class="btn btn-bd btn-lg tablink" onclick="openOrder(event,'completed')">Đã hoàn tất</button>
+        <button class="btn btn-fill btn-lg tablink" id="status" value="Chờ duyệt">Chờ xác nhận</button>
+        <button class="btn btn-bd btn-lg tablink" value="Đang giao">Đang giao</button>
+        <button class="btn btn-bd btn-lg tablink" value="Hoàn thành">Đã hoàn tất</button>
     </div>
 
-    <table id="confirming" class="table text-center mt-3 align-middle border order">
+    <table id="confirming" class="table text-center mt-3 align-middle border donHangTable">
         <thead class="table-secondary" style="background-color: #8FC742; height:50px;">
         <tr>
             <th scope="col-1">Mã đơn hàng</th>
             <th scope="col-2">Tên khách hàng</th>
-            <th scope="col-5">Ngày đặt</th>
-            <th scope="col-1">Số lượng</th>
             <th scope="col-1">Tình trạng</th>
             <th scope="col-1">Tổng tiền</th>
+            <th scope="col-5">Ngày đặt</th>
+            <th scope="col-5">Ngày giao</th>
+            <th scope="col-5">Ngày nhận</th>
+<!--            <th scope="col-1">Số lượng</th>-->
             <th scope="col-2">Chức năng</th>
         </tr>
         </thead>
         <tbody class="list">
-        <tr class="item">
-            <td scope="row">1</td>
-            <td>Nguyen Thi Linh</td>
-            <td>22/04/2023</td>
-            <td>5</td>
-            <td>Chờ xác nhận</td>
-            <td>100.000đ</td>
-            <td>
-                <button type="button" class="btn btn-success">Xác nhận</button>
-                <button type="button" class="btn btn-primary">Xem</button>
-                <button type="button" class="btn btn-danger">Xoá</button>
-            </td>
-        </tr>
+<!--        <tr class="item">-->
+<!--            <td scope="row">1</td>-->
+<!--            <td>Nguyen Thi Linh</td>-->
+<!--            <td>22/04/2023</td>-->
+<!--            <td>5</td>-->
+<!--            <td>Chờ xác nhận</td>-->
+<!--            <td>100.000đ</td>-->
+<!--            <td>-->
+<!--                <button type="button" class="btn btn-success">Xác nhận</button>-->
+<!--                <button type="button" class="btn btn-primary">Xem</button>-->
+<!--                <button type="button" class="btn btn-danger">Xoá</button>-->
+<!--            </td>-->
+<!--        </tr>-->
         </tbody>
     </table>
-    <table id="delivering" class="table text-center mt-3 align-middle border order" style="display: none;">
-        <thead class="table-secondary" style="background-color: #8FC742; height:50px;">
-        <tr>
-            <th scope="col-1">Mã đơn hàng</th>
-            <th scope="col-2">Tên khách hàng</th>
-            <th scope="col-5">Ngày đặt</th>
-            <th scope="col-1">Số lượng</th>
-            <th scope="col-1">Tình trạng</th>
-            <th scope="col-1">Tổng tiền</th>
-            <th scope="col-2">Chức năng</th>
-        </tr>
-        </thead>
-        <tbody class="list">
-        <tr class="item">
-            <td scope="row">1</td>
-            <td>Nguyen Thi Linh</td>
-            <td>22/04/2023</td>
-            <td>5</td>
-            <td>Đang giao</td>
-            <td>100.000đ</td>
-            <td>
-                <button type="button" class="btn btn-primary">Xem</button>
-                <button type="button" class="btn btn-danger">Xoá</button>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-    <table id="completed" class="table text-center mt-3 align-middle border order" style="display: none;">
-        <thead class="table-secondary" style="background-color: #8FC742; height:50px;">
-        <tr>
-            <th scope="col-1">Mã đơn hàng</th>
-            <th scope="col-2">Tên khách hàng</th>
-            <th scope="col-5">Ngày đặt</th>
-            <th scope="col-1">Số lượng</th>
-            <th scope="col-1">Tình trạng</th>
-            <th scope="col-1">Tổng tiền</th>
-            <th scope="col-2">Chức năng</th>
-        </tr>
-        </thead>
-        <tbody class="list">
-        <tr class="item">
-            <td scope="row">1</td>
-            <td>Nguyen Thi Linh</td>
-            <td>22/04/2023</td>
-            <td>5</td>
-            <td>Hoàn tất</td>
-            <td>100.000đ</td>
-            <td>
-                <button type="button" class="btn btn-primary">Xem</button>
-                <button type="button" class="btn btn-danger">Xoá</button>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+<!--    <table id="delivering" class="table text-center mt-3 align-middle border order" style="display: none;">-->
+<!--        <thead class="table-secondary" style="background-color: #8FC742; height:50px;">-->
+<!--        <tr>-->
+<!--            <th scope="col-1">Mã đơn hàng</th>-->
+<!--            <th scope="col-2">Tên khách hàng</th>-->
+<!--            <th scope="col-5">Ngày đặt</th>-->
+<!--            <th scope="col-1">Số lượng</th>-->
+<!--            <th scope="col-1">Tình trạng</th>-->
+<!--            <th scope="col-1">Tổng tiền</th>-->
+<!--            <th scope="col-2">Chức năng</th>-->
+<!--        </tr>-->
+<!--        </thead>-->
+<!--        <tbody class="list">-->
+<!--        <tr class="item">-->
+<!--            <td scope="row">1</td>-->
+<!--            <td>Nguyen Thi Linh</td>-->
+<!--            <td>22/04/2023</td>-->
+<!--            <td>5</td>-->
+<!--            <td>Đang giao</td>-->
+<!--            <td>100.000đ</td>-->
+<!--            <td>-->
+<!--                <button type="button" class="btn btn-primary">Xem</button>-->
+<!--                <button type="button" class="btn btn-danger">Xoá</button>-->
+<!--            </td>-->
+<!--        </tr>-->
+<!--        </tbody>-->
+<!--    </table>-->
+<!--    <table id="completed" class="table text-center mt-3 align-middle border order" style="display: none;">-->
+<!--        <thead class="table-secondary" style="background-color: #8FC742; height:50px;">-->
+<!--        <tr>-->
+<!--            <th scope="col-1">Mã đơn hàng</th>-->
+<!--            <th scope="col-2">Tên khách hàng</th>-->
+<!--            <th scope="col-5">Ngày đặt</th>-->
+<!--            <th scope="col-1">Số lượng</th>-->
+<!--            <th scope="col-1">Tình trạng</th>-->
+<!--            <th scope="col-1">Tổng tiền</th>-->
+<!--            <th scope="col-2">Chức năng</th>-->
+<!--        </tr>-->
+<!--        </thead>-->
+<!--        <tbody class="list">-->
+<!--        <tr class="item">-->
+<!--            <td scope="row">1</td>-->
+<!--            <td>Nguyen Thi Linh</td>-->
+<!--            <td>22/04/2023</td>-->
+<!--            <td>5</td>-->
+<!--            <td>Hoàn tất</td>-->
+<!--            <td>100.000đ</td>-->
+<!--            <td>-->
+<!--                <button type="button" class="btn btn-primary">Xem</button>-->
+<!--                <button type="button" class="btn btn-danger">Xoá</button>-->
+<!--            </td>-->
+<!--        </tr>-->
+<!--        </tbody>-->
+<!--    </table>-->
 
     <ul class="listPage">
         <li class="active">1</li>
@@ -322,5 +324,12 @@
         evt.currentTarget.classList.add("btn-fill");
     }
 </script>
+<script
+        src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script
+        src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script
+        src="https://cdnjs.cloudflare.com/ajax/libs/jquery.serializeJSON/2.9.0/jquery.serializejson.js"></script>
 
+<script th:src="@{/js/donHangAjax.js}"></script>
 </html>

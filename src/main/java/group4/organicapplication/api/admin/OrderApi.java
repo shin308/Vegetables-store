@@ -22,13 +22,13 @@ public class OrderApi {
     @Autowired
     private UserService userService;
 
-//    @GetMapping("/all")
-//    public Page<Orders> getDonHangByFilter(@RequestParam(defaultValue = "1") int page, @RequestParam String trangThai) throws ParseException {
-//
-//        SearchOrderObject object = new SearchOrderObject();
-//        object.setStatusOrder(trangThai);
-//        Page<Orders> listOrders = orderService.getAllDonHangByFilter(object, page);
-//        return listDonHang;
-//    }
+    @GetMapping("/all")
+    public Page<Orders> getDonHangByFilter(@RequestParam(defaultValue = "1") int page, @RequestParam String trangThai) throws ParseException {
+
+        SearchOrderObject object = new SearchOrderObject();
+        object.setStatusOrder(trangThai);
+        Page<Orders> listOrders = orderService.getAllOrderByFilter(object, page);
+        return listOrders;
+    }
 
 }

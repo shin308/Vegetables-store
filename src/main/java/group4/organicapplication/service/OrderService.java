@@ -12,8 +12,8 @@ import java.util.List;
 @Service
 public interface OrderService {
 
-//    Page<Orders> getAllOrderByFilter(SearchOrderObject object, int page) throws ParseException;
-    List<Orders> findByOrderStatus(String orderStatus);
+    Page<Orders> getAllOrderByFilter(SearchOrderObject object, int page) throws ParseException;
+    List<Orders> findByOrderStatusAndShipper(String orderStatus, User shipper);
     int countByOrderStatus(String orderStatus);
 
     Orders updateOrder(Orders order);

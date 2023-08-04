@@ -1,17 +1,16 @@
 package group4.organicapplication.controller;
 
 import group4.organicapplication.exception.CategoryNotFoundException;
+import group4.organicapplication.model.CartItem;
 import group4.organicapplication.model.Category;
 import group4.organicapplication.model.Product;
 import group4.organicapplication.model.User;
-import group4.organicapplication.service.CategoryService;
-import group4.organicapplication.service.ProductService;
-import group4.organicapplication.service.SelectProductService;
-import group4.organicapplication.service.UserService;
+import group4.organicapplication.service.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Import;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -22,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@SessionAttributes("loggedInUser")
+@SessionAttributes({"loggedInUser","cartItems"})
 @RequestMapping("/")
 public class MainController {
     @Autowired
@@ -33,6 +32,9 @@ public class MainController {
     @Autowired private CategoryService categoryService;
 
     @Autowired private ProductService productService;
+
+    @Autowired private CartService cartService;
+
 
     @ModelAttribute("loggedInUser")
     public User loggedInUser(){
@@ -56,6 +58,9 @@ public class MainController {
             productList = selectProductService.selectAll();
         }
         model.addAttribute("productList",productList);
+        List<CartItem> cartItems = cartService.getCartItems();
+        int totalQuantity = cartService.sumQuantity(cartItems);
+        model.addAttribute("totalQuantity", totalQuantity);
         return "client/home";
     }
 
@@ -97,16 +102,6 @@ public class MainController {
         return "productInfo";
     }
 
-    @GetMapping("/productInfoUser/{productID}")
-    public String showProductInfoUser(@PathVariable("productID") Integer productID, Model model){
-        List<Category> categoryList = categoryService.listAll();
-        model.addAttribute(("categoryList"),categoryList);
-
-        Product productInfo = productService.get(productID);
-        model.addAttribute("productInfo",productInfo);
-        return "productInfo_user";
-    }
-
     @GetMapping("/sale")
     public String showSalePage(){
         return "sale";
@@ -125,8 +120,30 @@ public class MainController {
     }
 
     @GetMapping("/cart")
-    public String showCartPage(){
+    public String getCart(Model model) {
+        List<CartItem> cartItems = cartService.getCartItems();
+        List<Product> products = productService.getAllProduct();
+        model.addAttribute("products", products);
+        model.addAttribute("cartItems", cartItems);
+        model.addAttribute("totalQuantity", cartService.sumQuantity(cartItems));
+        model.addAttribute("totalPrice", cartService.sumTotalPrice(cartItems));
         return "cart";
+    }
+
+    @GetMapping("/purchase")
+    public String purchase(@ModelAttribute("cartItems") List<CartItem> cartItems, Model model) {
+
+        int totalQuantity = cartService.sumQuantity(cartItems);
+        double totalPrice = cartService.sumTotalPrice(cartItems);
+
+        if (totalQuantity == 0) {
+            return "redirect:/cart";
+        }
+
+        model.addAttribute("totalQuantity", totalQuantity);
+        model.addAttribute("totalPrice", totalPrice);
+
+        return "purchase";
     }
 
 

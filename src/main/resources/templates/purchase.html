@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
@@ -146,43 +146,26 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <th scope="row">1</th>
-                <th><img src="/static/images/image 10.png" alt="" width="50"></th>
-                <td>Cà chua</td>
-                <td>1</td>
-                <td>15.000</td>
-                <td>15.000</td>
+            <tr th:each="cartItem, index: ${cartItems}">
+                <td th:text="${index.count}">1</td>
+                <td><img th:src="@{'/images/' + ${cartItem.imageProduct}}" alt="" width="50"></td>
+                <td th:text="${cartItem.productName}">Cà chua</td>
+                <td th:text="${cartItem.quantity}">1</td>
+                <td th:text="${cartItem.unitPrice}">15.000</td>
+                <td th:text="${cartItem.totalPrice}">15.000</td>
             </tr>
-            <tr>
-                <th scope="row">2</th>
-                <th><img src="/static/images/image 10.png" alt="" width="50"></th>
-                <td>Cà chua</td>
-                <td>1</td>
-                <td>15.000</td>
-                <td>15.000</td>
 
-            </tr>
-            <tr>
-                <th scope="row">3</th>
-                <th><img src="/static/images/image 10.png" alt="" width="50"></th>
-                <td>Cà chua</td>
-                <td>1</td>
-                <td>15.000</td>
-                <td>15.000</td>
-
-            </tr>
             </tbody>
         </table>
 
         <div style="padding: 20px 30px 10px 30px; border:#8FC742 1px solid;">
             <div class="row1">
                 <h5>Tổng số lượng</h5>
-                <h6>3</h6>
+                <h6 th:text="${totalQuantity}">3</h6>
             </div>
             <div class="row1">
                 <h5>Tạm tính</h5>
-                <h6>45000</h6>
+                <h6 th:text="${totalPrice}">45000</h6>
             </div>
             <div class="row1">
                 <h5>Phí vận chuyển</h5>
@@ -191,7 +174,7 @@
             <hr>
             <div class="row1">
                 <h5>Thành tiền</h5>
-                <h6>60000</h6>
+                <h6 th:text="${totalPrice} + 15000">60000</h6>
             </div>
         </div>
 

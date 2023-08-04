@@ -36,7 +36,8 @@
                                                 alt="brand_icon" width="100px"></a>
     <form class="d-flex" id="search" role="search" th:action="@{/}" method="get">
       <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="searchProductName">
-      <button class="btn btn-outline-success" type="submit">Search</button>
+      <button style="background-color: #5CB85C; color:white;" class="btn btn-outline-success border-0"
+              type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
     </form>
 
     <div class="collapse navbar-collapse ms-3" id="navbarTogglerDemo02">
@@ -50,7 +51,7 @@
             DANH MỤC
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" th:href="@{/#productAll}">Tất Cả Sản Phẩm</a></li>
+            <li><a class="dropdown-item" th:href="@{/#productAll}">Tất cả sản phẩm</a></li>
             <th:block th:each="category:${categoryList}">
               <li><a class="dropdown-item" th:href="@{'/' + ${category.categoryID}}">[[${category.categoryName}]]</a></li>
             </th:block>
@@ -70,22 +71,22 @@
 					<a class="navbar-brand me-1 fs-6" th:href="@{/login}">Đăng nhập</a>|<a class="navbar-brand ms-1 fs-6" th:href="@{/register}">Đăng ký</a>
 				</span>
       <span th:case="${true}">
-                    <div class="dropdown">
-                        <button class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    		<span th:text="${loggedInUser.lastName}"></span>
-							<span> </span>
-							<span th:text="${loggedInUser.firstName}"></span>
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" th:href="@{/manage-user-account}">Thông tin cá nhân</a></li>
-                          <!--                            <li><a class="dropdown-item" href="#">Sửa thông tin cá nhân</a></li>-->
-                          <!--                            <li><a class="dropdown-item" href="#">Đổi mật khẩu</a></li>-->
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a></li>
-                        </ul>
+          <div class="dropdown">
+              <button class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <span th:text="${loggedInUser.lastName}"></span>
+                  <span> </span>
+                  <span th:text="${loggedInUser.firstName}"></span>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end">
+                  <li><a class="dropdown-item" th:href="@{/manage-user-account}">Thông tin cá nhân</a></li>
+                <!--                            <li><a class="dropdown-item" href="#">Sửa thông tin cá nhân</a></li>-->
+                <!--                            <li><a class="dropdown-item" href="#">Đổi mật khẩu</a></li>-->
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a></li>
+              </ul>
 
-					</div>
-				</span>
+          </div>
+      </span>
     </div>
   </div>
 </nav>

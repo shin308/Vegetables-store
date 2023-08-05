@@ -5,14 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Products_Info</title>
-    <link rel="stylesheet" href="./styles/index.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+          integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/5a213e1813.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <style>
-    ul>li {
+    ul > li {
         margin: 0 10px;
     }
 
@@ -21,8 +20,6 @@
         text-align: center;
         list-style: none;
         margin: 0 auto;
-        position: sticky;
-        top: 100%;
     }
 
     .listPage li {
@@ -34,13 +31,8 @@
     }
 
     .listPage .active {
-        background-color: #8FC742;
+        background-color: #5CB85C;
         color: white;
-    }
-
-    #content {
-        display: grid;
-        grid-template-columns: 60% 40%;
     }
 
     .counter {
@@ -50,9 +42,9 @@
     }
 
     .counter input {
-        width: 50px;
-        line-height: 30px;
-        font-size: 20px;
+        width: 30px;
+        line-height: 20px;
+        font-size: 15px;
         text-align: center;
         appearance: none;
         border: 0.5px solid gray;
@@ -66,202 +58,203 @@
         user-select: none;
     }
 
-    .addCart {
-        width: 50%;
-        height: 42px;
-        border: 0;
-        border-radius: 5px;
-        background-color: #8FC742;
-        color: white;
-        float: right;
-    }
-
-    div.description{
+    div.description {
         padding: 20px 30px;
-        height: 290px;
+        height: 250px;
         overflow: auto;
         border: 0.5px solid;
         border-radius: 10px;
     }
-    footer{
-        position: fixed;
-        z-index: 2;
-        width: 100%;
-    }
-    header{
-        position: fixed;
-        z-index: 2;
-        width: 100%;
-        margin-bottom: 100px;
-    }
+
     .active {
         border: 0;
-        border-bottom: #8FC742 2px solid;
+        border-bottom: #5CB85C 2px solid;
+        color: black;
+    }
+
+    @media only screen and (max-width: 970px) {
+        #review {
+            width: 100%;
+        }
     }
 </style>
 
 <body>
-    <header>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid shadow-sm" style="height: 100px;">
-            <a class="navbar-brand" th:href="@{/}"><img
-                    src="https://img.freepik.com/premium-vector/organic-icon-100-percent-organic-product-label_349999-1003.jpg?w=2000"
-                    alt="brand_icon" width="150"></a>
-            <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                <ul class="navbar-nav">
+<nav class="navbar navbar-expand-lg bg-body-tertiary sticky-top shadow-sm">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02"
+                aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" th:href="@{/admin}"><img id="imgBr"
+                                              src="https://img.freepik.com/premium-vector/organic-icon-100-percent-organic-product-label_349999-1003.jpg?w=2000"
+                                              alt="brand_icon" width="100px"></a>
 
-                    <li class="nav-item">
-                        <a class="nav-link active" th:href="@{/product}">SẢN PHẨM</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/sale}">BÁN HÀNG</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/order}">ĐƠN HÀNG</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/category}">DANH MỤC</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/suppliers}">NHÀ CUNG CẤP</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/import}">NHẬP HÀNG</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/account}">QUẢN LÝ TÀI KHOẢN</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">THỐNG KÊ</a>
-                    </li>
-                </ul>
-            </div>
-            <div class="dropdown me-5">
-                <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    ADMIN
-                </button>
-                <ul class="dropdown-menu dropdown-menu-end">
-                    <li><a class="dropdown-item" href="#">Thông tin cá nhân</a></li>
-                    <li><a class="dropdown-item" href="#">Sửa thông tin cá nhân</a></li>
-                    <li><a class="dropdown-item" href="#">Đổi mật khẩu</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="#">Đăng xuất</a></li>
-                </ul>
-            </div>
+
+        <div class="collapse navbar-collapse ms-3" id="navbarTogglerDemo02">
+            <ul class="navbar-nav me-auto">
+
+                <li class="nav-item active">
+                    <a class="nav-link" th:href="@{/product}">SẢN PHẨM</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/sale}">BÁN HÀNG</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/order}">ĐƠN HÀNG</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/category}">DANH MỤC</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/suppliers}">NHÀ CUNG CẤP</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/import}">NHẬP HÀNG</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/account}">QUẢN LÝ TÀI KHOẢN</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/statistic}">THỐNG KÊ</a>
+                </li>
+            </ul>
+
         </div>
-    </nav>
-</header>
-
-    <div style="margin: 120px 30px; position:absolute;" th:object="${productInfo}">
-        <div style="display: flex; background-color:#8FC742; color:white;">
-            <div style="height:60px; padding:15px 80px;">
-                <h5>Quản lý sản phẩm / [[*{productName}]]</h5>
-            </div>
+        <div class="dropdown me-4">
+            <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                ADMIN
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end">
+                <li><a class="dropdown-item" href="#">Thông tin cá nhân</a></li>
+                <li><a class="dropdown-item" href="#">Sửa thông tin cá nhân</a></li>
+                <li><a class="dropdown-item" href="#">Đổi mật khẩu</a></li>
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item" href="#">Đăng xuất</a></li>
+            </ul>
         </div>
 
-        <div id="content">
-            <div th:object="${productInfo}">
-                <div id="productInfo" class="row mt-3 mb-3">
-                    <div class="col-5">
-                        <img style="transform: translate(10%, 0%); border: 1px solid #8FC742; " th:src = "@{'/images/'+ ${productInfo.img}}" width="300">
-                    </div>
-                    <div class="col-4">
-                        <h2 class="mt-3 mb-5">[[*{productName}]]</h2>
-                        <div class="row">
-                            <div class="col">
-                                <h5 class="mb-4">Giá bán</h5>
-                                <h5 class="mb-4">Tình trạng</h5>
-                                <h5 class="mb-4">Số lượng</h5>
-                            </div>
-                            <div class="col" style="text-align: right;">
-                                <h5 class="mb-4">[[*{price}]] VNĐ</h5>
-                                <h5 class="mb-4">Còn hàng</h5>
-                                <div class="mb-4">
-                                    <div class="counter">
-                                        <span class="down" onClick='decreaseCount(event, this)'>-</span>
-                                        <input type="text" value="1">
-                                        <span class="up" onClick='increaseCount(event, this)'>+</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <button class="addCart">Thêm vào giỏ</button>
-                    </div>
-                </div>
-
-                <div style="display: flex; margin-left:70px;">
-                    <div class="me-3" ><span>5</span> <span style="color: yellow;"><i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i></span>
-                    </div>
-                    <div class="me-3"><span>20</span> Đánh giá</div>
-                    <div><span>30</span> Đã bán</div>
-                </div>
-
-                <div style="margin: 20px 100px 150px 70px;">
-                    <h5>Mô tả sản phẩm</h5>
-                    <div class="description">
-                        <p>
-                            [[*{description}]]
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div id="review" class="mt-3 mb-3">
-                <div style="background-color: #8FC742; width:50%; height:50px; padding:13px; display:inline-block;">
-                    <h5>Đánh giá của khách hàng</h5>
-                </div>
-                <div class="list border" style="width:90%; padding:15px 15px 0 15px; height:630px;">
-                    <div class="item border mb-3 p-3">
-                        <div class="row">
-                            <div class="col-1 me-3"><i style="font-size: 50px;" class="fa-solid fa-circle-user"></i></div>
-                            <div class="col">
-                                <h6>LinhNT</h6>
-                                <p>2023/06/04</p>
-                            </div>
-                            <div class="col-4" style="color: yellow;">
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                            </div>
-                        </div>
-                        <div class="row mb-1">
-                            <div class="col-1 me-3"></div>
-                            <span class="col">Đã mua nhiều lần.<br> Đóng gói chắc chắn.<br> Chất lượng ok</span>
-                        </div>
-                        <div>
-                            <button class="border-0" style="margin-left:80%;">Phản hồi</button>
-                            <button class="border-0">Xoá</button>
-                        </div>
-
-                    </div>
-                    <ul class="listPage">
-                        <li class="active">1</li>
-                        <li>2</li>
-                        <li>3</li>
-                    </ul>
-                </div>
-
-
-            </div>
+    </div>
+</nav>
+<div th:object="${productInfo}">
+    <div style="display: flex; background-color: #5CB85C; color:white;">
+        <div class="py-3 px-5">
+            <h5>Quản lý sản phẩm / [[*{productName}]]</h5>
         </div>
     </div>
 
+    <div class="row px-5 py-3 gx-5">
+        <div class="col">
+            <div class="row">
+                <div class="col-6" id="info">
+                    <img th:src="@{'/images/'+ ${productInfo.img}}" width="200" height="200">
+                    <div class="mt-2">
+                        <div style="display: flex;"><span>5 </span>
+                            <p style="color: yellow; width:108px;margin-bottom: 0;">
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i></p>
+                        </div>
+                        <div><span>20</span> Đánh giá</div>
+                        <div><span>30</span> Đã bán</div>
+                    </div>
+                </div>
+                <div class="col">
+                    <h3 class="mt-3 mb-5">[[*{productName}]]</h3>
+                    <div class="row">
+                        <div class="col">
+                            <h6 class="mb-4">Giá bán</h6>
+                            <h6 class="mb-4">Tình trạng</h6>
+                            <h6 class="mb-4">Số lượng</h6>
+                        </div>
+                        <div class="col" style="text-align: right;">
+                            <p class="mb-4">[[*{price}]] VNĐ</p>
+                            <p class="mb-4">Còn hàng</p>
+                            <div class="mb-4">
+                                <div class="counter">
+                                    <span class="down" onClick='decreaseCount(event, this)'>-</span>
+                                    <input type="text" value="1">
+                                    <span class="up" onClick='increaseCount(event, this)'>+</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-success border-0" style="background-color: #5CB85C; float:right;">Thêm vào
+                        giỏ
+                    </button>
 
-    <footer class="bottom-0 end-0  shadow-lg p-4"
-            style="height: 70px; width:100%; background-color:black; color:white;">
-        <div class="footer-bottom clearfix">
-            <div class="container">
-                <div class="row">
-                    &copy; 2023 - Vegetables Store by Group 4
+
+                </div>
+            </div>
+            <div class="mt-3">
+                <h6>Mô tả sản phẩm</h6>
+                <div class="description">
+                    <p>
+                        [[*{description}]]
+                    </p>
                 </div>
             </div>
         </div>
-    </footer>
+        <div class="col-6 mt-3" id="review">
+            <div>
+                <h6>Đánh giá của khách hàng</h6>
+            </div>
+            <div class="list border" style="padding:10px 10px 0 10px;">
+                <div class="item border mb-3 p-3">
+                    <div class="row">
+                        <div class="col-1"><img src="/images/image 10.png" alt="imgUser" width="50" height="50"
+                                                class="border">
+                        </div>
+                        <div class="col-7">
+                            <div class="ms-3">
+                                <h6>LinhNT</h6>
+                                <p>2023/06/04</p>
+                            </div>
+                        </div>
+                        <div class="col-4 text-end" style="color: yellow;">
+                            <p style="width:108px; float:right;"><i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i></p>
+
+                        </div>
+                    </div>
+                    <div class="row mb-1">
+                        <p>Chất lượng ok</p>
+                    </div>
+                    <div class="text-end">
+                        <button class="border-0">Phản hồi</button>
+                        <button class="border-0">Xoá</button>
+                    </div>
+
+                </div>
+
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" aria-describedby="button-addon2">
+                    <button class="btn btn-primary" type="submit" id="button-addon2"><i
+                            class="fa-solid fa-paper-plane"></i></button>
+                </div>
+
+
+            </div>
+
+            <div style="position: sticky; top:100%; margin:0 auto;">
+                <ul class="listPage">
+                    <li class="active">1</li>
+                    <li>2</li>
+                    <li>3</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
 <script>
     let thisPage = 1;
@@ -275,15 +268,16 @@
             if (key >= beginGet && key <= endGet) {
                 item.style.display = 'block';
 
-            }
-            else {
+            } else {
                 item.style.display = 'none';
             }
         })
         listPage();
 
     }
+
     loadItem();
+
     function listPage() {
         let count = Math.ceil(list.length / limit);
         document.querySelector('.listPage').innerHTML = '';
@@ -311,6 +305,7 @@
             document.querySelector('.listPage').appendChild(next);
         }
     }
+
     function changePage(i) {
         thisPage = i;
         loadItem();

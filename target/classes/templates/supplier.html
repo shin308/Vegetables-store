@@ -5,42 +5,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Suppliers</title>
-    <link rel="stylesheet" href="./styles/index.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/5a213e1813.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <style>
-    ul>li {
-        margin: 0 10px;
-    }
-
-    #search {
-        width: 658px;
-        margin: auto 20px;
-    }
-
-    .add {
-        width: 160px;
-        height: 50px;
-        border: 1px solid #8FC742;
-        border-radius: 5px;
-        color: #8FC742;
-        margin: 15px auto 0 500px;
-        font-size: 20px;
-        background-color: white;
+    li {
+        margin: 0 5px;
     }
 
     .listPage {
         padding: 10px;
         text-align: center;
         list-style: none;
-        margin: 0 auto;
-        position: absolute;
-        left: 50%;
-        top: 86%;
-        transform: translate(-50%, -50%);
     }
 
     .listPage li {
@@ -52,97 +30,56 @@
     }
 
     .listPage .active {
-        background-color: #8FC742;
+        background-color: #5CB85C;
         color: white;
     }
 
-    #edit, #addNew{
+    #edit,
+    #addNew {
         position: absolute;
-        z-index:2;
-        background-color:rgba(0, 0, 0, 0.5);
+        z-index: 2;
+        background-color: rgba(0, 0, 0, 0.5);
         display: none;
-        width: 100%;
-        height: 100%;
+        width: 100vw;
+        height: 100vh;
         justify-content: center;
         align-items: center;
-        border-radius: 10px;
         display: none;
         left: 50%;
-        top: 50%;
+        top:50%;
         transform: translate(-50%, -50%);
     }
+
     .active {
         border: 0;
-        border-bottom: #8FC742 2px solid;
+        border-bottom: #5CB85C 2px solid;
+        color: black;
+    }
+
+    @media only screen and (max-width: 1015px) {
+        #search {
+            width: 100%;
+        }
+        #manage, #btnAdd {
+            width: 100%;
+            text-align: center;
+            margin: 10px auto;
+        }
     }
 </style>
 
 <body>
-<div id="edit">
-    <div style="background-color: white; width:550px; border-radius:10px;" class="shadow-lg">
-        <h6 style="height: 50px; background-color:black; color:white; padding:15px; border-radius:10px 10px 0 0;">
-            Cập nhật thông tin nhà cung cấp ID: <span id="supplierIDSpan">1</span>
-        </h6>
-        <form action="/suppliers" method="put" style="padding: 20px">
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="supplierNameEdit" name="supplierNameEdit">
-                <label for="supplierNameEdit">Tên nhà cung cấp</label>
-            </div>
-            <div class="form-floating mb-3">
-                <input type="tel" class="form-control" id="supplierPhoneEdit" name="supplierPhoneEdit">
-                <label for="supplierPhoneEdit">Số điện thoại</label>
-            </div>
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="supplierAddressEdit" name="supplierAddressEdit">
-                <label for="supplierAddressEdit">Địa chỉ</label>
-            </div>
-            <div style="float: right; margin-bottom:20px;">
-                <button type="button" class="btn btn-primary" onclick="submitEditForm()">Lưu</button>
-                <button type="button" class="btn btn-secondary" onclick="closeEdit()">Huỷ</button>
-            </div>
-
-        </form>
-    </div>
-</div>
-
-
-<div id="addNew">
-    <div style="background-color: white; width:550px; border-radius:10px;" class="shadow-lg">
-        <h6 style="height: 50px; background-color:black; color:white; padding:15px; border-radius:10px 10px 0 0;">
-            Thêm nhà cung cấp mới
-        </h6>
-        <form action="/suppliers" method="post" style="padding: 20px;">
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="supplierName" name="supplierName" required >
-                <label for="supplierName">Tên nhà cung cấp</label>
-            </div>
-            <div class="form-floating mb-3">
-                <input type="tel" class="form-control" id="phone" name="phone" required pattern="[0-9]{10}" title="Vui lòng nhập số gồm 10 chữ số và không chứa chữ cái!">
-                <label for="phone">Số điện thoại</label>
-            </div>
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="address" name="address">
-                <label for="address">Địa chỉ</label>
-            </div>
-            <div style="float: right; margin-bottom:20px;">
-                <button type="submit" class="btn btn-primary">Lưu</button>
-                <button type="button" class="btn btn-secondary" onclick="closeAddNew()">Hủy</button>
-            </div>
-        </form>
-
-    </div>
-
-</div>
-
-
-<header>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid shadow-sm" style="height: 100px;">
-            <a class="navbar-brand" th:href="@{/}"><img
+<nav class="navbar navbar-expand-lg bg-body-tertiary sticky-top shadow-sm">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02"
+                aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+            <a class="navbar-brand" th:href="@{/admin}"><img
                     src="https://img.freepik.com/premium-vector/organic-icon-100-percent-organic-product-label_349999-1003.jpg?w=2000"
-                    alt="brand_icon" width="150"></a>
-            <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                <ul class="navbar-nav">
+                    alt="brand_icon" width="100"></a>
+            <div class="collapse navbar-collapse ms-3" id="navbarTogglerDemo02">
+                <ul class="navbar-nav me-auto">
 
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/product}">SẢN PHẨM</a>
@@ -166,11 +103,11 @@
                         <a class="nav-link" th:href="@{/admin/list-account}">QUẢN LÝ TÀI KHOẢN</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">THỐNG KÊ</a>
+                        <a class="nav-link" th:href="@{/statistic}">THỐNG KÊ</a>
                     </li>
                 </ul>
             </div>
-            <div class="dropdown me-5">
+            <div class="dropdown me-4">
                 <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Hi, <span th:text="${loggedInUser.lastName}"></span>
                     <span th:text="${loggedInUser.firstName}"></span>
@@ -183,30 +120,31 @@
             </div>
         </div>
     </nav>
-</header>
 
-<div style="margin: 30px;">
-    <div style="display: flex; background-color:#8FC742; color:white;">
-        <div style="height:80px; padding:25px 100px;">
-            <h4>Quản lý nhà cung cấp</h4>
-        </div>
-        <div id="search">
+    <div class="px-5">
+        <div class="row align-middle mt-4 mb-4">
+            <div class="col-3" id="manage">
+                <h4 style="color: #5CB85C;">Quản lý nhà cung cấp</h4>
+            </div>
+            <div class="col-5" id="search">
             <form class="d-flex" role="search" th:action="@{/suppliers}" method="get">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
-                       style="height:50px;" name="searchName">
-                <button class="btn btn-success" type="submit"
-                        style=" margin-left:-100px; height:45px; width:87px; margin-top:3px; background-color:#8FC742; border:0;">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                </button>
+                       name="searchName">
+                <button style="background-color: #5CB85C; color:white;" class="btn btn-outline-success border-0"
+                        type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
             </form>
         </div>
-        <button type="button" class="add shadow-sm" onclick="openAddNew()">Thêm mới<i style="float: right; font-size: 40px;"
-                                                                                       class="fa-solid fa-square-plus"></i></button>
+        <div class="col-4 text-end" id="btnAdd">
+            <button style="background-color: #5CB85C; color:white;vertical-align: middle;" type="button"
+                    class="btn btn-success shadow-sm border-0"
+                    onclick="openAddNew()">Thêm mới<i style="font-size: 23px; vertical-align: middle;"
+                                                       class="fa-solid fa-square-plus ms-3"></i></button>
+        </div>
     </div>
 
 
-    <table class="table text-center mt-3 align-middle border">
-        <thead class="table-secondary" style="background-color: #8FC742; height:50px;">
+    <table class="table text-center align-middle border">
+        <thead class="table-secondary">
         <tr>
             <th scope="col-1">Mã nhà cung cấp</th>
             <th scope="col-2">Tên nhà cung cấp</th>
@@ -228,24 +166,69 @@
         </tr>
         </tbody>
     </table>
-    <ul class="listPage">
-        <li class="active">1</li>
-        <li>2</li>
-        <li>3</li>
-    </ul>
-
 </div>
+    <div style="position: sticky; top:100%; margin:0 auto;">
+        <ul class="listPage">
+            <li class="active">1</li>
+            <li>2</li>
+            <li>3</li>
+        </ul>
+    </div>
+    <div id="edit">
+        <div style="background-color: white; border-radius:10px;" class="shadow-lg w-50">
+            <h6 style="background-color:black; color:white; padding:15px; border-radius:10px 10px 0 0;">
+                Cập nhật thông tin nhà cung cấp ID: <span id="supplierIDSpan">1</span>
+            </h6>
+            <form action="/suppliers" method="put" style="padding: 20px">
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="supplierNameEdit" name="supplierNameEdit">
+                    <label for="supplierNameEdit">Tên nhà cung cấp</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="tel" class="form-control" id="supplierPhoneEdit" name="supplierPhoneEdit">
+                    <label for="supplierPhoneEdit">Số điện thoại</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="supplierAddressEdit" name="supplierAddressEdit">
+                    <label for="supplierAddressEdit">Địa chỉ</label>
+                </div>
+                <div style="float: right; margin-bottom:20px;">
+                    <button type="button" class="btn btn-primary" onclick="submitEditForm()">Lưu</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeEdit()">Huỷ</button>
+                </div>
 
-<footer class="position-absolute bottom-0 end-0  shadow-lg p-4"
-        style="height: 70px; width:100%; background-color:black; color:white;">
-    <div class="footer-bottom clearfix">
-        <div class="container">
-            <div class="row">
-                &copy; 2023 - Vegetables Store by Group 4
-            </div>
+            </form>
         </div>
     </div>
-</footer>
+
+
+    <div id="addNew">
+        <div style="background-color: white; border-radius:10px;" class="shadow-lg w-50">
+            <h6 style="background-color:black; color:white; padding:15px; border-radius:10px 10px 0 0;">
+                Thêm nhà cung cấp mới
+            </h6>
+            <form action="/suppliers" method="post" style="padding: 20px;">
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="supplierName" name="supplierName" required >
+                    <label for="supplierName">Tên nhà cung cấp</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="tel" class="form-control" id="phone" name="phone" required pattern="[0-9]{10}" title="Vui lòng nhập số gồm 10 chữ số và không chứa chữ cái!">
+                    <label for="phone">Số điện thoại</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="address" name="address">
+                    <label for="address">Địa chỉ</label>
+                </div>
+                <div style="float: right; margin-bottom:20px;">
+                    <button type="submit" class="btn btn-primary">Lưu</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeAddNew()">Hủy</button>
+                </div>
+            </form>
+
+        </div>
+
+    </div>
 </body>
 <script th:inline="javascript">
     let thisPage = 1;

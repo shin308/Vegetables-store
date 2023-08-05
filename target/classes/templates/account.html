@@ -5,96 +5,83 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - Manage Accounts</title>
-
-    <link rel="stylesheet" href="./styles/index.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/5a213e1813.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 
-    <link rel="stylesheet" th:href="@{/css/index.css}">
-
     <style>
-    ul>li {
-    margin: 0 10px;
-  }
-     #search {
-        width: 1000px;
-        margin: auto 20px;
-    }
+        li {
+            margin: 0 5px;
+        }
 
-    .add {
-        width: 160px;
-        height: 50px;
-        border: 1px solid #8FC742;
-        border-radius: 5px;
-        color: #8FC742;
-        margin: 15px auto 0 500px;
-        font-size: 20px;
-        background-color: white;
-    }
+        .listPage {
+            padding: 10px;
+            text-align: center;
+            list-style: none;
+        }
 
-    .listPage {
-        padding: 10px;
-        text-align: center;
-        list-style: none;
-        margin: 0 auto;
-        position: absolute;
-        left: 50%;
-        top: 86%;
-        transform: translate(-50%, -50%);
-    }
+        .listPage li {
+            background-color: white;
+            padding: 10px 20px;
+            display: inline-block;
+            margin: 0 10px;
+            cursor: pointer;
+        }
 
-    .listPage li {
-        background-color: white;
-        padding: 10px 20px;
-        display: inline-block;
-        margin: 0 10px;
-        cursor: pointer;
-    }
+        .listPage .active {
+            background-color: #5CB85C;
+            color: white;
+        }
 
-    .listPage .active {
-        background-color: #8FC742;
-        color: white;
-    }
-    select{
-        height: 35px;
-        border-radius: 5px;
-    }
+        #edit,
+        #addNew {
+            position: absolute;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            width: 100%;
+            height: 100%;
+            justify-content: center;
+            align-items: center;
+            display: none;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
 
-    #dropdownRole {
-        margin-left: 100px;
-    }
-    #edit, #addNew{
-        position: absolute;
-        z-index:2;
-        background-color:rgba(0, 0, 0, 0.5);
-        display: none;
-        width: 100%;
-        height: 100%;
-        justify-content: center;
-        align-items: center;
-        border-radius: 10px;
-        display: none;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
-    .active {
-        border: 0;
-        border-bottom: #8FC742 2px solid;
-    }
-</style>
+        .active {
+            border: 0;
+            border-bottom: #5CB85C 2px solid;
+            color: black;
+        }
+
+        @media only screen and (max-width: 1015px) {
+            #search, #manage {
+                width: 100%;
+                margin-bottom: 10px;
+                text-align: center;
+            }
+            #dropdownRole {
+                width:60%;
+            }
+            #btnAdd{
+                width:40%;
+            }
+        }
+    </style>
 </head>
 
 <body>
-<header>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid shadow-sm" style="height: 100px;">
+<nav class="navbar navbar-expand-lg bg-body-tertiary sticky-top shadow-sm">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02"
+                aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
             <a class="navbar-brand" th:href="@{/}"><img
                     src="https://img.freepik.com/premium-vector/organic-icon-100-percent-organic-product-label_349999-1003.jpg?w=2000"
-                    alt="brand_icon" width="150"></a>
-            <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                <ul class="navbar-nav">
+                    alt="brand_icon" width="100"></a>
+            <div class="collapse navbar-collapse ms-3" id="navbarTogglerDemo02">
+                <ul class="navbar-nav me-auto">
 
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/product}">SẢN PHẨM</a>
@@ -125,102 +112,91 @@
                 </ul>
             </div>
 
-<!--            <div class="dropdown me-5">-->
-<!--                <button class="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown"  aria-expanded="false">-->
-<!--                    Hi, <span th:text="${loggedInUser.lastName}"></span>-->
-<!--                    <span th:text="${loggedInUser.firstName}"></span>-->
-<!--                </button>-->
-<!--                <ul class="dropdown-menu dropdown-menu-end">-->
-<!--                    <li><a class="dropdown-item"  th:href="@{/admin/profile}">Thông tin cá nhân</a></li>-->
-<!--                    <li><hr class="dropdown-divider"></li>-->
-<!--                    <li><a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a></li>-->
-<!--                </ul>-->
-<!--            </div>-->
+            <!--            <div class="dropdown me-5">-->
+            <!--                <button class="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown"  aria-expanded="false">-->
+            <!--                    Hi, <span th:text="${loggedInUser.lastName}"></span>-->
+            <!--                    <span th:text="${loggedInUser.firstName}"></span>-->
+            <!--                </button>-->
+            <!--                <ul class="dropdown-menu dropdown-menu-end">-->
+            <!--                    <li><a class="dropdown-item"  th:href="@{/admin/profile}">Thông tin cá nhân</a></li>-->
+            <!--                    <li><hr class="dropdown-divider"></li>-->
+            <!--                    <li><a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a></li>-->
+            <!--                </ul>-->
+            <!--            </div>-->
 
-            <div class="dropdown me-5">
-                <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <div class="dropdown me-4">
+                <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
                     Hi, <span th:text="${loggedInUser.lastName}"></span>
                     <span th:text="${loggedInUser.firstName}"></span>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end">
                     <li><a class="dropdown-item" th:href="@{/admin/profile}">Thông tin cá nhân</a></li>
-                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
                     <li><a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a></li>
                 </ul>
             </div>
 
         </div>
     </nav>
-</header>
 
-<div style="margin: 30px;">
-    <div style="display: flex; background-color:#8FC742; color:white;">
-        <div style="height:80px; padding:25px 100px;">
-            <h4>Quản lý sản phẩm</h4>
+<div class="px-5">
+    <div class="row align-middle mt-4 mb-4">
+        <div class="col-2" id="manage">
+            <h4 style="color: #5CB85C;">Quản lý tài khoản</h4>
         </div>
-        <div id="search">
+        <div class="col-5" id="search">
             <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
-                       style="height:50px;">
-                <button class="btn btn-success" type="submit"
-                        style=" margin-left:-100px; height:45px; width:87px; margin-top:3px; background-color:#8FC742; border:0;">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                </button>
+                <input class="form-control me-2" type="search" placeholder="Tìm tài khoản..." aria-label="Search">
+                <button style="background-color: #5CB85C; color:white;" class="btn btn-outline-success border-0"
+                        type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
             </form>
         </div>
 
-        <div class="form-floating w-50" id="dropdownRole">
+        <div class="col-2" id="dropdownRole">
             <div class="form-group form-inline">
-                <label><strong>Lọc tài khoản:</strong> </label>
                 <select id="vaiTro" class="form-control form-select">
-                    <option th:each="role : ${listRole}" th:value="${role.roleName}" th:text="${role.roleName}"></option>
+                    <option th:each="role : ${listRole}" th:value="${role.roleName}"
+                            th:text="${role.roleName}"></option>
                 </select>
             </div>
         </div>
 
-        <button type="button" class="add shadow-sm btnThemTaiKhoan"
-                data-bs-toggle="modal" data-bs-target="#taiKhoanModal">
-            Thêm mới
-            <i style="float: right; font-size: 40px;" class="fa-solid fa-square-plus"></i>
-        </button>
+        <div class="col-3 text-end" id="btnAdd">
+            <button style="background-color: #5CB85C; color:white;vertical-align: middle;" type="button"
+                    class="btn btn-success shadow-sm border-0 btnThemTaiKhoan" data-bs-toggle="modal"
+                    data-bs-target="#taiKhoanModal">
+                Thêm mới<i style="font-size: 23px; vertical-align: middle;"
+                            class="fa-solid fa-square-plus ms-3"></i></button>
+        </div>
 
     </div>
 
 
-    <table class="table text-center mt-3 align-middle border taiKhoanTable">
-        <thead class="table-secondary" style="background-color: #8FC742; height:50px;">
+    <table class="table text-center align-middle border taiKhoanTable">
+        <thead class="table-secondary">
         <tr>
             <th scope="col-1">Mã tài khoản</th>
-            <th scope="col-5">Tên</th>
-            <th scope="col-5">Họ</th>
+            <th scope="col-2">Tên</th>
+            <th scope="col-1">Họ</th>
             <th scope="col-2">Email</th>
             <th scope="col-1">Số điện thoại</th>
-            <th scope="col-1">Địa chỉ</th>
-            <th scope="col-2">Vai trò</th>
+            <th scope="col-3">Địa chỉ</th>
+            <th scope="col-1">Vai trò</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
         </tr>
         </thead>
         <tbody class="list">
 
         </tbody>
     </table>
-<!--    <ul class="listPage">-->
-<!--        <li class="active">1</li>-->
-<!--        <li>2</li>-->
-<!--        <li>3</li>-->
-<!--    </ul>-->
+
 
 </div>
 
-<footer class="position-absolute bottom-0 end-0  shadow-lg p-4"
-        style="height: 70px; width:100%; background-color:black; color:white;">
-    <div class="footer-bottom clearfix">
-        <div class="container">
-            <div class="row">
-                &copy; 2023 - Vegetables Store by Group 4
-            </div>
-        </div>
-    </div>
-</footer>
 
 <!-- MODAL ADD USER -->
 <div class="row col-md-9">
@@ -242,15 +218,15 @@
                             </div>
                             <div class="form-group">
                                 <label for="name">Email</label>
-                                <input type="email" class="form-control" name="email" required />
+                                <input type="email" class="form-control" name="email" required/>
                             </div>
                             <div class="form-group">
                                 <label for="name">Mật khẩu:(8-32 ký tự)</label>
-                                <input type="password" class="form-control" name="password" required />
+                                <input type="password" class="form-control" name="password" required/>
                             </div>
                             <div class="form-group">
                                 <label for="name">Nhắc lại mật khẩu:</label>
-                                <input type="password" class="form-control" name="confirmPassword" required />
+                                <input type="password" class="form-control" name="confirmPassword" required/>
                             </div>
 
                             <div class="form-group">
@@ -260,7 +236,7 @@
                                         <input type="radio"
                                                name="roleName"
                                                th:value="${role.roleName}"
-                                               checked="checked" />
+                                               checked="checked"/>
                                         <span th:text="${role.roleName}"></span>
                                     </label>
                                 </div>
@@ -268,25 +244,26 @@
 
                             <div class="form-group">
                                 <label for="name">Họ :</label>
-                                <input type="text" class="form-control" name="lastName" required />
+                                <input type="text" class="form-control" name="lastName" required/>
                             </div>
                             <div class="form-group">
                                 <label for="name">Tên :</label>
-                                <input type="text" class="form-control" name="firstName" required />
+                                <input type="text" class="form-control" name="firstName" required/>
                             </div>
                             <div class="form-group">
                                 <label for="name">Số điện thoại:</label>
-                                <input type="text" class="form-control" name="phone" required />
+                                <input type="text" class="form-control" name="phone" required/>
                             </div>
                             <div class="form-group">
                                 <label for="name">Địa chỉ:</label>
-                                <input type="text" class="form-control" name="address" required />
+                                <input type="text" class="form-control" name="address" required/>
                             </div>
+
                         </div>
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Hủy</button>
-                            <input class="btn btn-primary" id="btnSubmit" type="button" value="Xác nhận" />
+                            <input class="btn btn-primary" id="btnSubmit" type="button" value="Xác nhận"/>
                         </div>
                     </div>
                 </div>
@@ -307,15 +284,16 @@
             if (key >= beginGet && key <= endGet) {
                 item.style.display = 'table-row';
 
-            }
-            else {
+            } else {
                 item.style.display = 'none';
             }
         })
         listPage();
 
     }
+
     loadItem();
+
     function listPage() {
         let count = Math.ceil(list.length / limit);
         document.querySelector('.listPage').innerHTML = '';
@@ -343,6 +321,7 @@
             document.querySelector('.listPage').appendChild(next);
         }
     }
+
     function changePage(i) {
         thisPage = i;
         loadItem();

@@ -115,8 +115,8 @@
         <a class="navbar-brand" th:href="@{/}"><img id="imgBr"
                                                     src="https://img.freepik.com/premium-vector/organic-icon-100-percent-organic-product-label_349999-1003.jpg?w=2000"
                                                     alt="brand_icon" width="100px"></a>
-        <form class="d-flex" id="search" role="search">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <form class="d-flex" id="search" role="search" th:action="@{/cart}" method="get">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="searchProductName">
             <button style="background-color: #5CB85C; color:white;" class="btn btn-outline-success border-0"
                     type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
         </form>
@@ -178,7 +178,7 @@
         <div class="row list">
             <th:block th:each="product:${products}">
                 <div class="col item">
-                    <a th:href="@{'/productInfo/' + ${product.productID}}">
+                    <a th:href="@{'/productInfoUser/' + ${product.productID}}">
                         <img  th:src="@{'images/'+ ${product.img}}" width="80px" height="80px">
                     </a>
                     <h6>[[${product.productName}]]</h6>

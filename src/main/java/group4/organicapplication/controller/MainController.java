@@ -98,9 +98,13 @@ public class MainController {
         return "redirect:/login?logout";
     }
 
-    @GetMapping("/productInfo")
-    public String showproductInfoPage(){
-        return "productInfo";
+    @GetMapping("/productInfoUser/{productID}")
+    public String showproductInfoUser(@PathVariable("productID") Integer productID, Model model){
+        Product productInfo = productService.get(productID);
+        model.addAttribute("productInfo",productInfo);
+        List<Category> categoryList = categoryService.listAll();
+        model.addAttribute(("categoryList"),categoryList);
+        return "productInfo_user";
     }
 
     @GetMapping("/sale")
@@ -121,9 +125,17 @@ public class MainController {
     }
 
     @GetMapping("/cart")
-    public String getCart(Model model) {
+    public String getCart(@RequestParam(value = "searchProductName", required = false)String searchProductName,Model model) {
         List<CartItem> cartItems = cartService.getCartItems();
-        List<Product> products = productService.getAllProduct();
+        List<Category> categoryList = categoryService.listAll();
+        model.addAttribute(("categoryList"),categoryList);
+        List<Product> products;
+        if (searchProductName != null && !searchProductName.isEmpty()) {
+            products = selectProductService.findProductByName(searchProductName);
+        } else {
+            // Nếu không có tên để tìm kiếm, hiển thị tất cả nhà cung cấp
+            products = selectProductService.selectAll();
+        }
         model.addAttribute("products", products);
         model.addAttribute("cartItems", cartItems);
         model.addAttribute("totalQuantity", cartService.sumQuantity(cartItems));

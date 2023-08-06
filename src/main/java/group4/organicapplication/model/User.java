@@ -110,6 +110,10 @@ public class User {
 		this.phone = phone;
 	}
 
+	public String getFullName(){
+		return getLastName() + " " + getFirstName();
+	}
+
 //	public String getCccd() {
 //		return cccd;
 //	}

@@ -153,7 +153,7 @@
                     <img th:src="@{'/images/'+ ${productInfo.img}}" width="200" height="200">
                     <div class="mt-2">
                         <div style="display: flex;"><span>5 </span>
-                            <p style="color: yellow; width:108px;margin-bottom: 0;">
+                            <p style="color: #FFD700; width:108px;margin-bottom: 0;">
                                 <i class="fa-solid fa-star"></i>
                                 <i class="fa-solid fa-star"></i>
                                 <i class="fa-solid fa-star"></i>
@@ -205,28 +205,32 @@
                 <h6>Đánh giá của khách hàng</h6>
             </div>
             <div class="list border" style="padding:10px 10px 0 10px;">
-                <div class="item border mb-3 p-3">
+
+                <div class="item border mb-3 p-3" th:each="review : ${reviewAll}">
                     <div class="row">
                         <div class="col-1"><img src="/images/image 10.png" alt="imgUser" width="50" height="50"
                                                 class="border">
                         </div>
                         <div class="col-7">
                             <div class="ms-3">
-                                <h6>LinhNT</h6>
-                                <p>2023/06/04</p>
+                                <h6 th:text="${review.userID.fullName}"></h6>
+                                <p th:text="${review.postDate}"></p>
                             </div>
                         </div>
-                        <div class="col-4 text-end" style="color: yellow;">
-                            <p style="width:108px; float:right;"><i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i></p>
-
+                        <div class="col-4 text-end" style="color:#ddd;">
+                            <p style="display: none" id="id" th:text="${review.reviewID}"></p>
+                            <p style="display: none" id="star" th:text="${review.star}"></p>
+                            <p style="width:108px; float:right;">
+                                <i class="fa-solid fa-star" id="1"></i>
+                                <i class="fa-solid fa-star" id="2"></i>
+                                <i class="fa-solid fa-star" id="3"></i>
+                                <i class="fa-solid fa-star" id="4"></i>
+                                <i class="fa-solid fa-star" id="5"></i>
+                            </p>
                         </div>
                     </div>
                     <div class="row mb-1">
-                        <p>Chất lượng ok</p>
+                        <p th:text="${review.content}"></p>
                     </div>
                     <div class="text-end">
                         <button class="border-0">Phản hồi</button>
@@ -328,6 +332,11 @@
             value--;
             input.value = value;
         }
+    }
+
+    let num = document.getElementById("star").innerText;
+    for (let i = 1; i<=num; i++){
+        document.getElementById(i).style.color = "#FFD700";
     }
 </script>
 

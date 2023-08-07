@@ -133,7 +133,7 @@
       <h4>Quản lý sản phẩm</h4>
     </div>
     <div id="search">
-      <form class="d-flex" role="search" th:action="@{/category}" method="get">
+      <form class="d-flex" role="search" th:action="@{/admin/category}" method="get">
         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
                style="height:50px;" name="searchCategory">
         <button class="btn btn-success" type="submit"
@@ -161,9 +161,9 @@
         <td>[[${category.categoryID}]]</td>
         <td>[[${category.categoryName}]]</td>
         <td>
-          <a class="h4 m-3" th:href="@{'/category/edit/' + ${category.categoryID}}">
+          <a class="h4 m-3" th:href="@{'/admin/category/edit/' + ${category.categoryID}}">
             <button type="button" class="btn btn-primary">Sửa</button></a>
-          <a class="h4" th:href="@{'/category/delete/' + ${category.categoryID}}">
+          <a class="h4" th:href="@{'/admin/category/delete/' + ${category.categoryID}}">
             <button type="button" class="btn btn-danger" >Xoá</button></a>
         </td>
       </tr>
@@ -183,7 +183,7 @@
     <h6 style="height: 50px; background-color:black; color:white; padding:15px; border-radius:10px 10px 0 0;">
       Cập nhật thông tin danh mục ID: <span>1</span>
     </h6>
-    <form th:action="@{/category/save}" method="post" th:object="${category}"
+    <form th:action="@{/admin/category/save}" method="post" th:object="${category}"
           style="padding: 20px;">
       <div class="form-floating mb-3">
         <input type="text"  class="form-control" id="floatingInput">
@@ -202,7 +202,7 @@
     <h6 style="height: 50px; background-color:black; color:white; padding:15px; border-radius:10px 10px 0 0;">
       Thêm danh mục mới
     </h6>
-    <form th:action="@{/category/save}" method="post" th:object="${category}"
+    <form th:action="@{/admin/category/save}" method="post" th:object="${category}"
           style="padding:20px;">
       <div class="form-floating mb-3">
         <input type="text" th:field="*{categoryName}" class="form-control" required minlength="2" maxlength="50" id="floatingInput1"/>

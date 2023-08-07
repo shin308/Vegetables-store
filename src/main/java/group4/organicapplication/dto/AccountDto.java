@@ -21,23 +21,6 @@ public class AccountDto {
 	@NotEmpty(message="Số điện thoại không được để được trống")
 	private String phone;
 	private String roleName;
-//	private String cccd;
-	
-	public AccountDto(){
-		
-	}
-	
-//	public UserRegistrationDto(String firstName, String lastName, String email, String password, String address, String phone, String roleName) {
-//		super();
-//		this.firstName = firstName;
-//		this.lastName = lastName;
-//		this.email = email;
-//		this.password = password;
-//		this.address = address;
-//		this.phone = phone;
-////		this.cccd = cccd;
-//		this.roleName = roleName;
-//	}
 	
 	public String getFirstName() {
 		return firstName;

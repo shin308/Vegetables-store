@@ -36,7 +36,7 @@ public class SupplierController {
         } else {
             model.addAttribute("error", "Số điện thoại đã tồn tại. Vui lòng kiểm tra lại!");
         }
-        return "redirect:/suppliers";
+        return "redirect:/admin/suppliers";
     }
 
     //get supplier by id
@@ -56,7 +56,7 @@ public class SupplierController {
     @PutMapping("/{supplierID}")
     public String updateSupplier(@PathVariable int supplierID,@RequestBody Supplier supplier) {
         supplierService.updateSupplier(supplierID, supplier);
-        return "redirect:/suppliers";
+        return "redirect:/admin/suppliers";
 
     }
 

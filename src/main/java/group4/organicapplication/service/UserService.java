@@ -14,9 +14,9 @@ public interface UserService {
 
 	User findByConfirmationToken(String confirmationToken);
 
-	User saveUserForMember(User userDto);
+	User saveUserForMember(User user);
 
-	User saveUserForAdmin(AccountDto user);
+	User saveUserForAdmin(AccountDto dto);
 
 	User findById(long id);
 

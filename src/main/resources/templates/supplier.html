@@ -207,7 +207,7 @@
             <h6 style="background-color:black; color:white; padding:15px; border-radius:10px 10px 0 0;">
                 Thêm nhà cung cấp mới
             </h6>
-            <form action="/suppliers" method="post" style="padding: 20px;">
+            <form th:action="@{/admin/suppliers}" method="post" style="padding: 20px;">
                 <div class="form-floating mb-3">
                     <input type="text" class="form-control" id="supplierName" name="supplierName" required >
                     <label for="supplierName">Tên nhà cung cấp</label>
@@ -298,7 +298,7 @@
 
     try {
 
-        const response = await fetch(`/suppliers/${supplierID}`, {
+        const response = await fetch(`/admin/suppliers/${supplierID}`, {
             method: "GET"
         });
 
@@ -328,7 +328,7 @@ async function submitEditForm() {
 
 
     try {
-        const response = await fetch(`/suppliers/${supplierID}`, {
+        const response = await fetch(`/admin/suppliers/${supplierID}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
@@ -358,7 +358,7 @@ async function submitEditForm() {
 
 
   async function deleteSupplier(supplierID) {
-      const apiUrl = '/suppliers/' + supplierID;
+      const apiUrl = '/admin/suppliers/' + supplierID;
 
       const confirmed = confirm('Bạn có chắc chắn muốn xóa nhà cung cấp này?');
 

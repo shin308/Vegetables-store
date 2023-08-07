@@ -182,7 +182,7 @@ $(document).ready(function() {
 				'<td>' + stt + '</td>' +
                 '<td>' + chiTiet.product.productName + '</td>' +
                 '<td>' + chiTiet.totalAmount + '</td>'+
-                '<td>' + chiTiet.quantity+ '</td>';
+                '<td>' + chiTiet.quantity + '</td>';
 
 				if(check){
 					chiTietRow += '<td>' + chiTiet.soLuongNhanHang + '</td>';

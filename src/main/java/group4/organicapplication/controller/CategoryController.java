@@ -51,7 +51,7 @@ public class CategoryController {
     @PostMapping("/category/save")
     public String saveCategory(Category category){
         service.save(category);
-        return "redirect:/category";
+        return "redirect:/admin/category";
     }
 
     @GetMapping("/category/edit/{categoryID}")
@@ -62,7 +62,7 @@ public class CategoryController {
             model.addAttribute("pageTitle","Cập nhật thông tin danh mục ID: "+categoryID);
             return "category_form";
         } catch (CategoryNotFoundException e) {
-            return "redirect:/category";
+            return "redirect:/admin/category";
         }
     }
 
@@ -71,9 +71,9 @@ public class CategoryController {
         try {
             service.delete(categoryID);
         } catch (CategoryNotFoundException e) {
-            return "redirect:/category";
+            return "redirect:/admin/category";
         }
-        return "redirect:/category";
+        return "redirect:/admin/category";
     }
 
     @GetMapping("/category/search")
@@ -88,7 +88,7 @@ public class CategoryController {
         }
 
         model.addAttribute("category", category);
-        return "redirect:/category";
+        return "redirect:/admin/category";
     }
 
     @ModelAttribute("loggedInUser")

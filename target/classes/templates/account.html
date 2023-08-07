@@ -105,7 +105,7 @@
                         <a class="nav-link" th:href="@{/admin/list-account}">QUẢN LÝ TÀI KHOẢN</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/statistic}">THỐNG KÊ</a>
+                        <a class="nav-link" th:href="@{/admin/statistic}">THỐNG KÊ</a>
                     </li>
 
                 </ul>
@@ -201,10 +201,9 @@
 <div class="row col-md-9">
     <form class="taiKhoanForm" id="form">
         <div>
-            <div class="modal" id="taiKhoanModal" tabindex="-1"
-                 role="dialog" aria-labelledby="exampleModalLabel"
-                 aria-hidden="true" data-backdrop="static" data-keyboard="false">
-                <div class="modal-dialog" role="document">
+            <div class="modal fade" id="taiKhoanModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+                <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">Tạo mới tài
@@ -212,9 +211,9 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                         </div>
                         <div class="modal-body">
-                            <div class="form-group">
-                                <!-- <input type="hidden" class="form-control" name="id" /> -->
-                            </div>
+<!--                            <div class="form-group">-->
+<!--                                 <input type="hidden" class="form-control" name="id" /> -->
+<!--                            </div>-->
                             <div class="form-group">
                                 <label for="name">Email</label>
                                 <input type="email" class="form-control" name="email" required/>
@@ -236,7 +235,7 @@
                                                name="roleName"
                                                th:value="${role.roleName}"
                                                checked="checked"/>
-                                        <span th:text="${role.roleName}"></span>
+                                        [[${role.roleName}]]
                                     </label>
                                 </div>
                             </div>
@@ -271,82 +270,82 @@
     </form>
 </div>
 
-<script>
-    let thisPage = 1;
-    let limit = 5;
-    let list = document.querySelectorAll('.list .item');
+<!--<script>-->
+<!--    let thisPage = 1;-->
+<!--    let limit = 5;-->
+<!--    let list = document.querySelectorAll('.list .item');-->
 
-    function loadItem() {
-        let beginGet = limit * (thisPage - 1);
-        let endGet = limit * thisPage - 1;
-        list.forEach((item, key) => {
-            if (key >= beginGet && key <= endGet) {
-                item.style.display = 'table-row';
+<!--    function loadItem() {-->
+<!--        let beginGet = limit * (thisPage - 1);-->
+<!--        let endGet = limit * thisPage - 1;-->
+<!--        list.forEach((item, key) => {-->
+<!--            if (key >= beginGet && key <= endGet) {-->
+<!--                item.style.display = 'table-row';-->
 
-            } else {
-                item.style.display = 'none';
-            }
-        })
-        listPage();
+<!--            } else {-->
+<!--                item.style.display = 'none';-->
+<!--            }-->
+<!--        })-->
+<!--        listPage();-->
 
-    }
+<!--    }-->
 
-    loadItem();
+<!--    loadItem();-->
 
-    function listPage() {
-        let count = Math.ceil(list.length / limit);
-        document.querySelector('.listPage').innerHTML = '';
+<!--    function listPage() {-->
+<!--        let count = Math.ceil(list.length / limit);-->
+<!--        document.querySelector('.listPage').innerHTML = '';-->
 
-        if (thisPage != 1) {
-            let prev = document.createElement('li');
-            prev.innerHTML = '<i class="fa-solid fa-angles-left"></i>';
-            prev.setAttribute('onclick', "changePage(" + (thisPage - 1) + ")");
-            document.querySelector('.listPage').appendChild(prev);
-        }
+<!--        if (thisPage != 1) {-->
+<!--            let prev = document.createElement('li');-->
+<!--            prev.innerHTML = '<i class="fa-solid fa-angles-left"></i>';-->
+<!--            prev.setAttribute('onclick', "changePage(" + (thisPage - 1) + ")");-->
+<!--            document.querySelector('.listPage').appendChild(prev);-->
+<!--        }-->
 
-        for (i = 1; i <= count; i++) {
-            let newPage = document.createElement('li');
-            newPage.innerText = i;
-            if (i == thisPage) {
-                newPage.classList.add('active');
-            }
-            newPage.setAttribute('onclick', "changePage(" + i + ")");
-            document.querySelector('.listPage').appendChild(newPage);
-        }
-        if (thisPage != count) {
-            let next = document.createElement('li');
-            next.innerHTML = '<i class="fa-solid fa-angles-right"></i>';
-            next.setAttribute('onclick', "changePage(" + (thisPage + 1) + ")");
-            document.querySelector('.listPage').appendChild(next);
-        }
-    }
+<!--        for (i = 1; i <= count; i++) {-->
+<!--            let newPage = document.createElement('li');-->
+<!--            newPage.innerText = i;-->
+<!--            if (i == thisPage) {-->
+<!--                newPage.classList.add('active');-->
+<!--            }-->
+<!--            newPage.setAttribute('onclick', "changePage(" + i + ")");-->
+<!--            document.querySelector('.listPage').appendChild(newPage);-->
+<!--        }-->
+<!--        if (thisPage != count) {-->
+<!--            let next = document.createElement('li');-->
+<!--            next.innerHTML = '<i class="fa-solid fa-angles-right"></i>';-->
+<!--            next.setAttribute('onclick', "changePage(" + (thisPage + 1) + ")");-->
+<!--            document.querySelector('.listPage').appendChild(next);-->
+<!--        }-->
+<!--    }-->
 
-    function changePage(i) {
-        thisPage = i;
-        loadItem();
-    }
+<!--    function changePage(i) {-->
+<!--        thisPage = i;-->
+<!--        loadItem();-->
+<!--    }-->
 
-    <!--Open form Add New-->
-    function openAddNew() {
-        let x = document.getElementById("addNew");
-        x.style.display = "flex";
-    }
+<!--    &lt;!&ndash;Open form Add New&ndash;&gt;-->
+<!--    function openAddNew() {-->
+<!--        let x = document.getElementById("addNew");-->
+<!--        x.style.display = "flex";-->
+<!--    }-->
 
-    function closeAddNew() {
-        let x = document.getElementById("addNew");
-        x.style.display = "none";
-    }
+<!--    function closeAddNew() {-->
+<!--        let x = document.getElementById("addNew");-->
+<!--        x.style.display = "none";-->
+<!--    }-->
 
-    function openEdit() {
-        let x = document.getElementById("edit");
-        x.style.display = "flex";
-    }
+<!--    function openEdit() {-->
+<!--        let x = document.getElementById("edit");-->
+<!--        x.style.display = "flex";-->
+<!--    }-->
 
-    function closeEdit() {
-        let x = document.getElementById("edit");
-        x.style.display = "none";
-    }
-</script>
+<!--    function closeEdit() {-->
+<!--        let x = document.getElementById("edit");-->
+<!--        x.style.display = "none";-->
+<!--    }-->
+<!--</script>-->
 
 <script
         src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>

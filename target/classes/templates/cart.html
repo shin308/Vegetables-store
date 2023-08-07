@@ -16,19 +16,19 @@
         background-color: white;
         text-align: center;
         border-radius: 10px;
-        border: 1px solid #8FC742;
-        margin: 0 5% 15px 5%;
+        border: 1px solid #5CB85C;
+        margin: 0 4% 15px 4%;
         padding: 15px;
-        max-width: 160px;
-        min-width: 160px;
+        max-width: 170px;
+        min-width: 170px;
     }
 
     .addCart {
         width: 100%;
-        height: 30px;
+        height: 35px;
         border: 0;
         border-radius: 5px;
-        background-color: #8FC742;
+        background-color: #5CB85C;
         color: white;
     }
     .product-fly {
@@ -58,7 +58,7 @@
     }
 
     .listPage .active {
-        background-color: #8FC742;
+        background-color: #5CB85C;
         color: white;
     }
     .counter {
@@ -115,9 +115,10 @@
         <a class="navbar-brand" th:href="@{/}"><img id="imgBr"
                                                     src="https://img.freepik.com/premium-vector/organic-icon-100-percent-organic-product-label_349999-1003.jpg?w=2000"
                                                     alt="brand_icon" width="100px"></a>
-        <form class="d-flex" id="search" role="search">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success" type="submit">Search</button>
+        <form class="d-flex" id="search" role="search" th:action="@{/cart}" method="get">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="searchProductName">
+            <button style="background-color: #5CB85C; color:white;" class="btn btn-outline-success border-0"
+                    type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
         </form>
 
         <div class="collapse navbar-collapse ms-3" id="navbarTogglerDemo02">
@@ -131,7 +132,7 @@
                         DANH MỤC
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" th:href="@{/#productAll}">Tất Cả Sản Phẩm</a></li>
+                        <li><a class="dropdown-item" th:href="@{/#productAll}">Tất cả sản phẩm</a></li>
                         <th:block th:each="category:${categoryList}">
                             <li><a class="dropdown-item" th:href="@{'/' + ${category.categoryID}}">[[${category.categoryName}]]</a></li>
                         </th:block>
@@ -177,8 +178,8 @@
         <div class="row list">
             <th:block th:each="product:${products}">
                 <div class="col item">
-                    <a th:href="@{'/productInfo/' + ${product.productID}}">
-                        <img  th:src="@{'images/'+ ${product.img}}" width="100px" height="100px">
+                    <a th:href="@{'/productInfoUser/' + ${product.productID}}">
+                        <img  th:src="@{'images/'+ ${product.img}}" width="80px" height="80px">
                     </a>
                     <h6>[[${product.productName}]]</h6>
                     <div style="position: sticky; top:100%;">
@@ -257,7 +258,7 @@
 
 
 
-        <a href="/purchase"><button class="btn btn-success mt-5 w-100">Mua hàng</button></a>
+        <a href="/purchase"><button style="background-color: #5CB85C;" class="btn btn-success mt-5 w-100 border-0">Mua hàng</button></a>
     </div>
 </div>
 </body>

@@ -165,10 +165,10 @@ public class MainController {
 //        return "import";
 //    }
 
-    @GetMapping("/statistic")
-    public String showStatisticPage(){
-        return "statistic";
-    }
+//    @GetMapping("/statistic")
+//    public String showStatisticPage(){
+//        return "statistic";
+//    }
 
 //    @GetMapping("/account")
 //    public String showAccountPage(){

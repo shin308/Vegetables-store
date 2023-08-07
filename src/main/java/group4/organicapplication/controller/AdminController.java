@@ -77,6 +77,11 @@ public class AdminController {
         return "import";
     }
 
+    @GetMapping("/statistic")
+    public String showStatisticPage(){
+        return "statistic";
+    }
+
     @GetMapping("/profile")
     public String manageProfilrPage(Model model, HttpServletRequest request){
         model.addAttribute("user", getSessionUser(request));

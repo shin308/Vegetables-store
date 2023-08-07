@@ -32,9 +32,9 @@ public class DataSeeder implements ApplicationListener<ContextRefreshedEvent> {
             roleRepository.save(new Role("ROLE_MEMBER"));
         }
 
-//        if(roleRepository.findByRoleName("ROLE_ADMIN") == null){
-//            roleRepository.save(new Role("ROLE_ADMIN"));
-//        }
+        if (roleRepository.findByRoleName("ROLE_SHIPPER") == null) {
+            roleRepository.save(new Role("ROLE_SHIPPER"));
+        }
 
         // Admin account
         if (userRepository.findByEmail("admin@gmail.com") == null) {

@@ -55,6 +55,9 @@ public class SecurityConfiguration {
 								.requestMatchers("/register").permitAll()
 								.requestMatchers("/").permitAll()
 								.requestMatchers("/admin").hasRole("ADMIN")
+								.requestMatchers("/admin/**").hasRole("ADMIN")
+								.requestMatchers("/shipper").hasRole("SHIPPER")
+								.requestMatchers("/shipper/**").hasRole("SHIPPER")
 								.anyRequest().authenticated())
 				.formLogin((form) -> form
 							.loginPage("/login").permitAll()

@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@RequestMapping("/product")
+@RequestMapping("/admin/product")
 @SessionAttributes("loggedInUser")
 public class ProductController {
 

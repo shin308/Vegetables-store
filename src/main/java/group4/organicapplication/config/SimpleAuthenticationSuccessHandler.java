@@ -39,14 +39,13 @@ public class SimpleAuthenticationSuccessHandler implements AuthenticationSuccess
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
-//            } else if (authority.getAuthority().equals("ROLE_SHIPPER")) {
-//                try {
-//                    redirectStrategy.sendRedirect(request, response, "/shipper");
-//                } catch (Exception e) {
-//                    // TODO Auto-generated catch block
-//                    e.printStackTrace();
-//                }
-//            }
+            } else if (authority.getAuthority().equals("ROLE_SHIPPER")) {
+                try {
+                    redirectStrategy.sendRedirect(request, response, "/shipper");
+                } catch (Exception e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
               } else {
                 throw new IllegalStateException();
             }

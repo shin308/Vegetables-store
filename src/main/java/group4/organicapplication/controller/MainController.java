@@ -103,15 +103,10 @@ public class MainController {
         return "productInfo";
     }
 
-    @GetMapping("/sale")
-    public String showSalePage(){
-        return "sale";
-    }
-
-    @GetMapping("/order")
-    public String showOrderPage(){
-        return "order";
-    }
+//    @GetMapping("/order")
+//    public String showOrderPage(){
+//        return "order";
+//    }
 
     @GetMapping("/order_user")
     public String showOrderUserPage(Model model){
@@ -148,15 +143,15 @@ public class MainController {
     }
 
 
-    @GetMapping("/supplier")
-    public String showSupplierPage(){
-        return "supplier";
-    }
+//    @GetMapping("/supplier")
+//    public String showSupplierPage(){
+//        return "supplier";
+//    }
 
-    @GetMapping("/import")
-    public String showImportPage(){
-        return "import";
-    }
+//    @GetMapping("/import")
+//    public String showImportPage(){
+//        return "import";
+//    }
 
 //    @GetMapping("/account")
 //    public String showAccountPage(){

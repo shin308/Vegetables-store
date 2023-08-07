@@ -17,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.List;
 
 @Controller
+@RequestMapping("/admin")
 @SessionAttributes("loggedInUser")
 public class CategoryController {
     @Autowired private CategoryService service;

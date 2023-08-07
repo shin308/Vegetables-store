@@ -15,7 +15,7 @@ public class Orders {
     private Long id;
 
     @OneToMany(mappedBy = "order")
-    private List<OrderDetail> orderDetailList;
+    private List<PurchaseOrder> orderDetailList;
 
     @ManyToOne(optional = true)
     @JoinColumn(name = "user_id")
@@ -49,7 +49,7 @@ public class Orders {
         this.id = id;
     }
 
-    public List<OrderDetail> getOrderDetailList() {
+    public List<PurchaseOrder> getOrderDetailList() {
         return orderDetailList;
     }
 
@@ -69,7 +69,7 @@ public class Orders {
         return note;
     }
 
-    public void setOrderDetailList(List<OrderDetail> orderDetailList) {
+    public void setOrderDetailList(List<PurchaseOrder> orderDetailList) {
         this.orderDetailList = orderDetailList;
     }
 

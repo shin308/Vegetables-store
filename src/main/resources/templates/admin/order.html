@@ -85,22 +85,22 @@
                 <ul class="navbar-nav">
 
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/product}">SẢN PHẨM</a>
+                        <a class="nav-link" th:href="@{/admin/product}">SẢN PHẨM</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/sale}">BÁN HÀNG</a>
+                        <a class="nav-link" th:href="@{/admin/sale}">BÁN HÀNG</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" th:href="@{/order}">ĐƠN HÀNG</a>
+                        <a class="nav-link" th:href="@{/admin/orders}">ĐƠN HÀNG</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/category}">DANH MỤC</a>
+                        <a class="nav-link active" th:href="@{/admin/category}">DANH MỤC</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/supplier}">NHÀ CUNG CẤP</a>
+                        <a class="nav-link" th:href="@{/admin/suppliers}">NHÀ CUNG CẤP</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/import}">NHẬP HÀNG</a>
+                        <a class="nav-link" th:href="@{/admin/import}">NHẬP HÀNG</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/admin/list-account}">QUẢN LÝ TÀI KHOẢN</a>
@@ -141,15 +141,39 @@
                 </button>
             </form>
         </div>
+
+        <div class="form-floating w-50" id="dropdownRole">
+            <div class="form-group form-inline">
+                <label><strong>Tình trạng đơn hàng:</strong> </label>
+                <select class="form-select" id="status">
+                    <option value="Chờ duyệt">Chờ duyệt</option>
+                    <option value="Đang giao">Đang giao</option>
+                    <option value="Hoàn thành">Hoàn thành</option>
+                </select>
+            </div>
+        </div>
+
+
         <a th:href="@{/sale}"><button type="button" class="add shadow-sm">Thêm mới<i style="float: right; font-size: 40px;"
                                                                                       class="fa-solid fa-square-plus"></i></button></a>
     </div>
 
-    <div style="margin-top: 30px;">
-        <button class="btn btn-fill btn-lg tablink" id="status" value="Chờ duyệt">Chờ xác nhận</button>
-        <button class="btn btn-bd btn-lg tablink" value="Đang giao">Đang giao</button>
-        <button class="btn btn-bd btn-lg tablink" value="Hoàn thành">Đã hoàn tất</button>
-    </div>
+<!--    <div style="margin-top: 30px;">-->
+<!--        <button class="btn btn-fill btn-lg tablink" id="status" value="Chờ duyệt">Chờ xác nhận</button>-->
+<!--        <button class="btn btn-bd btn-lg tablink status" id="statusDelivery" value="Đang giao">Đang giao</button>-->
+<!--        <button class="btn btn-bd btn-lg tablink status" id="statusDone" value="Hoàn thành">Đã hoàn tất</button>-->
+<!--    </div>-->
+
+<!--    <div style="margin-top: 30px;">-->
+<!--        <h3>Trạng thái đơn hàng: </h3>-->
+<!--        <form>-->
+<!--            <select class="form-select form-select-lg" id="status">-->
+<!--                <option value="Chờ duyệt">Chờ duyệt</option>-->
+<!--                <option value="Đang giao">Đang giao</option>-->
+<!--                <option value="Hoàn thành">Hoàn thành</option>-->
+<!--            </select>-->
+<!--        </form>-->
+<!--    </div>-->
 
     <table id="confirming" class="table text-center mt-3 align-middle border donHangTable">
         <thead class="table-secondary" style="background-color: #8FC742; height:50px;">
@@ -235,13 +259,11 @@
 <!--        </tr>-->
 <!--        </tbody>-->
 <!--    </table>-->
-
     <ul class="listPage">
         <li class="active">1</li>
         <li>2</li>
         <li>3</li>
     </ul>
-
 </div>
 
 <footer class="position-absolute bottom-0 end-0  shadow-lg p-4"
@@ -254,6 +276,126 @@
         </div>
     </div>
 </footer>
+ <!-- Chi tiet don hang-->
+<div class="row col-md-6">
+    <form class="chiTietForm">
+        <div class="modal" id="chiTietModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document" style="width: 700px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <p class="h4 modal-title" th:text="${maDonHang}" id="maDonHang"></p>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card" style="padding-left: 40px; padding-right: 40px">
+                                    <div class="row pb-5 p-5">
+                                        <div class="col-md-6">
+                                            <h5 class="font-weight-bold mb-4">
+                                                <strong>Thông tin khách</strong>
+                                            </h5>
+                                            <p class="mb-1" th:text="${hoTenNguoiNhan}" id="hoTenNguoiNhan"></p>
+                                            <p class="mb-1" th:text="${diaChiNhan}" id="diaChiNhan"></p>
+                                            <p class="mb-1" th:text="${sdtNhanHang}" id="sdtNhanHang"></p>
+                                        </div>
+                                        <div class="col-md-6 text-right" style="text-align: left; padding-left: 100px">
+                                            <h5 class="font-weight-bold mb-4">
+                                                <strong>Thông tin đơn hàng</strong>
+                                            </h5>
+                                            <p class="mb-1" th:text="${trangThaiDonHang}" id="trangThaiDonHang"></p>
+                                            <p class="mb-1" th:text="${ngayDatHang}" id="ngayDatHang"></p>
+                                            <p class="mb-1" th:text="${ngayShipHang}" id="ngayShipHang"></p>
+                                            <p class="mb-1" th:text="${ngayNhanHang}" id="ngayNhanHang"></p>
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div class="row p-5">
+                                        <div class="col-md-12">
+                                            <table class="table chiTietTable" style="text-align: center;">
+                                                <thead>
+                                                <tr>
+                                                    <th class="border-0 text-uppercase small font-weight-bold">STT</th>
+                                                    <th class="border-0 text-uppercase small font-weight-bold">Tên sản phẩm</th>
+                                                    <th class="border-0 text-uppercase small font-weight-bold">Đơn giá</th>
+                                                    <th class="border-0 text-uppercase small font-weight-bold">Số lượng đặt</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <!-- You can add Thymeleaf iteration for the table rows here if you have a list of products -->
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex flex-row-reverse bg-dark text-white p-4">
+                                        <div class="py-3 px-5 text-right">
+                                            <div class="mb-2">
+                                                <p th:text="${tongTien}" id="tongTien"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div class="col-md-6">
+                                        <h5 class="font-weight-bold mb-4">
+                                            <strong>Thông tin khác</strong>
+                                        </h5>
+                                        <p class="mb-1" th:text="${shipper}" id="shipper"></p>
+                                        <p class="mb-1" th:text="${nguoiDat}" id="nguoiDat"></p>
+                                        <p th:text="${ghiChu}" id="ghiChu"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Đóng</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- Phan cong don hang -->
+<!--<div class="row col-md-6">-->
+<!--    <form class="phanCongForm" id="form">-->
+<!--        <div>-->
+<!--            <div class="modal" id="phanCongModal" tabindex="-1" role="dialog"-->
+<!--                 aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static"-->
+<!--                 data-keyboard="false">-->
+<!--                <div class="modal-dialog" role="document">-->
+<!--                    <div class="modal-content">-->
+<!--                        <div class="modal-header">-->
+<!--                            <h5 class="modal-title" id="exampleModalLabel">Phân công đơn hàng</h5>-->
+<!--                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">-->
+<!--                            </button>-->
+<!--                        </div>-->
+<!--                        <div class="modal-body">-->
+<!--                            <div class="form-group">-->
+<!--                                <input type="hidden" id="donHangId" th:value="${donHangId}">-->
+<!--                            </div>-->
+<!--                            <div class="form-group">-->
+<!--                                Chọn shipper cho đơn hàng:-->
+<!--                                <select class="form-control" name="shipper" th:field="*{shipper}">-->
+<!--                                    <option th:each="shipper : ${allShipper}" th:value="${shipper.email}">-->
+<!--                                        <span th:text="${shipper.firstName} + '(' + ${#lists.size(shipper.listOrders)} + ')'"></span>-->
+<!--                                    </option>-->
+<!--                                </select>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="modal-footer">-->
+<!--                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Hủy</button>-->
+<!--                            <input class="btn btn-primary" id="btnPhanCongSubmit" type="submit" value="Xác nhận" />-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </form>-->
+<!--</div>-->
+
+
 </body>
 <script>
     let thisPage = 1;

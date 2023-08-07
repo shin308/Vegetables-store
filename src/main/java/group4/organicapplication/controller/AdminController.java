@@ -1,12 +1,16 @@
 package group4.organicapplication.controller;
 
+import group4.organicapplication.exception.CategoryNotFoundException;
+import group4.organicapplication.model.Category;
 import group4.organicapplication.model.Role;
 import group4.organicapplication.model.User;
+import group4.organicapplication.service.CategoryService;
 import group4.organicapplication.service.OrderService;
 import group4.organicapplication.service.RoleService;
 import group4.organicapplication.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -30,6 +34,9 @@ public class AdminController {
     @Autowired
     private OrderService orderService;
 
+    @Autowired
+    private CategoryService categoryService;
+
     @ModelAttribute("loggedInUser")
     public User loggedInUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -47,7 +54,7 @@ public class AdminController {
         return "account";
     }
 
-    @GetMapping("/don-hang")
+    @GetMapping("/orders")
     public String manageOrder(Model model) {
         Set<Role> role = new HashSet<>();
         role.add(roleService.findByRoleName("ROLE_SHIPPER"));
@@ -58,6 +65,16 @@ public class AdminController {
         }
         model.addAttribute("allShipper", shippers);
         return "admin/order";
+    }
+
+    @GetMapping("/sale")
+    public String showSalePage(){
+        return "sale";
+    }
+
+    @GetMapping("/import")
+    public String showImportPage(){
+        return "import";
     }
 
     @GetMapping("/profile")

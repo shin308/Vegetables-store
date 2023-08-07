@@ -39,7 +39,7 @@ $(document).ready(function() {
 					    	 donHangRow += ' &nbsp;<button class="btn btn-primary btnPhanCong" data-bs-toggle="modal" data-bs-target="#phanCongModal">Phân công</button>'+
 					    	               ' &nbsp;<button class="btn btn-danger btnHuy">Hủy đơn</button>' ;
 					     } else if (orders.orderStatus == "Chờ duyệt"){
-					         donHangRow += ' &nbsp;<button class="btn btn-primary btnCapNhat" >Cập Nhật</button> </td>';
+					         donHangRow += ' &nbsp;<button class="btn btn-primary btnCapNhat" data-bs-toggle="modal" data-bs-target="#capNhatTrangThaiModal" >Cập Nhật</button> </td>';
 					     }
 
 					$('.donHangTable tbody.list').append(donHangRow);
@@ -260,23 +260,24 @@ $(document).ready(function() {
 		var donHangId = $(this).parent().prev().children().val();	
 		$("#idDonHangXacNhan").val(donHangId);
 		var href = "http://localhost:8080/api/orders/"+donHangId;
-		$.get(href, function(donHang) {
+		$.get(href, function(order) {
 			// thêm bảng:
 			var stt = 1;
-			$.each(donHang.danhSachChiTiet, function(i, chiTiet){
+			$.each(order.orderDetailList, function(i, chiTiet){
 				var chiTietRow = '<tr>' +
 				'<td>' + stt + '</td>' +
-                '<td>' + chiTiet.sanPham.tenSanPham + '</td>' +
-                '<td>' + chiTiet.donGia + '</td>'+
-                '<td>' + chiTiet.soLuongDat + '</td>'+
-                '<td>' + chiTiet.soLuongNhanHang + '</td>'+
+                '<td>' + chiTiet.product.productName + '</td>' +
+                '<td>' + chiTiet.totalAmount + '</td>'+
+                '<td>' + chiTiet.quantity + '</td>'+
+//                '<td>' + chiTiet.soLuongNhanHang + '</td>'+
                 '<td><input type="hidden" value="'+chiTiet.id+'" ></td>'
 				 $('.chiTietTable tbody').append(chiTietRow);
                 stt++;
 	    	  });		
 			var sum = 0;
-			$.each(donHang.danhSachChiTiet, function(i, chiTiet){
-				sum += chiTiet.donGia * chiTiet.soLuongNhanHang;
+			$.each(order.orderDetailList, function(i, chiTiet){
+				sum += chiTiet.donGia;
+				//* chiTiet.soLuongNhanHang;
 			});
 			$("#tongTienXacNhan").text("Tổng : "+ sum);
 		});

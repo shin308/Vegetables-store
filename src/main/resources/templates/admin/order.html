@@ -9,174 +9,171 @@
           integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/5a213e1813.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        li {
+            margin: 0 5px;
+        }
+
+        .listPage {
+            padding: 10px;
+            text-align: center;
+            list-style: none;
+        }
+
+        .listPage li {
+            background-color: white;
+            padding: 10px 20px;
+            display: inline-block;
+            margin: 0 10px;
+            cursor: pointer;
+        }
+
+        .listPage .active {
+            background-color: #5CB85C;
+            color: white;
+        }
+
+        #edit,
+        #addNew {
+            position: absolute;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            width: 100%;
+            height: 100%;
+            justify-content: center;
+            align-items: center;
+            display: none;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .active {
+            border: 0;
+            border-bottom: #5CB85C 2px solid;
+            color: black;
+        }
+
+        @media only screen and (max-width: 1015px) {
+            #search, #manage {
+                width: 100%;
+                margin-bottom: 10px;
+                text-align: center;
+            }
+            #dropdownRole {
+                width:60%;
+            }
+            #btnAdd{
+                width:40%;
+            }
+        }
+    </style>
 </head>
-<style>
-    ul>li {
-        margin: 0 10px;
-    }
-
-    #search {
-        width: 658px;
-        margin: auto 20px;
-    }
-
-    .add {
-        width: 160px;
-        height: 50px;
-        border: 1px solid #8FC742;
-        border-radius: 5px;
-        color: #8FC742;
-        margin: 15px auto 0 500px;
-        font-size: 20px;
-        background-color: white;
-    }
-
-    .listPage {
-        padding: 10px;
-        text-align: center;
-        list-style: none;
-        margin: 0 auto;
-        position: absolute;
-        left: 50%;
-        top: 86%;
-        transform: translate(-50%, -50%);
-    }
-
-    .listPage li {
-        background-color: white;
-        padding: 10px 20px;
-        display: inline-block;
-        margin: 0 10px;
-        cursor: pointer;
-    }
-
-    .listPage .active {
-        background-color: #8FC742;
-        color: white;
-    }
-    select{
-        height: 35px;
-        border-radius: 5px;
-    }
-    .btn-fill{
-        background-color: #8FC742;
-        color: white;
-    }
-    .btn-bd{
-        background-color: white;
-        color: #8FC742;
-        border: 1px solid #8FC742;
-    }
-    .active {
-        border: 0;
-        border-bottom: #8FC742 2px solid;
-    }
-
-</style>
 
 <body>
-<header>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid shadow-sm" style="height: 100px;">
-            <a class="navbar-brand" th:href="@{/product}"><img
-                    src="https://img.freepik.com/premium-vector/organic-icon-100-percent-organic-product-label_349999-1003.jpg?w=2000"
-                    alt="brand_icon" width="150"></a>
-            <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                <ul class="navbar-nav">
-
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/admin/product}">SẢN PHẨM</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/admin/sale}">BÁN HÀNG</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/admin/orders}">ĐƠN HÀNG</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" th:href="@{/admin/category}">DANH MỤC</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/admin/suppliers}">NHÀ CUNG CẤP</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/admin/import}">NHẬP HÀNG</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/admin/list-account}">QUẢN LÝ TÀI KHOẢN</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/admin/statistic}">THỐNG KÊ</a>
-                    </li>
-
-                </ul>
-            </div>
-            <div class="dropdown me-5">
-                <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Hi, <span th:text="${loggedInUser.lastName}"></span>
-                    <span th:text="${loggedInUser.firstName}"></span>
+    <header>
+        <nav class="navbar navbar-expand-lg bg-body-tertiary sticky-top shadow-sm">
+            <div class="container-fluid">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02"
+                        aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
                 </button>
-                <ul class="dropdown-menu dropdown-menu-end">
-                    <li><a class="dropdown-item" th:href="@{/admin/profile}">Thông tin cá nhân</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a></li>
-                </ul>
+                <a class="navbar-brand" th:href="@{/admin}"><img
+                        src="https://img.freepik.com/premium-vector/organic-icon-100-percent-organic-product-label_349999-1003.jpg?w=2000"
+                        alt="brand_icon" width="100"></a>
+                <div class="collapse navbar-collapse ms-3" id="navbarTogglerDemo02">
+                    <ul class="navbar-nav me-auto">
+
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/admin/product}">SẢN PHẨM</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/admin/sale}">BÁN HÀNG</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/admin/orders}">ĐƠN HÀNG</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" th:href="@{/admin/category}">DANH MỤC</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/admin/suppliers}">NHÀ CUNG CẤP</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/admin/import}">NHẬP HÀNG</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/admin/list-account}">QUẢN LÝ TÀI KHOẢN</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/admin/statistic}">THỐNG KÊ</a>
+                        </li>
+
+                    </ul>
+                </div>
+
+                <div class="dropdown me-4">
+                    <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                        Hi, <span th:text="${loggedInUser.lastName}"></span>
+                        <span th:text="${loggedInUser.firstName}"></span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" th:href="@{/admin/profile}">Thông tin cá nhân</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a></li>
+                    </ul>
+                </div>
+
             </div>
-        </div>
-    </nav>
-</header>
+        </nav>
+    </header>
 
-<div style="margin: 30px;">
-    <div style="display: flex; background-color:#8FC742; color:white;">
-        <div style="height:80px; padding:25px 100px;">
-            <h4>Quản lý đơn hàng</h4>
-        </div>
-        <div id="search">
-            <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
-                       style="height:50px;">
-                <button class="btn btn-success" type="submit"
-                        style=" margin-left:-100px; height:45px; width:87px; margin-top:3px; background-color:#8FC742; border:0;">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                </button>
-            </form>
-        </div>
-
-        <div class="form-floating w-50" id="dropdownRole">
-            <div class="form-group form-inline">
-                <label><strong>Tình trạng đơn hàng:</strong> </label>
-                <select class="form-select" id="status">
-                    <option value="Chờ duyệt">Chờ duyệt</option>
-                    <option value="Đang giao">Đang giao</option>
-                    <option value="Hoàn thành">Hoàn thành</option>
-                </select>
+    <div class="px-5">
+        <div class="row align-middle mt-4 mb-4">
+            <div class="col-2" id="manage">
+                <h4>Quản lý đơn hàng</h4>
             </div>
-        </div>
+<!--            <div id="search">-->
+<!--                <form class="d-flex" role="search">-->
+<!--                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"-->
+<!--                       style="height:50px;">-->
+<!--                    <button class="btn btn-success" type="submit"-->
+<!--                        style=" margin-left:-100px; height:45px; width:87px; margin-top:3px; background-color:#8FC742; border:0;">-->
+<!--                        <i class="fa-solid fa-magnifying-glass"></i>-->
+<!--                    </button>-->
+<!--                </form>-->
+<!--            </div>-->
+            <div class="col-5" id="search">
+                <form class="d-flex" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Tìm đơn hàng..." aria-label="Search">
+                    <button style="background-color: #5CB85C; color:white;" class="btn btn-outline-success border-0"
+                            type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                </form>
+            </div>
+
+            <div class="col-2" style="margin-left: 50px;">
+                <strong>Tình trạng đơn hàng: </strong>
+            </div>
+
+            <div class="col-2" id="dropdownRole" style="margin-right: 30px">
+                <div class="form-group form-inline">
+                    <select class="form-control form-select" id="status">
+                        <option value="Chờ duyệt">Chờ duyệt</option>
+                        <option value="Đang giao">Đang giao</option>
+                        <option value="Hoàn thành">Hoàn thành</option>
+                    </select>
+                </div>
+            </div>
 
 
-        <a th:href="@{/sale}"><button type="button" class="add shadow-sm">Thêm mới<i style="float: right; font-size: 40px;"
-                                                                                      class="fa-solid fa-square-plus"></i></button></a>
+<!--        <a th:href="@{/sale}"><button type="button" class="add shadow-sm">Thêm mới-->
+<!--            <i style="float: right; font-size: 40px;" class="fa-solid fa-square-plus"></i></button></a>-->
     </div>
 
-<!--    <div style="margin-top: 30px;">-->
-<!--        <button class="btn btn-fill btn-lg tablink" id="status" value="Chờ duyệt">Chờ xác nhận</button>-->
-<!--        <button class="btn btn-bd btn-lg tablink status" id="statusDelivery" value="Đang giao">Đang giao</button>-->
-<!--        <button class="btn btn-bd btn-lg tablink status" id="statusDone" value="Hoàn thành">Đã hoàn tất</button>-->
-<!--    </div>-->
-
-<!--    <div style="margin-top: 30px;">-->
-<!--        <h3>Trạng thái đơn hàng: </h3>-->
-<!--        <form>-->
-<!--            <select class="form-select form-select-lg" id="status">-->
-<!--                <option value="Chờ duyệt">Chờ duyệt</option>-->
-<!--                <option value="Đang giao">Đang giao</option>-->
-<!--                <option value="Hoàn thành">Hoàn thành</option>-->
-<!--            </select>-->
-<!--        </form>-->
-<!--    </div>-->
-
-    <table id="confirming" class="table text-center mt-3 align-middle border donHangTable">
-        <thead class="table-secondary" style="background-color: #8FC742; height:50px;">
+    <table id="confirming" class="table text-center align-middle border donHangTable">
+        <thead class="table-secondary">
         <tr>
             <th scope="col-1">Mã đơn hàng</th>
             <th scope="col-2">Tên khách hàng</th>
@@ -185,80 +182,12 @@
             <th scope="col-5">Ngày đặt</th>
             <th scope="col-5">Ngày giao</th>
             <th scope="col-5">Ngày nhận</th>
-<!--            <th scope="col-1">Số lượng</th>-->
             <th scope="col-2">Chức năng</th>
         </tr>
         </thead>
         <tbody class="list">
-<!--        <tr class="item">-->
-<!--            <td scope="row">1</td>-->
-<!--            <td>Nguyen Thi Linh</td>-->
-<!--            <td>22/04/2023</td>-->
-<!--            <td>5</td>-->
-<!--            <td>Chờ xác nhận</td>-->
-<!--            <td>100.000đ</td>-->
-<!--            <td>-->
-<!--                <button type="button" class="btn btn-success">Xác nhận</button>-->
-<!--                <button type="button" class="btn btn-primary">Xem</button>-->
-<!--                <button type="button" class="btn btn-danger">Xoá</button>-->
-<!--            </td>-->
-<!--        </tr>-->
         </tbody>
     </table>
-<!--    <table id="delivering" class="table text-center mt-3 align-middle border order" style="display: none;">-->
-<!--        <thead class="table-secondary" style="background-color: #8FC742; height:50px;">-->
-<!--        <tr>-->
-<!--            <th scope="col-1">Mã đơn hàng</th>-->
-<!--            <th scope="col-2">Tên khách hàng</th>-->
-<!--            <th scope="col-5">Ngày đặt</th>-->
-<!--            <th scope="col-1">Số lượng</th>-->
-<!--            <th scope="col-1">Tình trạng</th>-->
-<!--            <th scope="col-1">Tổng tiền</th>-->
-<!--            <th scope="col-2">Chức năng</th>-->
-<!--        </tr>-->
-<!--        </thead>-->
-<!--        <tbody class="list">-->
-<!--        <tr class="item">-->
-<!--            <td scope="row">1</td>-->
-<!--            <td>Nguyen Thi Linh</td>-->
-<!--            <td>22/04/2023</td>-->
-<!--            <td>5</td>-->
-<!--            <td>Đang giao</td>-->
-<!--            <td>100.000đ</td>-->
-<!--            <td>-->
-<!--                <button type="button" class="btn btn-primary">Xem</button>-->
-<!--                <button type="button" class="btn btn-danger">Xoá</button>-->
-<!--            </td>-->
-<!--        </tr>-->
-<!--        </tbody>-->
-<!--    </table>-->
-<!--    <table id="completed" class="table text-center mt-3 align-middle border order" style="display: none;">-->
-<!--        <thead class="table-secondary" style="background-color: #8FC742; height:50px;">-->
-<!--        <tr>-->
-<!--            <th scope="col-1">Mã đơn hàng</th>-->
-<!--            <th scope="col-2">Tên khách hàng</th>-->
-<!--            <th scope="col-5">Ngày đặt</th>-->
-<!--            <th scope="col-1">Số lượng</th>-->
-<!--            <th scope="col-1">Tình trạng</th>-->
-<!--            <th scope="col-1">Tổng tiền</th>-->
-<!--            <th scope="col-2">Chức năng</th>-->
-<!--        </tr>-->
-<!--        </thead>-->
-<!--        <tbody class="list">-->
-<!--        <tr class="item">-->
-<!--            <td scope="row">1</td>-->
-<!--            <td>Nguyen Thi Linh</td>-->
-<!--            <td>22/04/2023</td>-->
-<!--            <td>5</td>-->
-<!--            <td>Hoàn tất</td>-->
-<!--            <td>100.000đ</td>-->
-<!--            <td>-->
-<!--                <button type="button" class="btn btn-primary">Xem</button>-->
-<!--                <button type="button" class="btn btn-danger">Xoá</button>-->
-<!--            </td>-->
-<!--        </tr>-->
-<!--        </tbody>-->
-<!--    </table>-->
     <ul class="listPage">
         <li class="active">1</li>
         <li>2</li>
@@ -276,8 +205,9 @@
         </div>
     </div>
 </footer>
+
  <!-- Chi tiet don hang-->
-<div class="row col-md-6">
+<div class="row col-md-9">
     <form class="chiTietForm">
         <div class="modal" id="chiTietModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document" style="width: 700px;">
@@ -358,114 +288,212 @@
 </div>
 
 <!-- Phan cong don hang -->
-<!--<div class="row col-md-6">-->
-<!--    <form class="phanCongForm" id="form">-->
-<!--        <div>-->
-<!--            <div class="modal" id="phanCongModal" tabindex="-1" role="dialog"-->
-<!--                 aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static"-->
-<!--                 data-keyboard="false">-->
-<!--                <div class="modal-dialog" role="document">-->
-<!--                    <div class="modal-content">-->
-<!--                        <div class="modal-header">-->
-<!--                            <h5 class="modal-title" id="exampleModalLabel">Phân công đơn hàng</h5>-->
-<!--                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">-->
-<!--                            </button>-->
-<!--                        </div>-->
-<!--                        <div class="modal-body">-->
-<!--                            <div class="form-group">-->
-<!--                                <input type="hidden" id="donHangId" th:value="${donHangId}">-->
-<!--                            </div>-->
-<!--                            <div class="form-group">-->
-<!--                                Chọn shipper cho đơn hàng:-->
-<!--                                <select class="form-control" name="shipper" th:field="*{shipper}">-->
-<!--                                    <option th:each="shipper : ${allShipper}" th:value="${shipper.email}">-->
-<!--                                        <span th:text="${shipper.firstName} + '(' + ${#lists.size(shipper.listOrders)} + ')'"></span>-->
-<!--                                    </option>-->
-<!--                                </select>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div class="modal-footer">-->
-<!--                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Hủy</button>-->
-<!--                            <input class="btn btn-primary" id="btnPhanCongSubmit" type="submit" value="Xác nhận" />-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </form>-->
-<!--</div>-->
+<div class="row col-md-6">
+    <form class="phanCongForm" id="form">
+        <div>
+            <div class="modal" id="phanCongModal" tabindex="-1" role="dialog"
+                 aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static"
+                 data-keyboard="false">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Phân công đơn hàng</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <input type="hidden" id="donHangId" value="">
+                            </div>
+                            <div class="form-group">
+                                Chọn shipper cho đơn hàng:
+                                <select class="form-control" name="shipper">
+                                    <option th:each="shipper : ${allShipper}" th:value="${shipper.email}"
+                                            th:text="${shipper.lastName} + ${shipper.firstName}">
+<!--                                            th:text="${shipper.lastName} + '(' + ${#lists.size(shipper.listOrders)} + ')'">-->
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Hủy</button>
+                            <input class="btn btn-primary" id="btnPhanCongSubmit" type="submit" value="Xác nhận" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- Câp nhật traạng thái đơn hàng -->
+    <div class="row col-md-6">
+        <form class="capNhatTrangThaiForm" id="form">
+            <div>
+                <div class="modal fade" id="capNhatTrangThaiModal" tabindex="-1"
+                     role="dialog" aria-labelledby="exampleModalLabel"
+                     aria-hidden="true" data-backdrop="static" data-keyboard="false">
+                    <div class="modal-dialog " role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Xác nhận hoàn thành đơn</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close">
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <input type="hidden" th:id="idDonHangXacNhan"  value=""/>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <table class="table chiTietTable"
+                                               style="text-align: center;">
+                                            <thead>
+                                            <tr>
+                                                <th class="border-0 text-uppercase small font-weight-bold">STT</th>
+                                                <th class="border-0 text-uppercase small font-weight-bold">Tên
+                                                    sản phẩm</th>
+                                                <th class="border-0 text-uppercase small font-weight-bold">Đơn
+                                                    giá</th>
+                                                <th class="border-0 text-uppercase small font-weight-bold">Số
+                                                    lượng đặt</th>
+<!--                                                <th class="border-0 text-uppercase small font-weight-bold">Số-->
+<!--                                                    lượng nhận</th>-->
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                        <h4 th:id="tongTienXacNhan" style="float: right; font-weight: bold;padding-right: 50px"></h4>
+                                    </div>
+
+                                    <div>
+                                        <h5 th:id="ghiChu" style="font-weight: bold; padding-top: 10px">Ghi
+                                            chú</h5>
+                                        <textarea rows="3" cols="75" th:id="ghiChuAdmin"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger"
+                                        data-bs-dismiss="modal">Hủy</button>
+                                <input class="btn btn-primary" id="btnXacNhan" type="button"
+                                       value="Xác nhận" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
 
 
 </body>
-<script>
-    let thisPage = 1;
-    let limit = 5;
-    let list = document.querySelectorAll('.list .item');
+<!--<script>-->
+<!--    let thisPage = 1;-->
+<!--    let limit = 5;-->
+<!--    let list = document.querySelectorAll('.list .item');-->
 
-    function loadItem() {
-        let beginGet = limit * (thisPage - 1);
-        let endGet = limit * thisPage - 1;
-        list.forEach((item, key) => {
-            if (key >= beginGet && key <= endGet) {
-                item.style.display = 'table-row';
+<!--    function loadItem() {-->
+<!--        let beginGet = limit * (thisPage - 1);-->
+<!--        let endGet = limit * thisPage - 1;-->
+<!--        list.forEach((item, key) => {-->
+<!--            if (key >= beginGet && key <= endGet) {-->
+<!--                item.style.display = 'table-row';-->
 
-            }
-            else {
-                item.style.display = 'none';
-            }
-        })
-        listPage();
+<!--            }-->
+<!--            else {-->
+<!--                item.style.display = 'none';-->
+<!--            }-->
+<!--        })-->
+<!--        listPage();-->
 
-    }
-    loadItem();
-    function listPage() {
-        let count = Math.ceil(list.length / limit);
-        document.querySelector('.listPage').innerHTML = '';
+<!--    }-->
+<!--    loadItem();-->
+<!--    function listPage() {-->
+<!--        let count = Math.ceil(list.length / limit);-->
+<!--        document.querySelector('.listPage').innerHTML = '';-->
 
-        if (thisPage != 1) {
-            let prev = document.createElement('li');
-            prev.innerHTML = '<i class="fa-solid fa-angles-left"></i>';
-            prev.setAttribute('onclick', "changePage(" + (thisPage - 1) + ")");
-            document.querySelector('.listPage').appendChild(prev);
-        }
+<!--        if (thisPage != 1) {-->
+<!--            let prev = document.createElement('li');-->
+<!--            prev.innerHTML = '<i class="fa-solid fa-angles-left"></i>';-->
+<!--            prev.setAttribute('onclick', "changePage(" + (thisPage - 1) + ")");-->
+<!--            document.querySelector('.listPage').appendChild(prev);-->
+<!--        }-->
 
-        for (i = 1; i <= count; i++) {
-            let newPage = document.createElement('li');
-            newPage.innerText = i;
-            if (i == thisPage) {
-                newPage.classList.add('active');
-            }
-            newPage.setAttribute('onclick', "changePage(" + i + ")");
-            document.querySelector('.listPage').appendChild(newPage);
-        }
-        if (thisPage != count) {
-            let next = document.createElement('li');
-            next.innerHTML = '<i class="fa-solid fa-angles-right"></i>';
-            next.setAttribute('onclick', "changePage(" + (thisPage + 1) + ")");
-            document.querySelector('.listPage').appendChild(next);
-        }
-    }
-    function changePage(i) {
-        thisPage = i;
-        loadItem();
-    }
+<!--        for (i = 1; i <= count; i++) {-->
+<!--            let newPage = document.createElement('li');-->
+<!--            newPage.innerText = i;-->
+<!--            if (i == thisPage) {-->
+<!--                newPage.classList.add('active');-->
+<!--            }-->
+<!--            newPage.setAttribute('onclick', "changePage(" + i + ")");-->
+<!--            document.querySelector('.listPage').appendChild(newPage);-->
+<!--        }-->
+<!--        if (thisPage != count) {-->
+<!--            let next = document.createElement('li');-->
+<!--            next.innerHTML = '<i class="fa-solid fa-angles-right"></i>';-->
+<!--            next.setAttribute('onclick', "changePage(" + (thisPage + 1) + ")");-->
+<!--            document.querySelector('.listPage').appendChild(next);-->
+<!--        }-->
+<!--    }-->
+<!--    function changePage(i) {-->
+<!--        thisPage = i;-->
+<!--        loadItem();-->
+<!--    }-->
 
-    <!--Nav-Tab-->
-    function openOrder(evt, orderName) {
-        var i, x, tablinks;
-        x = document.getElementsByClassName("order");
-        for (i = 0; i < x.length; i++) {
-            x[i].style.display = "none";
-        }
-        tablinks = document.getElementsByClassName("tablink");
-        for (i = 0; i < x.length; i++) {
-            tablinks[i].className = tablinks[i].className.replace(" btn-fill", " btn-bd");
-        }
-        document.getElementById(orderName).style.display = "table";
-        evt.currentTarget.classList.remove("btn-bd");
-        evt.currentTarget.classList.add("btn-fill");
-    }
-</script>
+<!--    &lt;!&ndash;Nav-Tab&ndash;&gt;-->
+<!--    function openOrder(evt, orderName) {-->
+<!--        var i, x, tablinks;-->
+<!--        x = document.getElementsByClassName("order");-->
+<!--        for (i = 0; i < x.length; i++) {-->
+<!--            x[i].style.display = "none";-->
+<!--        }-->
+<!--        tablinks = document.getElementsByClassName("tablink");-->
+<!--        for (i = 0; i < x.length; i++) {-->
+<!--            tablinks[i].className = tablinks[i].className.replace(" btn-fill", " btn-bd");-->
+<!--        }-->
+<!--        document.getElementById(orderName).style.display = "table";-->
+<!--        evt.currentTarget.classList.remove("btn-bd");-->
+<!--        evt.currentTarget.classList.add("btn-fill");-->
+<!--    }-->
+<!--</script>-->
+
+<script type="text/javascript">
+		$(function() {
+
+			if (${param.trangThai != null}){
+				$("#trangThai").val('${param.trangThai}');
+ 				console.log('${param.trangThai}');
+			};
+
+			var from = $("#fromDate").datepicker({
+				dateFormat : "dd-mm-yy",
+				changeMonth : true
+			}).on("change", function() {
+				to.datepicker("option", "minDate", getDate(this));
+			}), to = $("#toDate").datepicker({
+				dateFormat : "dd-mm-yy",
+				changeMonth : true
+			}).on("change", function() {
+				from.datepicker("option", "maxDate", getDate(this));
+			});
+
+			function getDate(element) {
+				var date;
+				var dateFormat = "dd-mm-yy";
+				try {
+					date = $.datepicker.parseDate(dateFormat, element.value);
+				} catch (error) {
+					date = null;
+				}
+
+				return date;
+			}
+		});
+	</script>
+
 <script
         src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script

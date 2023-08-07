@@ -44,28 +44,9 @@ public class User {
 
 	@Transient
 	@JsonIgnore
-	private List<Orders> listOrder;
+	private List<Orders> listOrders;
 	
-	public User() {
-		
-	}
-	
-//	public User(String firstName, String lastName, String email, String password, String address,
-//				String phone, Set<Role> roles) {
-//		super();
-//		this.firstName = firstName;
-//		this.lastName = lastName;
-//		this.email = email;
-//		this.password = password;
-//		this.address =  address;
-//		this.phone = phone;
-////		this.cccd = cccd;
-//		this.roles = roles;
-//	}
-	public User(String email, String password){
-		this.email = email;
-		this.password = password;
-	}
+
 
 	public Long getId() {
 		return id;
@@ -114,12 +95,6 @@ public class User {
 		return getLastName() + " " + getFirstName();
 	}
 
-//	public String getCccd() {
-//		return cccd;
-//	}
-//	public void setCccd(String cccd) {
-//		this.cccd = cccd;
-//	}
 	public Set<Role> getRole() {
 		return role;
 	}
@@ -135,11 +110,19 @@ public class User {
 	}
 
 	public List<Orders> getListOrder() {
-		return listOrder;
+		return listOrders;
 	}
 
-	public void setListOrder(List<Orders> listOrder) {
-		this.listOrder = listOrder;
+	public void setListOrder(List<Orders> listOrders) {
+		this.listOrders = listOrders;
+	}
+
+	public User() {
+	}
+
+	public User(String email, String password){
+		this.email = email;
+		this.password = password;
 	}
 
 	@Override

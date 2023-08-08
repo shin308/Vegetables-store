@@ -104,6 +104,22 @@ public class MainController {
         model.addAttribute("productInfo",productInfo);
         List<Category> categoryList = categoryService.listAll();
         model.addAttribute(("categoryList"),categoryList);
+
+        List<CartItem> cartItems = cartService.getCartItems();
+        model.addAttribute("cartItems", cartItems);
+        model.addAttribute("totalQuantity", cartService.sumQuantity(cartItems));
+        model.addAttribute("totalPrice", cartService.sumTotalPrice(cartItems));
+
+        int quantityInCart = 0;
+        String productIDStr = String.valueOf(productID);
+        for (CartItem cartItem : cartItems) {
+
+            if (cartItem.getProductId().equals(productIDStr)) {
+                quantityInCart = cartItem.getQuantity();
+                break;
+            }
+        }
+        model.addAttribute("quantityInCart", quantityInCart);
         return "productInfo_user";
     }
 

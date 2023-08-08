@@ -33,7 +33,7 @@ public class ProductInfoController {
         List<Reviews> reviewAll = reviewService.getReviewProduct(productID);
         model.addAttribute("reviewAll", reviewAll);
         model.addAttribute("productInfo",productInfo);
-        model.addAttribute("addComment", new Reviews());
+        model.addAttribute("addNew", new Reviews());
         return "productInfo";
     }
 
@@ -66,4 +66,9 @@ public class ProductInfoController {
         return "redirect:/admin/productInfo/{productID}";
     }
 
+    @PostMapping("/productInfo/{productID}/newReply")
+    public String newReply(@ModelAttribute Reviews reviews, @PathVariable("productID") Integer productID, Reviews replyID){
+        Reviews reply = reviewService.addNewReply(reviews.getProduct(), reviews.getUser(), reviews.getContent(), reviews.getReplyID());
+        return "redirect:/admin/productInfo/{productID}";
+    }
 }

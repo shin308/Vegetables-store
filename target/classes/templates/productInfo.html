@@ -140,7 +140,7 @@
 <div th:object="${productInfo}">
     <div style="display: flex; background-color: #5CB85C; color:white;">
         <div class="py-3 px-5">
-            <h5>Quản lý sản phẩm / [[*{productName}]]</h5>
+            <h5><a th:href="@{/admin/product}">Quản lý sản phẩm</a> / [[*{productName}]]</h5>
         </div>
     </div>
 
@@ -249,27 +249,33 @@
                                             </div>
                                             <div class="col-7">
                                                 <div class="ms-3">
-                                                    <h6>[[${reply.userID.fullName}]]</h6>
-                                                    <p>[[${reply.postDate}]]</p>
+                                                    <h6 th:text="${reply.user.fullName}"></h6>
+                                                    <p th:text="${reply.postDate}"></p>
                                                 </div>
                                             </div>
                                             <div class="col-4 text-end">
-                                                <button class="border-0">Xoá</button>
-
+                                                <a th:href="'/admin/productInfo/' + ${review.product.productID} + '/delete/' + ${reply.reviewID}">
+                                                    <button class="border-0">Xoá</button>
+                                                </a>
                                             </div>
                                         </div>
                                         <div class="row mb-1">
-                                            <p>[[${reply.content}]]</p>
+                                            <p th:text="${reply.content}"></p>
                                         </div>
                                     </th:block>
                                 </div>
 
                                 <div class="border p-2">
                                     <div class="input-group">
-                                        <span class="input-group-text" id="basic-addon1">Phản hồi</span>
-                                        <input type="text" class="form-control" aria-describedby="button-addon2">
-                                        <button class="btn btn-primary" type="submit"><i
-                                                class="fa-solid fa-paper-plane"></i></button>
+                                        <form class="w-100 d-flex" method="post" th:action="'/admin/productInfo/'+ ${productInfo.productID} +'/newReply'" th:object="${addNew}">
+                                            <input type="text" th:value="${loggedInUser.id}"  name="user" style="display: none">
+                                            <input type="text" th:value="${review.reviewID}" name="replyID" style="display: none">
+                                            <input type="text" th:value="${productInfo.productID}"  name="product" style="display: none">
+                                            <input type="text" class="form-control" th:field="*{content}" id="reply" onchange="enterReply()" required>
+                                            <button class="btn btn-primary" type="submit" id="submitReply" disabled><i
+                                                    class="fa-solid fa-paper-plane"></i></button>
+                                        </form>
+
                                     </div>
                                 </div>
                             </div>
@@ -279,11 +285,11 @@
                 </div>
 
                 <div class="input-group mb-2">
-                    <form class="w-100 d-flex" method="post" th:action="'/admin/productInfo/'+ ${productInfo.productID} +'/newComment'" th:object="${addComment}">
-                        <input type="text" th:value="${loggedInUser.id}" id="user" name="user" style="display: none">
-                        <input type="text" th:value="${productInfo.productID}" id="product" name="product" style="display: none">
-                        <input type="text" class="form-control" aria-describedby="button-addon2" th:field="*{content}">
-                        <button class="btn btn-primary" type="submit" id="button-addon2"><i
+                    <form class="w-100 d-flex" method="post" th:action="'/admin/productInfo/'+ ${productInfo.productID} +'/newComment'" th:object="${addNew}">
+                        <input type="text" th:value="${loggedInUser.id}" name="user" style="display: none">
+                        <input type="text" th:value="${productInfo.productID}" name="product" style="display: none">
+                        <input type="text" class="form-control" th:field="*{content}" id="comment" onchange="enterComment()" required>
+                        <button class="btn btn-primary" type="submit" id="submitComment" disabled><i
                                 class="fa-solid fa-paper-plane"></i></button>
                     </form>
 
@@ -398,6 +404,26 @@
             for (let j = 0; j < 6; j++) {
                 review[j].style.display = "none";
             }
+        }
+    }
+
+    function enterComment(){
+        let comment = document.getElementById('comment').value;
+        if ((/^\s*$/.test(comment))) {
+            document.getElementById('submitComment').disabled = true;
+        }
+        else {
+            document.getElementById('submitComment').disabled = false;
+        }
+    }
+
+    function enterReply(){
+        let reply = document.getElementById('reply').value;
+        if ((/^\s*$/.test(reply))){
+            document.getElementById('submitReply').disabled = true;
+        }
+        else {
+            document.getElementById('submitReply').disabled = false;
         }
     }
 </script>

@@ -24,7 +24,12 @@ public class ReviewService {
     }
 
     public Reviews addNewComment(Product product, User userID, String content){
-        Reviews reviews = new Reviews(product, userID, content);
-        return reviewRepository.save(reviews);
+        Reviews comment = new Reviews(product, userID, content);
+        return reviewRepository.save(comment);
+    }
+
+    public Reviews addNewReply(Product product, User userID, String content, Reviews replyID){
+        Reviews reply = new Reviews(product, userID, content, replyID);
+        return reviewRepository.save(reply);
     }
 }

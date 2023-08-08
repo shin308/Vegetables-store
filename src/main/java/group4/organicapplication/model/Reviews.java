@@ -50,7 +50,14 @@ public class Reviews {
         this.product = product;
         this.user = userID;
         this.content = content;
-        Date date = new Date();
-        this.postDate = date;
+        this.postDate = new Date();
+    }
+
+    public Reviews(Product product, User userID, String content, Reviews replyID){
+        this.product = product;
+        this.user = userID;
+        this.content = content;
+        this.postDate = new Date();
+        this.replyID = replyID;
     }
 }

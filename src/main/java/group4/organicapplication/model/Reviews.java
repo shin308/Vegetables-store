@@ -27,8 +27,8 @@ public class Reviews {
     private Product product;
 
     @ManyToOne()
-    @JoinColumn(name = "id", nullable = false)
-    private User userID;
+    @JoinColumn(name = "userID", nullable = false)
+    private User user;
 
     @Column(name = "content", columnDefinition = "nvarchar(200) not null")
     private String content;
@@ -36,7 +36,7 @@ public class Reviews {
     @Column(name = "postDate", nullable = false)
     private Date postDate;
 
-    @Column(name = "star", nullable = false)
+    @Column(name = "star")
     private Integer star;
 
     @ManyToOne(cascade = {CascadeType.ALL})
@@ -45,4 +45,12 @@ public class Reviews {
 
     @OneToMany(mappedBy = "replyID")
     private List<Reviews> reviewsList;
+
+    public Reviews(Product product, User userID, String content) {
+        this.product = product;
+        this.user = userID;
+        this.content = content;
+        Date date = new Date();
+        this.postDate = date;
+    }
 }

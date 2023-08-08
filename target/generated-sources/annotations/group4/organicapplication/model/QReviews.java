@@ -36,7 +36,7 @@ public class QReviews extends EntityPathBase<Reviews> {
 
     public final NumberPath<Integer> star = createNumber("star", Integer.class);
 
-    public final QUser userID;
+    public final QUser user;
 
     public QReviews(String variable) {
         this(Reviews.class, forVariable(variable), INITS);
@@ -58,7 +58,7 @@ public class QReviews extends EntityPathBase<Reviews> {
         super(type, metadata, inits);
         this.product = inits.isInitialized("product") ? new QProduct(forProperty("product"), inits.get("product")) : null;
         this.replyID = inits.isInitialized("replyID") ? new QReviews(forProperty("replyID"), inits.get("replyID")) : null;
-        this.userID = inits.isInitialized("userID") ? new QUser(forProperty("userID")) : null;
+        this.user = inits.isInitialized("user") ? new QUser(forProperty("user")) : null;
     }
 
 }

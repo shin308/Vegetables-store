@@ -24,7 +24,6 @@ public class ProductInfoController {
     ProductService productService;
     @Autowired
     ReviewService reviewService;
-
     @Autowired
     private UserService userService;
 
@@ -34,6 +33,7 @@ public class ProductInfoController {
         List<Reviews> reviewAll = reviewService.getReviewProduct(productID);
         model.addAttribute("reviewAll", reviewAll);
         model.addAttribute("productInfo",productInfo);
+        model.addAttribute("addComment", new Reviews());
         return "productInfo";
     }
 
@@ -44,6 +44,26 @@ public class ProductInfoController {
     }
     public User getSessionUser(HttpServletRequest request) {
         return (User) request.getSession().getAttribute("loggedInUser");
+    }
+
+    @GetMapping("/productInfo/{productID}/delete/{reviewID}")
+    public String deleteReview(@PathVariable("reviewID") Long reviewID,@PathVariable("productID") Integer productID ){
+        reviewService.delete(reviewID);
+        return "redirect:/admin/productInfo/{productID}";
+    }
+
+    @GetMapping("/productInfo/{productID}/reply/{reviewID}")
+    public String showReply(@PathVariable("reviewID") Long reviewID,@PathVariable("productID") Integer productID, Model model){
+        showProductInfo(productID, model);
+        List<Reviews> replyAll = reviewService.getReplyOfReview(reviewID);
+        model.addAttribute("replyAll", replyAll);
+        return "productInfo";
+    }
+
+    @PostMapping("/productInfo/{productID}/newComment")
+    public String newComment(@ModelAttribute Reviews reviews, @PathVariable("productID") Integer productID){
+        Reviews comment = reviewService.addNewComment(reviews.getProduct(), reviews.getUser(), reviews.getContent());
+        return "redirect:/admin/productInfo/{productID}";
     }
 
 }

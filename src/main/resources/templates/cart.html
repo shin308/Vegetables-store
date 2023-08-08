@@ -31,6 +31,14 @@
         background-color: #5CB85C;
         color: white;
     }
+    @keyframes scaleUp {
+        0% {
+            transform: scale(1);
+        }
+        100% {
+            transform: scale(0.5);
+        }
+    }
     .product-fly {
         position: fixed;
         width: 60px;
@@ -41,6 +49,7 @@
         background-position: center;
         z-index: 9999;
         transition: top 1s ease-in-out, left 1s ease-in-out;
+        animation: scaleUp 1s ease-in-out;
     }
     .listPage {
         padding: 10px;
@@ -160,8 +169,8 @@
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" th:href="@{/account}">Thông tin cá nhân</a></li>
-                            <li><a class="dropdown-item" href="#">Sửa thông tin cá nhân</a></li>
-                            <li><a class="dropdown-item" href="#">Đổi mật khẩu</a></li>
+<!--                            <li><a class="dropdown-item" href="#">Sửa thông tin cá nhân</a></li>-->
+<!--                            <li><a class="dropdown-item" href="#">Đổi mật khẩu</a></li>-->
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a></li>
                         </ul>
@@ -179,11 +188,11 @@
             <th:block th:each="product:${products}">
                 <div class="col item">
                     <a th:href="@{'/productInfoUser/' + ${product.productID}}">
-                        <img  th:src="@{'images/'+ ${product.img}}" width="80px" height="80px">
+                        <img  th:src="@{'images/'+ ${product.img}}" width="100px" height="100px">
                     </a>
                     <h6>[[${product.productName}]]</h6>
                     <div style="position: sticky; top:100%;">
-                        <p><span>[[${product.price}]] VNĐ</span> / <span>[[${product.unit}]]</span></p>
+                        <p><span>[[${product.price}]] ₫</span> / <span>[[${product.unit}]]</span></p>
                         <button class="addCart" th:attr="onclick=|addToCart('${product.productID}', '${product.productName}', 1, ${product.price},'${product.img}', ${product.quantity})|">Thêm vào giỏ</button>
                     </div>
                 </div>
@@ -222,13 +231,13 @@
                 <td th:text="${item.productName}">Cà chua</td>
                 <td>
                     <div class="counter">
-                        <span class="down" th:attr="onclick=|decreaseCount('${item.productId}', this)|">-</span>
-                        <input type="number" th:value="${item.quantity}" th:attr="onchange=|updateCartItem('${item.productId}', this.value)|" th:max="${item.limitQuantity}" min="1" data-product-id="${item.productId}" >
+                        <span class="down" th:attr="onclick=|decreaseCount('${item.productId}', this, '${item.limitQuantity}')|">-</span>
+                        <input type="text" th:value="${item.quantity}" th:attr="id='quantityInput' + ${item.productId}, onchange=|updateCartItem('${item.productId}', this.value, ${item.limitQuantity} )|" data-product-id="${item.productId}">
                         <span class="up" th:attr="onclick=|increaseCount('${item.productId}', this, '${item.limitQuantity}')|" >+</span>
                     </div>
                 </td>
-                <td th:attr="id='unitPrice' + ${item.productId}" th:text="${item.unitPrice}">15.000</td>
-                <td th:attr="id='itemTotalPrice' + ${item.productId}" th:text="${item.totalPrice}">15.000</td>
+                <td th:attr="id='unitPrice' + ${item.productId}" th:text="${item.unitPrice}+ ' ₫'">15.000</td>
+                <td th:attr="id='itemTotalPrice' + ${item.productId}" th:text="${item.totalPrice}+ ' ₫'">15.000</td>
                 <td>
                     <i class="fa-regular fa-trash-can" th:attr="onclick=|removeFromCart('${item.productId}')|" style="cursor: pointer;"></i>
                 </td>
@@ -246,12 +255,12 @@
             </div>
             <div class="row1">
                 <h6>Tạm tính</h6>
-                <p th:text="${totalPrice}" th:attr="class='totalPrice'">45000</p>
+                <p th:text="${totalPrice}+ ' ₫'" th:attr="class='totalPrice'">45000</p>
             </div>
             <hr>
             <div class="row1">
                 <h6>Thành tiền</h6>
-                <p th:text="${totalPrice}" th:attr="class='totalPrice'">60000</p>
+                <p th:text="${totalPrice}+ ' ₫'" th:attr="class='totalPrice'">60000</p>
             </div>
         </div>
 
@@ -389,7 +398,7 @@
         }
     }
 
-    async function decreaseCount(productId, element) {
+    async function decreaseCount(productId, element, limitQuantity) {
         var inputElement = element.parentElement.querySelector('input');
         var quantity = parseInt(inputElement.value);
 
@@ -397,10 +406,10 @@
         var itemTotalPriceDOM = document.getElementById(`itemTotalPrice${productId}`);
 
 
-        if (quantity > 1) {
+        if (quantity > 0) {
             quantity--;
             inputElement.value = quantity;
-            await updateCartItem(productId, quantity);
+            await updateCartItem(productId, quantity, limitQuantity);
 
             //update ui
             let unitPrice = parseInt(unitPriceDOM.innerText);
@@ -426,7 +435,7 @@
         if (limitQuantity > quantity) {
             quantity++;
             inputElement.value = quantity;
-            await updateCartItem(productId, quantity);
+            await updateCartItem(productId, quantity, limitQuantity);
 
             //update ui
             let unitPrice = parseInt(unitPriceDOM.innerText);
@@ -441,38 +450,69 @@
         }
     }
 
-    async function updateCartItem(productId, quantity) {
+    async function updateCartItem(productId, quantity, limitQuantity) {
 
+        console.log(quantity, limitQuantity);
 
 
         let unitPriceDOM = document.getElementById(`unitPrice${productId}`);
         let itemTotalPriceDOM = document.getElementById(`itemTotalPrice${productId}`);
 
-        try {
-            const response = await fetch('cart/update', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ productId: productId, quantity: quantity }),
-            });
+        if(limitQuantity >= quantity && quantity >=1) {
+            try {
+                const response = await fetch('cart/update', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ productId: productId, quantity: quantity }),
+                });
 
-            if (response.ok) {
+                if (response.ok) {
 
-                //update ui
-                let unitPrice = parseInt(unitPriceDOM.innerText);
-                let itemTotalPrice = parseInt(quantity) * unitPrice
+                    //update ui
+                    let unitPrice = parseInt(unitPriceDOM.innerText);
+                    let itemTotalPrice = parseInt(quantity) * unitPrice
 
-                itemTotalPriceDOM.innerText = itemTotalPrice.toString();
+                    itemTotalPriceDOM.innerText = itemTotalPrice.toString();
 
-                updateTotal()
-            } else {
-                console.error('Có lỗi xảy ra khi cập nhật giỏ hàng.');
+                    updateTotal()
+                } else {
+                    console.error('Có lỗi xảy ra khi cập nhật giỏ hàng.');
+                }
+
+            } catch (error) {
+                console.error('Lỗi:', error.message);
             }
-
-        } catch (error) {
-            console.error('Lỗi:', error.message);
+        } else if( quantity <0){
+            Swal.fire({
+                icon: 'error',
+                title: 'Vui lòng nhập số lượng ít nhất một sản phẩm!',
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000
+            });
+            let inputElement = document.getElementById(`quantityInput${productId}`)
+            inputElement.value = 1
         }
+        else if( quantity == 0){
+            await removeFromCart(productId);
+        }
+        else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Không đủ sản phẩm!',
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000
+            });
+            let inputElement = document.getElementById(`quantityInput${productId}`)
+            console.log(inputElement)
+            inputElement.value = limitQuantity
+        }
+
     }
 
     function animateProductFly(imageProduct) {
@@ -499,6 +539,7 @@
 
             // cho ảnh bay đến giỏ
             setTimeout(() => {
+
                 productFly.style.left = `${cartRect.left}px`;
                 productFly.style.top = `${cartRect.top}px`;
             }, 100);

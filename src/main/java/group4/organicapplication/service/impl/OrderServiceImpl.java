@@ -57,6 +57,22 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public Page<Orders> findOrderByShipper(SearchOrderObject object, int page, int size, User shipper) throws ParseException {
+        BooleanBuilder builder = new BooleanBuilder();
+
+        String trangThaiDon = object.getStatusOrder();
+        SimpleDateFormat formatDate = new SimpleDateFormat("dd-MM-yyyy");
+
+        builder.and(QOrders.orders.shipper.eq(shipper));
+
+        if (!trangThaiDon.equals("")) {
+            builder.and(QOrders.orders.orderStatus.eq(trangThaiDon));
+        }
+
+        return orderRepository.findAll(builder, PageRequest.of(page - 1, size));
+    }
+
+    @Override
     public int countByOrderStatus(String orderStatus){
         return orderRepository.countByOrderStatus(orderStatus);
     }

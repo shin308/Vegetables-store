@@ -21,4 +21,6 @@ public interface OrderService {
     Orders findById(long id);
 
     Orders save(Orders order);
+
+    Page<Orders> findOrderByShipper(SearchOrderObject object, int page, int size, User shipper) throws ParseException;
 }

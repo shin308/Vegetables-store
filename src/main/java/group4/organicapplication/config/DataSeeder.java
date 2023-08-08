@@ -61,5 +61,16 @@ public class DataSeeder implements ApplicationListener<ContextRefreshedEvent> {
             member.setRole(roles);
             userRepository.save(member);
         }
+
+        // Shipper account
+        if (userRepository.findByEmail("shipper@gmail.com") == null) {
+            User member = new User();
+            member.setEmail("shipper@gmail.com");
+            member.setPassword(passwordEncoder.encode("123456"));
+            HashSet<Role> roles = new HashSet<>();
+            roles.add(roleRepository.findByRoleName("ROLE_SHIPPER"));
+            member.setRole(roles);
+            userRepository.save(member);
+        }
     }
 }

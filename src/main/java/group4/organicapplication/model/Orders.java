@@ -37,6 +37,10 @@ public class Orders {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+7")
     private Date receiveDay;
 
+    private String email;
+    private String address;
+    private String phone;
+
     private long totalPrice;
     private String orderStatus;
     private String note;
@@ -119,6 +123,30 @@ public class Orders {
 
     public void setShipper(User shipper) {
         this.shipper = shipper;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public Orders() {

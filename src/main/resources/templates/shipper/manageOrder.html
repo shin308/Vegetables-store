@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orders Shipper</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/5a213e1813.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        li {
+            margin: 0 5px;
+        }
+
+        .listPage {
+            padding: 10px;
+            text-align: center;
+            list-style: none;
+        }
+
+        .listPage li {
+            background-color: white;
+            padding: 10px 20px;
+            display: inline-block;
+            margin: 0 10px;
+            cursor: pointer;
+        }
+
+        .listPage .active {
+            background-color: #5CB85C;
+            color: white;
+        }
+
+        #edit,
+        #addNew {
+            position: absolute;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            width: 100%;
+            height: 100%;
+            justify-content: center;
+            align-items: center;
+            display: none;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .active {
+            border: 0;
+            border-bottom: #5CB85C 2px solid;
+            color: black;
+        }
+
+        @media only screen and (max-width: 1015px) {
+            #search, #manage {
+                width: 100%;
+                margin-bottom: 10px;
+                text-align: center;
+            }
+            #dropdownRole {
+                width:60%;
+            }
+            #btnAdd{
+                width:40%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<header>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary sticky-top shadow-sm">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02"
+                    aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <a class="navbar-brand" th:href="@{/admin}"><img
+                    src="https://img.freepik.com/premium-vector/organic-icon-100-percent-organic-product-label_349999-1003.jpg?w=2000"
+                    alt="brand_icon" width="100"></a>
+            <div class="collapse navbar-collapse ms-3" id="navbarTogglerDemo02">
+                <ul class="navbar-nav me-auto">
+
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/shipper/orders}">QUẢN LÝ ĐƠN HÀNG</a>
+                    </li>
+
+                </ul>
+            </div>
+
+            <div class="dropdown me-4">
+                <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                    Hi, <span th:text="${loggedInUser.lastName}"></span>
+                    <span th:text="${loggedInUser.firstName}"></span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" th:href="@{/admin/profile}">Thông tin cá nhân</a></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li><a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a></li>
+                </ul>
+            </div>
+
+        </div>
+    </nav>
+</header>
+
+<div class="px-5">
+    <div class="row align-middle mt-4 mb-4">
+        <div class="col-2" id="manage">
+            <h4>Quản lý đơn hàng</h4>
+        </div>
+        <!--            <div id="search">-->
+        <!--                <form class="d-flex" role="search">-->
+        <!--                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"-->
+        <!--                       style="height:50px;">-->
+        <!--                    <button class="btn btn-success" type="submit"-->
+        <!--                        style=" margin-left:-100px; height:45px; width:87px; margin-top:3px; background-color:#8FC742; border:0;">-->
+        <!--                        <i class="fa-solid fa-magnifying-glass"></i>-->
+        <!--                    </button>-->
+        <!--                </form>-->
+        <!--            </div>-->
+        <div class="col-5" id="search">
+            <form class="d-flex" role="search">
+                <input class="form-control me-2" type="search" placeholder="Tìm đơn hàng..." aria-label="Search">
+                <button style="background-color: #5CB85C; color:white;" class="btn btn-outline-success border-0"
+                        type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+            </form>
+        </div>
+
+        <div class="col-2" style="margin-left: 50px;">
+            <strong>Tình trạng đơn hàng: </strong>
+        </div>
+
+        <div class="col-2" id="dropdownRole" style="margin-right: 30px">
+            <div class="form-group form-inline">
+                <input id="idShipper" type="hidden" th:value="${loggedInUser.id}">
+                <select class="form-control form-select" id="status">
+                    <option value="Đang giao">Được phân công</option>
+                    <option value="Chờ duyệt">Chờ duyệt</option>
+                    <option value="Hoàn thành">Hoàn thành</option>
+                </select>
+            </div>
+        </div>
+
+
+        <!--        <a th:href="@{/sale}"><button type="button" class="add shadow-sm">Thêm mới-->
+        <!--            <i style="float: right; font-size: 40px;" class="fa-solid fa-square-plus"></i></button></a>-->
+    </div>
+
+    <table id="confirming" class="table text-center align-middle border donHangTable">
+        <thead class="table-secondary">
+        <tr>
+            <th scope="col-1">Mã đơn hàng</th>
+            <th scope="col-2">Người nhận</th>
+            <th scope="col-1">Trạng thái</th>
+            <th scope="col-1">Giá trị</th>
+            <th scope="col-5">Ngày đặt</th>
+            <th scope="col-5">Ngày giao</th>
+            <th scope="col-5">Ngày nhận</th>
+            <th scope="col-2"></th>
+        </tr>
+        </thead>
+        <tbody class="list">
+        </tbody>
+    </table>
+    <ul class="listPage">
+        <li class="active">1</li>
+        <li>2</li>
+        <li>3</li>
+    </ul>
+</div>
+
+<footer class="position-absolute bottom-0 end-0  shadow-lg p-4"
+        style="height: 70px; width:100%; background-color:black; color:white;">
+    <div class="footer-bottom clearfix">
+        <div class="container">
+            <div class="row">
+                &copy; 2023 - Vegetables Store by Group 4
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- CHI TIET DON HANG -->
+<div class="row col-md-9">
+    <form class="chiTietForm">
+        <div class="modal" id="chiTietModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document" style="width: 700px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <p class="h4 modal-title" th:text="${maDonHang}" id="maDonHang"></p>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card" style="padding-left: 40px; padding-right: 40px">
+                                    <div class="row pb-5 p-5">
+                                        <div class="col-md-6">
+                                            <h5 class="font-weight-bold mb-4">
+                                                <strong>Thông tin khách</strong>
+                                            </h5>
+                                            <p class="mb-1" th:text="${hoTenNguoiNhan}" id="hoTenNguoiNhan"></p>
+                                            <p class="mb-1" th:text="${diaChiNhan}" id="diaChiNhan"></p>
+                                            <p class="mb-1" th:text="${sdtNhanHang}" id="sdtNhanHang"></p>
+                                        </div>
+                                        <div class="col-md-6 text-right" style="text-align: left; padding-left: 100px">
+                                            <h5 class="font-weight-bold mb-4">
+                                                <strong>Thông tin đơn hàng</strong>
+                                            </h5>
+                                            <p class="mb-1" th:text="${trangThaiDonHang}" id="trangThaiDonHang"></p>
+                                            <p class="mb-1" th:text="${ngayDatHang}" id="ngayDatHang"></p>
+                                            <p class="mb-1" th:text="${ngayShipHang}" id="ngayShipHang"></p>
+                                            <p class="mb-1" th:text="${ngayNhanHang}" id="ngayNhanHang"></p>
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div class="row p-5">
+                                        <div class="col-md-12">
+                                            <table class="table chiTietTable" style="text-align: center;">
+                                                <thead>
+                                                <tr>
+                                                    <th class="border-0 text-uppercase small font-weight-bold">STT</th>
+                                                    <th class="border-0 text-uppercase small font-weight-bold">Tên sản phẩm</th>
+                                                    <th class="border-0 text-uppercase small font-weight-bold">Đơn giá</th>
+                                                    <th class="border-0 text-uppercase small font-weight-bold">Số lượng đặt</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <!-- You can add Thymeleaf iteration for the table rows here if you have a list of products -->
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex flex-row-reverse bg-dark text-white p-4">
+                                        <div class="py-3 px-5 text-right">
+                                            <div class="mb-2">
+                                                <p th:text="${tongTien}" id="tongTien"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div class="col-md-6">
+                                        <h5 class="font-weight-bold mb-4">
+                                            <strong>Thông tin khác</strong>
+                                        </h5>
+                                        <p class="mb-1" th:text="${shipper}" id="shipper"></p>
+                                        <p class="mb-1" th:text="${nguoiDat}" id="nguoiDat"></p>
+                                        <p th:text="${ghiChu}" id="ghiChu"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Đóng</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- Câp nhật traạng thái đơn hàng -->
+<div class="row col-md-6">
+    <form class="capNhatTrangThaiForm" id="form">
+        <div>
+            <div class="modal fade" id="capNhatTrangThaiModal" tabindex="-1"
+                 role="dialog" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true" data-backdrop="static" data-keyboard="false">
+                <div class="modal-dialog " role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Xác nhận hoàn thành đơn</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close">
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <input type="hidden" th:id="donHangId" value=""/>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <table class="table chiTietCapNhatTable"
+                                           style="text-align: center;">
+                                        <thead>
+                                        <tr>
+                                            <th class="border-0 text-uppercase small font-weight-bold">STT</th>
+                                            <th class="border-0 text-uppercase small font-weight-bold">Tên
+                                                sản phẩm</th>
+                                            <th class="border-0 text-uppercase small font-weight-bold">Đơn
+                                                giá</th>
+                                            <th class="border-0 text-uppercase small font-weight-bold">Số
+                                                lượng đặt</th>
+                                            <!--                                                <th class="border-0 text-uppercase small font-weight-bold">Số-->
+                                            <!--                                                    lượng nhận</th>-->
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                    <h4 th:id="tongTienCapNhat" style="float: right; font-weight: bold;padding-right: 50px"></h4>
+                                </div>
+
+                                <div>
+                                    <h5 th:id="ghiChu" style="font-weight: bold; padding-top: 10px">Ghi
+                                        chú</h5>
+                                    <textarea rows="3" cols="75" th:id="ghiChuShipper"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger"
+                                    data-bs-dismiss="modal">Hủy</button>
+                            <input class="btn btn-primary" id="btnXacNhan" type="button"
+                                   value="Xác nhận" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+</body>
+<!--<script>-->
+<!--    let thisPage = 1;-->
+<!--    let limit = 5;-->
+<!--    let list = document.querySelectorAll('.list .item');-->
+
+<!--    function loadItem() {-->
+<!--        let beginGet = limit * (thisPage - 1);-->
+<!--        let endGet = limit * thisPage - 1;-->
+<!--        list.forEach((item, key) => {-->
+<!--            if (key >= beginGet && key <= endGet) {-->
+<!--                item.style.display = 'table-row';-->
+
+<!--            }-->
+<!--            else {-->
+<!--                item.style.display = 'none';-->
+<!--            }-->
+<!--        })-->
+<!--        listPage();-->
+
+<!--    }-->
+<!--    loadItem();-->
+<!--    function listPage() {-->
+<!--        let count = Math.ceil(list.length / limit);-->
+<!--        document.querySelector('.listPage').innerHTML = '';-->
+
+<!--        if (thisPage != 1) {-->
+<!--            let prev = document.createElement('li');-->
+<!--            prev.innerHTML = '<i class="fa-solid fa-angles-left"></i>';-->
+<!--            prev.setAttribute('onclick', "changePage(" + (thisPage - 1) + ")");-->
+<!--            document.querySelector('.listPage').appendChild(prev);-->
+<!--        }-->
+
+<!--        for (i = 1; i <= count; i++) {-->
+<!--            let newPage = document.createElement('li');-->
+<!--            newPage.innerText = i;-->
+<!--            if (i == thisPage) {-->
+<!--                newPage.classList.add('active');-->
+<!--            }-->
+<!--            newPage.setAttribute('onclick', "changePage(" + i + ")");-->
+<!--            document.querySelector('.listPage').appendChild(newPage);-->
+<!--        }-->
+<!--        if (thisPage != count) {-->
+<!--            let next = document.createElement('li');-->
+<!--            next.innerHTML = '<i class="fa-solid fa-angles-right"></i>';-->
+<!--            next.setAttribute('onclick', "changePage(" + (thisPage + 1) + ")");-->
+<!--            document.querySelector('.listPage').appendChild(next);-->
+<!--        }-->
+<!--    }-->
+<!--    function changePage(i) {-->
+<!--        thisPage = i;-->
+<!--        loadItem();-->
+<!--    }-->
+
+<!--    &lt;!&ndash;Nav-Tab&ndash;&gt;-->
+<!--    function openOrder(evt, orderName) {-->
+<!--        var i, x, tablinks;-->
+<!--        x = document.getElementsByClassName("order");-->
+<!--        for (i = 0; i < x.length; i++) {-->
+<!--            x[i].style.display = "none";-->
+<!--        }-->
+<!--        tablinks = document.getElementsByClassName("tablink");-->
+<!--        for (i = 0; i < x.length; i++) {-->
+<!--            tablinks[i].className = tablinks[i].className.replace(" btn-fill", " btn-bd");-->
+<!--        }-->
+<!--        document.getElementById(orderName).style.display = "table";-->
+<!--        evt.currentTarget.classList.remove("btn-bd");-->
+<!--        evt.currentTarget.classList.add("btn-fill");-->
+<!--    }-->
+<!--</script>-->
+
+<script type="text/javascript">
+		$(function() {
+
+			if (${param.trangThai != null}){
+				$("#trangThai").val('${param.trangThai}');
+ 				console.log('${param.trangThai}');
+			};
+
+			var from = $("#fromDate").datepicker({
+				dateFormat : "dd-mm-yy",
+				changeMonth : true
+			}).on("change", function() {
+				to.datepicker("option", "minDate", getDate(this));
+			}), to = $("#toDate").datepicker({
+				dateFormat : "dd-mm-yy",
+				changeMonth : true
+			}).on("change", function() {
+				from.datepicker("option", "maxDate", getDate(this));
+			});
+
+			function getDate(element) {
+				var date;
+				var dateFormat = "dd-mm-yy";
+				try {
+					date = $.datepicker.parseDate(dateFormat, element.value);
+				} catch (error) {
+					date = null;
+				}
+
+				return date;
+			}
+		});
+	</script>
+
+<script
+        src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script
+        src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script
+        src="https://cdnjs.cloudflare.com/ajax/libs/jquery.serializeJSON/2.9.0/jquery.serializejson.js"></script>
+
+<script th:src="@{/js/shipper/donHangShipperAjax.js}"></script>
+</html>

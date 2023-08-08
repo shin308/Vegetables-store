@@ -51,6 +51,14 @@
 		color: white;
 	}
 
+	@keyframes scaleUp {
+		0% {
+			transform: scale(1);
+		}
+		100% {
+			transform: scale(0.5);
+		}
+	}
 	.product-fly {
 		position: fixed;
 		width: 60px;
@@ -61,6 +69,7 @@
 		background-position: center;
 		z-index: 9999;
 		transition: top 1s ease-in-out, left 1s ease-in-out;
+		animation: scaleUp 1s ease-in-out;
 	}
 
 	#search {
@@ -134,8 +143,8 @@
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" th:href="@{/manage-user-account}">Thông tin cá nhân</a></li>
-<!--                            <li><a class="dropdown-item" href="#">Sửa thông tin cá nhân</a></li>-->
-<!--                            <li><a class="dropdown-item" href="#">Đổi mật khẩu</a></li>-->
+							<!--                            <li><a class="dropdown-item" href="#">Sửa thông tin cá nhân</a></li>-->
+							<!--                            <li><a class="dropdown-item" href="#">Đổi mật khẩu</a></li>-->
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a></li>
                         </ul>

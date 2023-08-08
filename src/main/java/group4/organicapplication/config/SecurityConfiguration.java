@@ -54,7 +54,9 @@ public class SecurityConfiguration {
 				.authorizeHttpRequests((auth) -> auth
 								.requestMatchers("/register").permitAll()
 								.requestMatchers("/").permitAll()
+								.requestMatchers("cart","/cart/**").permitAll()
 								.requestMatchers("/images/**").permitAll()
+								.requestMatchers("/productInfoUser/**").permitAll()
 								.requestMatchers("/admin").hasRole("ADMIN")
 								.requestMatchers("/admin/**").hasRole("ADMIN")
 								.requestMatchers("/shipper").hasRole("SHIPPER")

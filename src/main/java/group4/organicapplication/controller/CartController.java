@@ -19,10 +19,14 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/")
-@SessionAttributes("loggedInUser")
+@SessionAttributes({"loggedInUser", "cartItems"})
 public class CartController {
     @Autowired
     private CartService cartService;
+    @ModelAttribute("cartItems")
+    public CartService cartService() {
+        return cartService;
+    }
     @Autowired
     private UserService userService;
 
@@ -32,7 +36,7 @@ public class CartController {
         List<CartItem> cartItems = cartService.getCartItems();
         for(CartItem cartItem1 : cartItems) {
             if(cartItem1.getProductId().equals(cartItem.getProductId())) {
-                if(cartItem1.getQuantity() >= cartItem1.getLimitQuantity()) {
+                if(cartItem1.getQuantity() + cartItem.getQuantity() > cartItem1.getLimitQuantity()) {
                     return ResponseEntity.status(400).body("Hết hàng");
                 }
             }

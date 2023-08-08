@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@SessionScope
+//@SessionScope
 public class CartService {
     private List<CartItem> cartItems = new ArrayList<>();
 
@@ -54,7 +54,7 @@ public class CartService {
         return sum;
     }
 
-    public double sumTotalPrice(List<CartItem> cartItems) {
+    public int sumTotalPrice(List<CartItem> cartItems) {
         int sum = 0;
         for (CartItem item : cartItems) {
             sum += item.getTotalPrice();

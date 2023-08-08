@@ -155,7 +155,9 @@ public class MainController {
     }
 
     @GetMapping("/purchase")
-    public String purchase(@ModelAttribute("cartItems") List<CartItem> cartItems, Model model) {
+    public String purchase(@ModelAttribute("cartItems") List<CartItem> cartItems,HttpServletRequest re, Model model) {
+        User currentUser = getSessionUser(re);
+        model.addAttribute("user", currentUser);
 
         int totalQuantity = cartService.sumQuantity(cartItems);
         double totalPrice = cartService.sumTotalPrice(cartItems);

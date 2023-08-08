@@ -92,9 +92,9 @@
 							<span th:text="${loggedInUser.firstName}"></span>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" th:href="@{/account}">Thông tin cá nhân</a></li>
-                            <li><a class="dropdown-item" href="#">Sửa thông tin cá nhân</a></li>
-                            <li><a class="dropdown-item" href="#">Đổi mật khẩu</a></li>
+                            <li><a class="dropdown-item" th:href="@{/manage-user-account}">Thông tin cá nhân</a></li>
+                            <!--                            <li><a class="dropdown-item" href="#">Sửa thông tin cá nhân</a></li>-->
+                            <!--                            <li><a class="dropdown-item" href="#">Đổi mật khẩu</a></li>-->
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a></li>
                         </ul>
@@ -113,33 +113,40 @@
         <div class="mb-3 row">
             <label for="staticName" class="col-3 col-form-label">Họ tên</label>
             <div class="col-9">
-                <input type="text" readonly class="form-control-plaintext" id="staticName" value="Nguyễn Văn A">
+                <input type="text" readonly class="form-control-plaintext" id="staticName"
+                       th:value="${user.lastName} +' '+ ${user.firstName}">
             </div>
         </div>
         <div class="mb-3 row">
             <label for="staticPhone" class="col-3 col-form-label">Số điện thoại</label>
             <div class="col-9">
-                <input type="tel" readonly class="form-control-plaintext" id="staticPhone" value="0934374838">
+                <input type="tel" readonly class="form-control-plaintext" id="staticPhone" th:field="${user.phone}">
             </div>
         </div>
         <div class="mb-3 row">
             <label for="staticEmail" class="col-3 col-form-label">Email</label>
             <div class="col-9">
-                <input type="text" readonly class="form-control-plaintext" id="staticEmail"
-                       value="email@example.com">
+                <input type="email" readonly class="form-control-plaintext" id="staticEmail"
+                       th:field="${user.email}">
             </div>
         </div>
         <div class="mb-3 row">
             <label for="staticAddress" class="col-3 col-form-label">Địa chỉ</label>
             <div class="col-9">
                 <input type="text" readonly class="form-control-plaintext" id="staticAddress"
-                       value="137 Hoàng Diệu, Hải Châu, TP Đà Nẵng">
+                       th:field="${user.address}">
             </div>
         </div>
         <div class="mb-3 row">
             <label for="inputNotes" class="col-3 col-form-label">Ghi chú</label>
             <div class="col-9">
                 <textarea class="form-control" id="inputNotes" rows="3"></textarea>
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <div class="col-9">
+                <a class="btn btn-primary" data-bs-toggle="modal"
+                   data-bs-target="#modalInformation">Thay đổi thông tin đặt hàng</a>
             </div>
         </div>
 
@@ -164,8 +171,8 @@
                 <td><img th:src="@{'/images/' + ${cartItem.imageProduct}}" alt="" width="50"></td>
                 <td th:text="${cartItem.productName}">Cà chua</td>
                 <td th:text="${cartItem.quantity}">1</td>
-                <td th:text="${cartItem.unitPrice}">15.000</td>
-                <td th:text="${cartItem.totalPrice}">15.000</td>
+                <td th:text="${cartItem.unitPrice} + ' ₫'">15.000</td>
+                <td th:text="${cartItem.totalPrice}+ ' ₫'">15.000</td>
             </tr>
 
             </tbody>
@@ -178,16 +185,16 @@
             </div>
             <div class="row1">
                 <h6>Tạm tính</h6>
-                <p th:text="${totalPrice}">45000</p>
+                <p th:text="${totalPrice} + '  ₫'">45000</p>
             </div>
             <div class="row1">
                 <h6>Phí vận chuyển</h6>
-                <p>15000</p>
+                <p>5000 ₫</p>
             </div>
             <hr>
             <div class="row1">
                 <h6>Tổng tiền</h6>
-                <p th:text="${totalPrice} + 15000">60000</p>
+                <p th:text="${totalPrice} + 5000 + ' ₫'">60000</p>
             </div>
         </div>
 
@@ -197,6 +204,68 @@
         </div>
     </div>
 </div>
+<!-- Modal cập nhật thông tin -->
+<div class="modal" id="modalInformation" tabindex="-1"
+     role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                    <b>Cập nhật thông tin tài khoản</b>
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close">
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="form-group ">
+                    <label style="line-height: 2">Tên khách hàng*:</label><br>
+                    <label id="firstNameWarning" style="color: red"></label> <input
+                        class="form-control" id="firstName" name="firstName" type="text"
+                        th:value="${user.firstName}">
+                </div>
+                <div class="form-group ">
+                    <label style="line-height: 2">Họ khách hàng*:</label><br> <label
+                        id="lastNameWarning" style="color: red"></label> <input
+                        class="form-control" id="lastName" name="lastName" type="text"
+                        th:value="${user.lastName}">
+                </div>
+                <div class="form-group ">
+                    <label style="line-height: 2">Số điệnt thoại*:</label><br> <label
+                        id="phoneWarning" style="color: red"></label> <input
+                        class="form-control" id="phone" name="phone" type="text"
+                        th:value="${user.phone}">
+                </div>
+                <div class="form-group">
+                    <label style="line-height: 2">Địa chỉ*:</label><br> <label
+                        id="addressWarning" style="color: red"></label>
+                    <textarea rows="3" cols="1" class="form-control" id="address"
+                              th:text="${user.address}"></textarea>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger"
+                        data-bs-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-primary"
+                        onclick="changeInformationUserPurchase()">Cập nhật</button>
+            </div>
+
+        </div>
+    </div>
+</div>
 </body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+
+<script th:src="@{/Frontend/js/jquery.min.js}"></script>
+<script th:src="@{/Frontend/js/responsiveslides.min.js}"></script>
+<script th:src="@{/js/client/accounting.js}"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+<script th:src="@{/js/client/changeInformationUserPurchase.js}"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 </html>

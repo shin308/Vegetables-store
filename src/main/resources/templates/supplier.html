@@ -91,10 +91,10 @@
                         <a class="nav-link" th:href="@{/admin/orders}">ĐƠN HÀNG</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" th:href="@{/admin/category}">DANH MỤC</a>
+                        <a class="nav-link" th:href="@{/admin/category}">DANH MỤC</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/admin/suppliers}">NHÀ CUNG CẤP</a>
+                        <a class="nav-link active" th:href="@{/admin/suppliers}">NHÀ CUNG CẤP</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/admin/import}">NHẬP HÀNG</a>
@@ -127,19 +127,19 @@
                 <h4 style="color: #5CB85C;">Quản lý nhà cung cấp</h4>
             </div>
             <div class="col-5" id="search">
-            <form class="d-flex" role="search" th:action="@{/suppliers}" method="get">
+            <form class="d-flex" role="search" th:action="@{/admin/suppliers}" method="get">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
                        name="searchName">
                 <button style="background-color: #5CB85C; color:white;" class="btn btn-outline-success border-0"
                         type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
             </form>
         </div>
-        <div class="col-4 text-end" id="btnAdd">
-            <button style="background-color: #5CB85C; color:white;vertical-align: middle;" type="button"
-                    class="btn btn-success shadow-sm border-0"
-                    onclick="openAddNew()">Thêm mới<i style="font-size: 23px; vertical-align: middle;"
-                                                       class="fa-solid fa-square-plus ms-3"></i></button>
-        </div>
+            <div class="col-4 text-end" id="btnAdd">
+                <button style="background-color: #5CB85C; color:white;vertical-align: middle;" type="button"
+                        class="btn btn-success shadow-sm border-0"
+                        onclick="openAddNew()">Thêm mới<i style="font-size: 23px; vertical-align: middle;"
+                                                               class="fa-solid fa-square-plus ms-3"></i></button>
+            </div>
     </div>
 
 

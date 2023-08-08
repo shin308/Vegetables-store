@@ -169,8 +169,8 @@
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" th:href="@{/account}">Thông tin cá nhân</a></li>
-                            <li><a class="dropdown-item" href="#">Sửa thông tin cá nhân</a></li>
-                            <li><a class="dropdown-item" href="#">Đổi mật khẩu</a></li>
+<!--                            <li><a class="dropdown-item" href="#">Sửa thông tin cá nhân</a></li>-->
+<!--                            <li><a class="dropdown-item" href="#">Đổi mật khẩu</a></li>-->
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a></li>
                         </ul>
@@ -187,12 +187,12 @@
         <div class="row list">
             <th:block th:each="product:${products}">
                 <div class="col item">
-                    <a th:href="@{'/productInfo/' + ${product.productID}}">
+                    <a th:href="@{'/productInfoUser/' + ${product.productID}}">
                         <img  th:src="@{'images/'+ ${product.img}}" width="100px" height="100px">
                     </a>
                     <h6>[[${product.productName}]]</h6>
                     <div style="position: sticky; top:100%;">
-                        <p><span>[[${product.price}]] VNĐ</span> / <span>[[${product.unit}]]</span></p>
+                        <p><span>[[${product.price}]] ₫</span> / <span>[[${product.unit}]]</span></p>
                         <button class="addCart" th:attr="onclick=|addToCart('${product.productID}', '${product.productName}', 1, ${product.price},'${product.img}', ${product.quantity})|">Thêm vào giỏ</button>
                     </div>
                 </div>
@@ -236,8 +236,8 @@
                         <span class="up" th:attr="onclick=|increaseCount('${item.productId}', this, '${item.limitQuantity}')|" >+</span>
                     </div>
                 </td>
-                <td th:attr="id='unitPrice' + ${item.productId}" th:text="${item.unitPrice}">15.000</td>
-                <td th:attr="id='itemTotalPrice' + ${item.productId}" th:text="${item.totalPrice}">15.000</td>
+                <td th:attr="id='unitPrice' + ${item.productId}" th:text="${item.unitPrice}+ ' ₫'">15.000</td>
+                <td th:attr="id='itemTotalPrice' + ${item.productId}" th:text="${item.totalPrice}+ ' ₫'">15.000</td>
                 <td>
                     <i class="fa-regular fa-trash-can" th:attr="onclick=|removeFromCart('${item.productId}')|" style="cursor: pointer;"></i>
                 </td>
@@ -255,12 +255,12 @@
             </div>
             <div class="row1">
                 <h6>Tạm tính</h6>
-                <p th:text="${totalPrice}" th:attr="class='totalPrice'">45000</p>
+                <p th:text="${totalPrice}+ ' ₫'" th:attr="class='totalPrice'">45000</p>
             </div>
             <hr>
             <div class="row1">
                 <h6>Thành tiền</h6>
-                <p th:text="${totalPrice}" th:attr="class='totalPrice'">60000</p>
+                <p th:text="${totalPrice}+ ' ₫'" th:attr="class='totalPrice'">60000</p>
             </div>
         </div>
 

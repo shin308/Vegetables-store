@@ -120,9 +120,9 @@
 							<span th:text="${loggedInUser.firstName}"></span>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" th:href="@{/account}">Thông tin cá nhân</a></li>
-                            <li><a class="dropdown-item" href="#">Sửa thông tin cá nhân</a></li>
-                            <li><a class="dropdown-item" href="#">Đổi mật khẩu</a></li>
+                            <li><a class="dropdown-item" th:href="@{/manage-user-account}">Thông tin cá nhân</a></li>
+                          <!--                            <li><a class="dropdown-item" href="#">Sửa thông tin cá nhân</a></li>-->
+                          <!--                            <li><a class="dropdown-item" href="#">Đổi mật khẩu</a></li>-->
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a></li>
                         </ul>
@@ -145,7 +145,7 @@
           </a>
           <h6>[[${product.productName}]]</h6>
           <div style="position: sticky; top:100%;">
-            <p><span>[[${product.price}]] VNĐ</span> / <span>[[${product.unit}]]</span></p>
+            <p><span>[[${product.price}]] ₫</span> / <span>[[${product.unit}]]</span></p>
             <button class="addCart">Thêm vào giỏ</button>
           </div>
         </div>

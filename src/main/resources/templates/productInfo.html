@@ -35,29 +35,6 @@
         color: white;
     }
 
-    .counter {
-        display: flex;
-        align-items: center;
-        justify-content: right;
-    }
-
-    .counter input {
-        width: 30px;
-        line-height: 20px;
-        font-size: 15px;
-        text-align: center;
-        appearance: none;
-        border: 0.5px solid gray;
-    }
-
-    .counter span {
-        display: block;
-        font-size: 25px;
-        padding: 0 10px;
-        cursor: pointer;
-        user-select: none;
-    }
-
     div.description {
         padding: 20px 30px;
         height: 250px;
@@ -149,17 +126,10 @@
             <div class="row">
                 <div class="col-6" id="info">
                     <img th:src="@{'/images/'+ ${productInfo.img}}" width="200" height="200">
-                    <div class="mt-2">
-                        <div style="display: flex;"><span>5 </span>
-                            <p style="color: #FFD700; width:108px;margin-bottom: 0;">
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i></p>
-                        </div>
-                        <div><span>20</span> Đánh giá</div>
-                        <div><span>30</span> Đã bán</div>
+                    <div class="mt-2 row gx-1">
+                        <div class="col-2"><span>5</span> <i style="color:#FFD700;" class="fa-solid fa-star"></i></div>
+                        <div class="col-4"><span>20</span> Đánh giá</div>
+                        <div class="col"><span>30</span> Đã bán</div>
                     </div>
                 </div>
                 <div class="col">
@@ -167,26 +137,15 @@
                     <div class="row">
                         <div class="col">
                             <h6 class="mb-4">Giá bán</h6>
-                            <h6 class="mb-4">Tình trạng</h6>
+                            <h6 class="mb-4">Khối lượng</h6>
                             <h6 class="mb-4">Số lượng</h6>
                         </div>
                         <div class="col" style="text-align: right;">
                             <p class="mb-4">[[*{price}]] ₫</p>
-                            <p class="mb-4">Còn hàng</p>
-                            <div class="mb-4">
-                                <div class="counter">
-                                    <span class="down" onClick='decreaseCount(event, this)'>-</span>
-                                    <input type="text" value="1">
-                                    <span class="up" onClick='increaseCount(event, this)'>+</span>
-                                </div>
-                            </div>
+                            <p class="mb-4">[[*{unit}]]</p>
+                            <p class="mb-4">[[*{quantity}]]</p>
                         </div>
                     </div>
-                    <button class="btn btn-success border-0" style="background-color: #5CB85C; float:right;">Thêm vào
-                        giỏ
-                    </button>
-
-
                 </div>
             </div>
             <div class="mt-3">
@@ -227,7 +186,6 @@
                         </div>
                     </div>
                     <div class="row">
-                        <p th:id="'review'+${review.reviewID}" th:text="${review.reviewID}"></p>
                         <p class="m-0" th:text="${review.content}"></p>
                     </div>
                     <div class="text-end">
@@ -314,7 +272,7 @@
 </body>
 <script>
     let thisPage = 1;
-    let limit = 3;
+    let limit = 5;
     let list = document.querySelectorAll('.list .item');
 
     function loadItem() {
@@ -367,24 +325,6 @@
         loadItem();
     }
 
-    <!--Quantity button-->
-    function increaseCount(a, b) {
-        var input = b.previousElementSibling;
-        var value = parseInt(input.value, 10);
-        value = isNaN(value) ? 0 : value;
-        value++;
-        input.value = value;
-    }
-
-    function decreaseCount(a, b) {
-        var input = b.nextElementSibling;
-        var value = parseInt(input.value, 10);
-        if (value > 1) {
-            value = isNaN(value) ? 0 : value;
-            value--;
-            input.value = value;
-        }
-    }
 
     /*Hiển thị sao đánh giá*/
     let item = document.getElementById("list").children
@@ -419,7 +359,6 @@
     }
 
     function enterReply(){
-
         let reply = document.getElementById('reply').value;
         if ((/^\s*$/.test(reply))){
             document.getElementById('submitReply').disabled = true;
@@ -428,8 +367,6 @@
             document.getElementById('submitReply').disabled = false;
         }
     }
-
-
 </script>
 
 </html>

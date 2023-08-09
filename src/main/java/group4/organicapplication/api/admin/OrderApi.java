@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/orders")
@@ -87,5 +88,19 @@ public class OrderApi {
         orderService.save(dh);
     }
 
+    @GetMapping("/statistic-revenue-day")
+    public List<Object> revenueDayChart() {
+        return orderService.getOrderByDayAndWeek();
+    }
+
+    @GetMapping("/statistic-revenue-week")
+    public List<Object> revenueWeekChart() {
+        return orderService.getOrderByWeekAndMonth();
+    }
+
+    @GetMapping("/statistic-revenue-month")
+    public List<Object> revenueMonthChart() {
+        return orderService.getOrderByMonthAndYear();
+    }
 
 }

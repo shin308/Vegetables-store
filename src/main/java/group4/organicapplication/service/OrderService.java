@@ -23,4 +23,12 @@ public interface OrderService {
     Orders save(Orders order);
 
     Page<Orders> findOrderByShipper(SearchOrderObject object, int page, int size, User shipper) throws ParseException;
+
+    List<Object> getOrderByDayAndWeek();
+
+    List<Object> getOrderByWeekAndMonth();
+
+    List<Object> getOrderByMonthAndYear();
+
+    List<Object> getOrderByYear();
 }

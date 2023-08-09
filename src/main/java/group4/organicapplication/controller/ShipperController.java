@@ -7,10 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/shipper")
@@ -28,6 +26,24 @@ public class ShipperController {
     @GetMapping(value = {"", "/orders"})
     public String shipperPage(){
         return "shipper/manageOrder";
+    }
+
+    @GetMapping("/profile")
+    public String profilePage(Model model, HttpServletRequest request) {
+        model.addAttribute("user", getSessionUser(request));
+        System.out.println(getSessionUser(request).toString());
+        return "shipper/manageProfileShipper";
+    }
+
+    @PostMapping("/profile/update")
+    public String updateUser(@ModelAttribute User nd, HttpServletRequest request) {
+        User currentUser = getSessionUser(request);
+        currentUser.setAddress(nd.getAddress());
+        currentUser.setLastName(nd.getLastName());
+        currentUser.setFirstName(nd.getFirstName());
+        currentUser.setPhone(nd.getPhone());
+        userService.updateUser(currentUser);
+        return "redirect:/shipper/profile";
     }
 
     public User getSessionUser(HttpServletRequest request){

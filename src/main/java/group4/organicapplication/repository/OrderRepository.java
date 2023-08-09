@@ -3,6 +3,7 @@ package group4.organicapplication.repository;
 import group4.organicapplication.model.Orders;
 import group4.organicapplication.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.stereotype.Repository;
 
@@ -13,4 +14,44 @@ public interface OrderRepository extends JpaRepository<Orders, Long>, QuerydslPr
     public List<Orders> findByOrderStatusAndShipper(String orderStatus, User shipper);
 
     public int countByOrderStatus(String orderStatus);
+
+    @Query(value = "SELECT DATE_FORMAT(order.receiveDay, '%d') as day, "
+            + " DATE_FORMAT(order.receiveDay, '%U') as week, SUM(purOrder.totalAmount) as total "
+            + " FROM Orders order, PurchaseOrder as purOrder"
+            + " WHERE order.id = purOrder.order.id and order.orderStatus = 'Hoàn thành'"
+            + " GROUP BY DATE_FORMAT(order.receiveDay, '%d%U')"
+            + " ORDER BY day asc"
+
+    )
+    public List<Object> getOrderByDayAndWeek();
+
+    @Query(value = "SELECT DATE_FORMAT(order.receiveDay, '%U') as week, "
+            + " DATE_FORMAT(order.receiveDay, '%M') as month, SUM(purOrder.totalAmount) as total "
+            + " FROM Orders order, PurchaseOrder as purOrder"
+            + " WHERE order.id = purOrder.order.id and order.orderStatus = 'Hoàn thành'"
+            + " GROUP BY DATE_FORMAT(order.receiveDay, '%U%M')"
+            + " ORDER BY month asc"
+
+    )
+    public List<Object> getOrderByWeekAndMonth();
+
+    @Query(value = "SELECT DATE_FORMAT(order.receiveDay, '%m') as month, "
+            + " DATE_FORMAT(order.receiveDay, '%Y') as year, SUM(purOrder.totalAmount) as total "
+            + " FROM Orders order, PurchaseOrder as purOrder"
+            + " WHERE order.id = purOrder.order.id and order.orderStatus = 'Hoàn thành'"
+            + " GROUP BY DATE_FORMAT(order.receiveDay, '%m%Y')"
+            + " ORDER BY year asc"
+
+    )
+    public List<Object> getOrderByMonthAndYear();
+
+    @Query(value = "SELECT DATE_FORMAT(order.receiveDay, '%Y') as year, "
+            + " SUM(purOrder.totalAmount) as total "
+            + " FROM Orders order, PurchaseOrder as purOrder"
+            + " WHERE order.id = purOrder.order.id and order.orderStatus = 'Hoàn thành'"
+            + " GROUP BY DATE_FORMAT(order.receiveDay, '%Y')"
+            + " ORDER BY year asc"
+
+    )
+    public List<Object> getOrderByYear();
 }

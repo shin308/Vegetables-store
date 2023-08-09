@@ -77,4 +77,24 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.countByOrderStatus(orderStatus);
     }
 
+
+    @Override
+    public List<Object> getOrderByDayAndWeek(){
+        return orderRepository.getOrderByDayAndWeek();
+    }
+
+    @Override
+    public List<Object> getOrderByWeekAndMonth(){
+        return orderRepository.getOrderByWeekAndMonth();
+    }
+
+    @Override
+    public List<Object> getOrderByMonthAndYear(){
+        return orderRepository.getOrderByMonthAndYear();
+    }
+
+    @Override
+    public List<Object> getOrderByYear(){
+        return orderRepository.getOrderByYear();
+    }
 }

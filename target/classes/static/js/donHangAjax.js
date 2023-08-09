@@ -144,7 +144,7 @@ $(document).ready(function() {
 		var href = "http://localhost:8080/api/orders/"+donHangId;
 		$.get(href, function(order) {
 			$('#maDonHang').text("Mã đơn hàng: "+ order.id);
-			$('#hoTenNguoiNhan').text("Người nhận: "+ order.user);
+			$('#hoTenNguoiNhan').text("Người nhận: "+ order.email);
 			$('#sdtNhanHang').text("SĐT: "+ order.phone);
 			$('#diaChiNhan').text("Địa chỉ: "+ order.address);
 			$('#trangThaiDonHang').text("Trạng thái đơn: "+ order.orderStatus);
@@ -171,9 +171,9 @@ $(document).ready(function() {
 			}
 			 
 			var check = order.orderStatus == "Hoàn thành" || order.orderStatus == "Chờ duyệt" ;
-			if(check){
-				$('.chiTietTable').find('thead tr').append('<th id="soLuongNhanTag" class="border-0 text-uppercase small font-weight-bold"> SỐ LƯỢNG NHẬN </th>');
-			}
+//			if(check){
+//				$('.chiTietTable').find('thead tr').append('<th id="soLuongNhanTag" class="border-0 text-uppercase small font-weight-bold"> SỐ LƯỢNG NHẬN </th>');
+//			}
 			// thêm bảng:
 			var sum = 0; // tổng giá trị đơn
 			var stt = 1;
@@ -185,10 +185,11 @@ $(document).ready(function() {
                 '<td>' + chiTiet.quantity + '</td>';
 
 				if(check){
-					chiTietRow += '<td>' + chiTiet.soLuongNhanHang + '</td>';
-					sum += chiTiet.donGia * chiTiet.soLuongNhanHang;
+					//chiTietRow += '<td>' + chiTiet.soLuongNhanHang + '</td>';
+					sum += chiTiet.totalAmount;
+					//* chiTiet.soLuongNhanHang;
 				} else {
-	                sum += chiTiet.donGia * chiTiet.soLuongDat;
+	                sum += chiTiet.totalAmount * chiTiet.quantity;
 				}
 	             
 				$('.chiTietTable tbody').append(chiTietRow);
@@ -276,7 +277,7 @@ $(document).ready(function() {
 	    	  });		
 			var sum = 0;
 			$.each(order.orderDetailList, function(i, chiTiet){
-				sum += chiTiet.donGia;
+				sum += chiTiet.totalAmount;
 				//* chiTiet.soLuongNhanHang;
 			});
 			$("#tongTienXacNhan").text("Tổng : "+ sum);

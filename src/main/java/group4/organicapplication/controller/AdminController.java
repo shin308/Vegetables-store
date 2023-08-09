@@ -78,7 +78,7 @@ public class AdminController {
     }
 
     @GetMapping("/statistic")
-    public String showStatisticPage(){
+    public String showStatisticPage(Model model){
         return "statistic";
     }
 

@@ -44,7 +44,7 @@ $(document).ready(function() {
         			success : function(data) {
         				for (var i = 0; i < data.length; i++) {
         					label.push(data[i][0] + "/" + data[i][1]);
-        					dataForDataSets.push(data[i][2]/1000000);
+        					dataForDataSets.push(data[i][2]);
         				}
         			},
         			error : function(e) {
@@ -59,8 +59,8 @@ $(document).ready(function() {
         			labels : label,
         			datasets : [ {
         				label : "Tổng giá trị (VNĐ)",
-        				backgroundColor : "#0000ff",
-        				borderColor : "#0000ff",
+        				backgroundColor : "#5CB85C",
+        				borderColor : "#5CB85C",
         				borderWidth : 2,
         				hoverBackgroundColor : "#0043ff",
         				hoverBorderColor : "#0043ff",
@@ -117,7 +117,7 @@ $(document).ready(function() {
             			success : function(data) {
             				for (var i = 0; i < data.length; i++) {
             					label.push(data[i][0] + "/" + data[i][1]);
-            					dataForDataSets.push(data[i][2]/1000000);
+            					dataForDataSets.push(data[i][2]);
             				}
             			},
             			error : function(e) {
@@ -132,8 +132,8 @@ $(document).ready(function() {
             			labels : label,
             			datasets : [ {
             				label : "Tổng giá trị (VNĐ)",
-            				backgroundColor : "#0000ff",
-            				borderColor : "#0000ff",
+            				backgroundColor : "#5CB85C",
+            				borderColor : "#5CB85C",
             				borderWidth : 2,
             				hoverBackgroundColor : "#0043ff",
             				hoverBorderColor : "#0043ff",
@@ -190,7 +190,7 @@ $(document).ready(function() {
                 			success : function(data) {
                 				for (var i = 0; i < data.length; i++) {
                 					label.push(data[i][0] + "/" + data[i][1]);
-                					dataForDataSets.push(data[i][2]/1000000);
+                					dataForDataSets.push(data[i][2]);
                 				}
                 			},
                 			error : function(e) {
@@ -205,8 +205,8 @@ $(document).ready(function() {
                 			labels : label,
                 			datasets : [ {
                 				label : "Tổng giá trị (VNĐ)",
-                				backgroundColor : "#0000ff",
-                				borderColor : "#0000ff",
+                				backgroundColor : "#5CB85C",
+                				borderColor : "#5CB85C",
                 				borderWidth : 2,
                 				hoverBackgroundColor : "#0043ff",
                 				hoverBorderColor : "#0043ff",

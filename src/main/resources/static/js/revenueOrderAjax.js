@@ -6,12 +6,21 @@ $(document).ready(function() {
         var target = event.target;
         if(target.id == 'revenueDay'){
             $('.revenue').remove();
+            $('#revenueWeek').removeClass("btn-fill").addClass("btn-bd");
+            $('#revenueMonth').removeClass("btn-fill").addClass("btn-bd");
+            $('#revenueDay').removeClass("btn-bd").addClass("btn-fill");
             ajaxGetDay();
         }else if(target.id == 'revenueWeek'){
             $('.revenue').remove();
+            $('#revenueDay').removeClass("btn-fill").addClass("btn-bd");
+            $('#revenueMonth').removeClass("btn-fill").addClass("btn-bd");
+            $('#revenueWeek').removeClass("btn-bd").addClass("btn-fill");
             ajaxGetWeek();
         }else{
             $('.revenue').remove();
+            $('#revenueWeek').removeClass("btn-fill").addClass("btn-bd");
+            $('#revenueDay').removeClass("btn-fill").addClass("btn-bd");
+            $('#revenueMonth').removeClass("btn-bd").addClass("btn-fill");
             ajaxGetMonth();
         }
     });

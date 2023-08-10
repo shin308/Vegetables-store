@@ -17,17 +17,22 @@ $(document).ready(function() {
 					var check = orders.orderStatus == "Hoàn thành" || orders.orderStatus == "Chờ duyệt";
 					if(check){
 						$.each(orders.orderDetailList, function(i, details){
-							sum += details.quantity;
+							sum += details.totalAmount;
 						});
 					} else {
 						$.each(orders.orderDetailList, function(i, details){
 							sum += details.quantity * details.totalAmount;
 						});
 					}
-
+                    var receiveUser;
+                    if(orders.user != null){
+                        receiveUser = orders.user.firstName;
+                    }else{
+                        receiveUser = orders.email;
+                    }
 					var donHangRow = '<tr class="item">' +
 					                  '<td>' + orders.id+ '</td>' +
-					                  '<td>' + orders.user + '</td>' +
+					                  '<td>' + receiveUser + '</td>' +
 					                  '<td>' + orders.orderStatus + '</td>' +
 					                  '<td>' + sum + '</td>' +
 					                  '<td>' + orders.orderDay + '</td>' +
@@ -39,7 +44,7 @@ $(document).ready(function() {
 					    	 donHangRow += ' &nbsp;<button class="btn btn-primary btnPhanCong" data-bs-toggle="modal" data-bs-target="#phanCongModal">Phân công</button>'+
 					    	               ' &nbsp;<button class="btn btn-danger btnHuy">Hủy đơn</button>' ;
 					     } else if (orders.orderStatus == "Chờ duyệt"){
-					         donHangRow += ' &nbsp;<button class="btn btn-primary btnCapNhat" data-bs-toggle="modal" data-bs-target="#capNhatTrangThaiModal" >Cập Nhật</button> </td>';
+					         donHangRow += ' &nbsp;<button class="btn btn-primary btnCapNhat" data-bs-toggle="modal" data-bs-target="#capNhatTrangThaiModal" >Duyệt đơn</button> </td>';
 					     }
 
 					$('.donHangTable tbody.list').append(donHangRow);
@@ -240,7 +245,7 @@ $(document).ready(function() {
 			 if(donHang.trangThaiDonHang == "Đang chờ giao" || donHang.trangThaiDonHang == "Đang giao"){
 		    	 donHangRow += ' &nbsp;<button class="btn btn-danger btnPhanCong">Phân công</button>';
 		     } else if (donHang.trangThaiDonHang == "Chờ duyệt"){
-		         donHangRow += ' &nbsp;<button class="btn btn-warning btnCapNhat" >Cập Nhật</button> </td>';
+		         donHangRow += ' &nbsp;<button class="btn btn-warning btnCapNhat" >Duyệt đơn</button> </td>';
 		     }
             
              $('.donHangTable tbody').append(donHangRow);

@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/account")
-public class    AccountApi {
+public class AccountApi {
     @Autowired
     private UserService userService;
 
@@ -45,6 +45,32 @@ public class    AccountApi {
         }
         if(!dto.getConfirmPassword().equals(dto.getPassword())) {
             result.rejectValue("confirmPassword", "error.confirmPassword","Nhắc lại mật khẩu không đúng");
+        }
+
+        if(dto.getPassword().length() == 0){
+            result.rejectValue("password", "error.password", "Không được để trống mật khẩu");
+        }
+        else if(dto.getPassword().length() < 8 || dto.getPassword().length() > 32){
+            result.rejectValue("password", "error.password", "Mật khẩu phải dài từ 8 đến 32 ký tự");
+        }
+
+        if(dto.getEmail().length() == 0){
+            result.rejectValue("email", "error.email", "Không được để trống email");
+        }
+        if(dto.getFirstName().length() == 0){
+            result.rejectValue("firstName", "error.firstName", "Không được để trống tên");
+        }
+        if(dto.getLastName().length() == 0){
+            result.rejectValue("lastName", "error.lastName", "Không được để trống họ");
+        }
+        if(dto.getAddress().length() == 0){
+            result.rejectValue("address", "error.address", "Không được để trống địa chỉ");
+        }
+        if(dto.getPhone().length() == 0){
+            result.rejectValue("phone", "error.phone", "Không được để trống số điện thoại");
+        }
+        else if(dto.getPhone().length() < 9 || dto.getPhone().length() > 10){
+            result.rejectValue("phone", "error.phone", "Hãy nhập số điện thoại từ 9-10 số");
         }
 
         if (result.hasErrors()) {

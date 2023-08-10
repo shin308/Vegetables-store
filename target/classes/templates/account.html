@@ -11,6 +11,10 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 
     <style>
+         span.error{
+            color: red;
+            margin-left: 5px;
+        }
         li {
             margin: 0 5px;
         }
@@ -215,20 +219,20 @@
 <!--                                 <input type="hidden" class="form-control" name="id" /> -->
 <!--                            </div>-->
                             <div class="form-group">
-                                <label for="name">Email</label>
-                                <input type="email" class="form-control" name="email" required/>
+                                <label for="name">Email: <span style="color: red;">(*)</span></label>
+                                <input type="email" class="form-control" name="email" placeholder="Nhập email" required/>
                             </div>
                             <div class="form-group">
-                                <label for="name">Mật khẩu:(8-32 ký tự)</label>
-                                <input type="password" class="form-control" name="password" required/>
+                                <label for="name">Mật khẩu:(8-32 ký tự) <span style="color: red;">(*)</span></label>
+                                <input type="password" class="form-control" name="password" placeholder="Nhập mật khẩu" required/>
                             </div>
                             <div class="form-group">
-                                <label for="name">Nhắc lại mật khẩu:</label>
-                                <input type="password" class="form-control" name="confirmPassword" required/>
+                                <label for="name">Nhắc lại mật khẩu: <span style="color: red;">(*)</span></label>
+                                <input type="password" class="form-control" name="confirmPassword" placeholder="Nhập lại mật khẩu" required/>
                             </div>
 
                             <div class="form-group">
-                                <label for="name">Chọn vai trò:</label>
+                                <label for="name">Chọn vai trò: </label>
                                 <div th:each="role : ${listRole}">
                                     <label class="radio-inline">
                                         <input type="radio"
@@ -241,20 +245,20 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="name">Họ :</label>
-                                <input type="text" class="form-control" name="lastName" required/>
+                                <label for="name">Họ: <span style="color: red;">(*)</span></label>
+                                <input type="text" class="form-control" name="lastName" placeholder="Nhập Họ và tên lót" required/>
                             </div>
                             <div class="form-group">
-                                <label for="name">Tên :</label>
-                                <input type="text" class="form-control" name="firstName" required/>
+                                <label for="name">Tên: <span style="color: red;">(*)</span></label>
+                                <input type="text" class="form-control" name="firstName" placeholder="Nhập tên" required/>
                             </div>
                             <div class="form-group">
-                                <label for="name">Số điện thoại:</label>
-                                <input type="text" class="form-control" name="phone" required/>
+                                <label for="name">Số điện thoại: <span style="color: red;">(*)</span></label>
+                                <input type="text" class="form-control" name="phone" placeholder="Nhập SĐT" required/>
                             </div>
                             <div class="form-group">
-                                <label for="name">Địa chỉ:</label>
-                                <input type="text" class="form-control" name="address" required/>
+                                <label for="name">Địa chỉ: <span style="color: red;">(*)</span></label>
+                                <input type="text" class="form-control" name="address" placeholder="Nhập địa chỉ" required/>
                             </div>
 
                         </div>

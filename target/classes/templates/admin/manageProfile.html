@@ -16,6 +16,10 @@
     <link rel="stylesheet" th:href="@{/css/index.css}">
 
     <style>
+        span.error{
+            color: red;
+            margin-left: 5px;
+        }
     ul>li {
     margin: 0 10px;
   }
@@ -205,7 +209,7 @@
     </div>
 
     <div class="col-md-6">
-        <form class="formCapNhat" th:action="@{profile/update}" method="post" th:object="${user}">
+        <form class="formCapNhat" th:action="@{/admin/profile/update}" method="post" th:object="${user}">
             <div>
                 <div class="modal fade" id="capNhatModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
                     <div class="modal-dialog" role="document">
@@ -220,20 +224,20 @@
                                     <input type="hidden" class="form-control" th:field="*{id}" name="id" />
                                 </div>
                                 <div class="form-group">
-                                    <label for="name">Tên</label>
-                                    <input type="text" class="form-control" th:field="*{firstName}" name="firstName" required="required" />
+                                    <label for="name">Tên <span style="color: red;">(*)</span></label>
+                                    <input type="text" class="form-control" th:field="*{firstName}" name="firstName" required />
                                 </div>
                                 <div class="form-group">
-                                    <label for="name">Họ</label>
-                                    <input type="text" class="form-control" th:field="*{lastName}" name="lastName" required="required" />
+                                    <label for="name">Họ <span style="color: red;">(*)</span></label>
+                                    <input type="text" class="form-control" th:field="*{lastName}" name="lastName" required />
                                 </div>
                                 <div class="form-group">
-                                    <label for="name">Số điện thoại</label>
-                                    <input type="text" class="form-control" th:field="*{phone}" name="phone" required="required" />
+                                    <label for="name">Số điện thoại <span style="color: red;">(*)</span></label>
+                                    <input type="text" class="form-control" th:field="*{phone}" name="phone" required />
                                 </div>
                                 <div class="form-group">
-                                    <label for="name">Địa chỉ</label>
-                                    <input type="text" class="form-control" th:field="*{address}" name="address" required="required" />
+                                    <label for="name">Địa chỉ <span style="color: red;">(*)</span></label>
+                                    <input type="text" class="form-control" th:field="*{address}" name="address" required />
                                 </div>
                             </div>
 
@@ -264,16 +268,16 @@
                                 <!--                            </div>-->
 
                                 <div class="form-group">
-                                    <label for="name">Mật khẩu cũ</label>
-                                    <input type="password" class="form-control" name="oldPassword" required="required" />
+                                    <label for="name">Mật khẩu cũ <span style="color: red;">(*)</span></label>
+                                    <input type="password" class="form-control" name="oldPassword" required/>
                                 </div>
                                 <div class="form-group">
-                                    <label for="name">Mật khẩu mới</label>
-                                    <input type="password" class="form-control" name="newPassword" required="required" />
+                                    <label for="name">Mật khẩu mới <span style="color: red;">(*)</span></label>
+                                    <input type="password" class="form-control" name="newPassword" required/>
                                 </div>
                                 <div class="form-group">
-                                    <label for="name">Nhắc lại mật khẩu mới</label>
-                                    <input type="password" class="form-control" name="confirmNewPassword" required="required" />
+                                    <label for="name">Nhắc lại mật khẩu mới <span style="color: red;">(*)</span></label>
+                                    <input type="password" class="form-control" name="confirmNewPassword" required/>
                                 </div>
                             </div>
 

@@ -17,7 +17,7 @@ $(document).ready(function() {
 					var check = orders.orderStatus == "Hoàn thành" || orders.orderStatus == "Chờ duyệt";
 					if(check){
 						$.each(orders.orderDetailList, function(i, details){
-							sum += details.quantity;
+							sum += details.totalAmount;
 						});
 					} else {
 						$.each(orders.orderDetailList, function(i, details){
@@ -27,7 +27,7 @@ $(document).ready(function() {
 
 					var donHangRow = '<tr class="item">' +
 					                  '<td>' + orders.id+ '</td>' +
-					                  '<td>' + orders.user + '</td>' +
+					                  '<td>' + orders.email + '</td>' +
 					                  '<td>' + orders.orderStatus + '</td>' +
 					                  '<td>' + sum + '</td>' +
 					                  '<td>' + orders.orderDay + '</td>' +

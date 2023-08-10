@@ -3,8 +3,10 @@ package group4.organicapplication.service.impl;
 import com.fasterxml.jackson.databind.util.ArrayBuilders;
 import group4.organicapplication.dto.SearchOrderObject;
 import group4.organicapplication.model.Orders;
+import group4.organicapplication.model.PurchaseOrder;
 import group4.organicapplication.model.QOrders;
 import group4.organicapplication.model.User;
+import group4.organicapplication.repository.OrderDetailRepository;
 import group4.organicapplication.repository.OrderRepository;
 import group4.organicapplication.service.OrderService;
 import org.attoparser.ParseException;
@@ -22,6 +24,22 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private OrderRepository orderRepository;
 
+    @Autowired
+    private OrderDetailRepository orderDetailRepository;
+
+    @Override
+    public Orders placeOrder(Orders order, List<PurchaseOrder> purchaseOrders) {
+        Orders savedOrder = orderRepository.save(order);
+
+        for (PurchaseOrder purchaseOrder : purchaseOrders) {
+
+            purchaseOrder.setOrder(savedOrder);
+            orderDetailRepository.save(purchaseOrder);
+
+        }
+
+        return savedOrder;
+    }
     @Override
     public Page<Orders> getAllOrderByFilter(SearchOrderObject object, int page) throws ParseException {
         BooleanBuilder builder = new BooleanBuilder();

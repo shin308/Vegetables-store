@@ -8,10 +8,12 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
+@Table(name = "Orders")
 public class Orders {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JoinColumn(name = "order_id")
     private Long id;
 
     @OneToMany(mappedBy = "order")
@@ -37,9 +39,11 @@ public class Orders {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+7")
     private Date receiveDay;
 
-    private String email;
     private String address;
+
     private String phone;
+
+    private String email;
 
     private long totalPrice;
     private String orderStatus;
@@ -125,33 +129,31 @@ public class Orders {
         this.shipper = shipper;
     }
 
-    public String getEmail() {
-        return email;
+    public Orders() {
+
     }
 
     public String getAddress() {
         return address;
     }
 
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getPhone() {
+        return phone;
     }
 
     public void setPhone(String phone) {
         this.phone = phone;
     }
 
-    public Orders() {
+    public String getEmail() {
+        return email;
+    }
 
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
-
-

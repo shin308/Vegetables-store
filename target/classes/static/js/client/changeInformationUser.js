@@ -13,7 +13,7 @@ function changeInformation()
 	if(lastName.length == 0)
     	{
     		flag = 1;
-    		document.getElementById("lastNameWarning").innerHTML = "Tên không được để trống";
+    		document.getElementById("lastNameWarning").innerHTML = "Họ không được để trống";
     	}
 	if(phone.length == 0)
 	{

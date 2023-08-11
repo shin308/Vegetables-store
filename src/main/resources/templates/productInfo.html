@@ -64,8 +64,8 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <a class="navbar-brand" th:href="@{/admin}"><img id="imgBr"
-                                              src="https://img.freepik.com/premium-vector/organic-icon-100-percent-organic-product-label_349999-1003.jpg?w=2000"
-                                              alt="brand_icon" width="100px"></a>
+                                                         src="https://img.freepik.com/premium-vector/organic-icon-100-percent-organic-product-label_349999-1003.jpg?w=2000"
+                                                         alt="brand_icon" width="100px"></a>
 
 
         <div class="collapse navbar-collapse ms-3" id="navbarTogglerDemo02">
@@ -230,7 +230,7 @@
                                             <input type="text" th:value="${loggedInUser.id}"  name="user" style="display: none">
                                             <input type="text" th:value="${review.reviewID}" name="replyID" style="display: none">
                                             <input type="text" th:value="${productInfo.productID}"  name="product" style="display: none">
-                                            <input type="text" class="form-control" th:field="*{content}" th:id="'reply' + ${review.reviewID}" onchange="enterReply()" required>
+                                            <input type="text" class="form-control" th:field="*{content}" th:id="'reply' + ${review.reviewID}" th:onchange="'enterReply('+${review.reviewID}+')'" required>
                                             <button class="btn btn-primary" type="submit" th:id="'submitReply' + ${review.reviewID}" disabled><i
                                                     class="fa-solid fa-paper-plane"></i></button>
                                         </form>
@@ -270,7 +270,7 @@
 </div>
 
 </body>
-<script>
+<script th:inline="javascript">
     let thisPage = 1;
     let limit = 5;
     let list = document.querySelectorAll('.list .item');
@@ -358,13 +358,13 @@
         }
     }
 
-    function enterReply(){
-        let reply = document.getElementById('reply').value;
+    function enterReply(a){
+        let reply = document.getElementById('reply'+a).value;
         if ((/^\s*$/.test(reply))){
-            document.getElementById('submitReply').disabled = true;
+            document.getElementById('submitReply'+a).disabled = true;
         }
         else {
-            document.getElementById('submitReply').disabled = false;
+            document.getElementById('submitReply'+a).disabled = false;
         }
     }
 </script>

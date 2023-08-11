@@ -1,13 +1,8 @@
 package group4.organicapplication.controller;
 
 import group4.organicapplication.exception.CategoryNotFoundException;
-import group4.organicapplication.model.Category;
-import group4.organicapplication.model.Role;
-import group4.organicapplication.model.User;
-import group4.organicapplication.service.CategoryService;
-import group4.organicapplication.service.OrderService;
-import group4.organicapplication.service.RoleService;
-import group4.organicapplication.service.UserService;
+import group4.organicapplication.model.*;
+import group4.organicapplication.service.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -36,6 +31,12 @@ public class AdminController {
 
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    private CartService cartService;
+
+    @Autowired
+    private ProductService productService;
 
     @ModelAttribute("loggedInUser")
     public User loggedInUser() {
@@ -68,17 +69,27 @@ public class AdminController {
     }
 
     @GetMapping("/sale")
-    public String showSalePage(){
+    public String showSalePage(@RequestParam(value = "searchProductName", required = false)String searchProductName,Model model) {
+        List<CartItem> cartItems = cartService.getCartItems();
+        List<Product> products;
+        if (searchProductName != null && !searchProductName.isEmpty()) {
+            products = productService.findProductByProductName(searchProductName);
+        } else {
+            products = productService.getAllProduct();
+        }
+        model.addAttribute("products", products);
+        model.addAttribute("cartItems", cartItems);
+        model.addAttribute("totalQuantity", cartService.sumQuantity(cartItems));
+        model.addAttribute("totalPrice", cartService.sumTotalPrice(cartItems));
         return "sale";
     }
-
     @GetMapping("/import")
     public String showImportPage(){
         return "import";
     }
 
     @GetMapping("/statistic")
-    public String showStatisticPage(Model model){
+    public String showStatisticPage(){
         return "statistic";
     }
 

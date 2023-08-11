@@ -2,6 +2,7 @@ package group4.organicapplication.service;
 
 import group4.organicapplication.dto.SearchOrderObject;
 import group4.organicapplication.model.Orders;
+import group4.organicapplication.model.PurchaseOrder;
 import group4.organicapplication.model.User;
 import org.attoparser.ParseException;
 import org.springframework.data.domain.Page;
@@ -12,6 +13,7 @@ import java.util.List;
 @Service
 public interface OrderService {
 
+    Orders placeOrder(Orders order, List<PurchaseOrder> orderDetails);
     Page<Orders> getAllOrderByFilter(SearchOrderObject object, int page) throws ParseException;
     List<Orders> findByOrderStatusAndShipper(String orderStatus, User shipper);
     int countByOrderStatus(String orderStatus);

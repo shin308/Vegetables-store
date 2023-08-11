@@ -188,7 +188,7 @@
             <th:block th:each="product:${products}">
                 <div class="col item">
                     <a th:href="@{'/productInfoUser/' + ${product.productID}}">
-                        <img  th:src="@{'images/'+ ${product.img}}" width="100px" height="100px">
+                        <img th:src="@{${product.getPhotosImagePath}}" height="100" width="100" title="ảnh"></img>
                     </a>
                     <h6>[[${product.productName}]]</h6>
                     <div style="position: sticky; top:100%;">

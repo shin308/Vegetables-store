@@ -22,7 +22,7 @@ public class QImportProduct extends EntityPathBase<ImportProduct> {
 
     public static final QImportProduct importProduct = new QImportProduct("importProduct");
 
-    public final DateTimePath<java.util.Date> importDate = createDateTime("importDate", java.util.Date.class);
+    public final DatePath<java.util.Date> importDate = createDate("importDate", java.util.Date.class);
 
     public final NumberPath<Integer> importID = createNumber("importID", Integer.class);
 

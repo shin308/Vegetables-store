@@ -37,4 +37,10 @@ public class Product {
     @Column(name = "description", columnDefinition = "nvarchar(300)")
     private String description;
 
+    @Transient
+    public String getPhotosImagePath() {
+        if (img == null || productID == null) return null;
+
+        return "/images/" + productID + "/" + img;
+    }
 }

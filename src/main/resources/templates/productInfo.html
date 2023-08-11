@@ -125,7 +125,7 @@
         <div class="col">
             <div class="row">
                 <div class="col-6" id="info">
-                    <img th:src="@{'/images/'+ ${productInfo.img}}" width="200" height="200">
+                    <img th:src="@{'/images/'+ ${productInfo.productID} + '/' +${productInfo.img}}" width="200" height="200">
                     <div class="mt-2 row gx-1">
                         <div class="col-2"><span>5</span> <i style="color:#FFD700;" class="fa-solid fa-star"></i></div>
                         <div class="col-4"><span>20</span> Đánh giá</div>

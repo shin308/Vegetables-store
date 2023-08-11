@@ -1,10 +1,574 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/5a213e1813.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 </head>
+<style>
+    li {
+        margin: 0 5px;
+    }
+    .listPage {
+        padding: 10px;
+        text-align: center;
+        list-style: none;
+    }
+
+    .listPage li {
+        background-color: white;
+        padding: 10px 20px;
+        display: inline-block;
+        margin: 0 10px;
+        cursor: pointer;
+    }
+
+    .listPage .active {
+        background-color: #5CB85C;
+        color: white;
+    }
+
+    #view,
+    #addNew {
+        position: absolute;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: none;
+        width: 100%;
+        height: 100%;
+        justify-content: center;
+        align-items: center;
+        display: none;
+        left: 50%;
+        top:50%;
+        transform: translate(-50%, -50%);
+    }
+    .active {
+        border: 0;
+        border-bottom: #5CB85C 2px solid;
+        color: black;
+    }
+
+    @media only screen and (max-width: 1015px) {
+        #search, #manage {
+            width: 100%;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        #dropdownSupplier {
+            width:60%;
+        }
+        #btnAdd{
+            width:40%;
+        }
+    }
+    a{
+        text-decoration: none;
+    }
+</style>
+
 <body>
+<nav class="navbar navbar-expand-lg bg-body-tertiary sticky-top shadow-sm">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02"
+                aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" th:href="@{/admin}"><img
+                src="https://img.freepik.com/premium-vector/organic-icon-100-percent-organic-product-label_349999-1003.jpg?w=2000"
+                alt="brand_icon" width="100"></a>
+        <div class="collapse navbar-collapse ms-3" id="navbarTogglerDemo02">
+            <ul class="navbar-nav me-auto">
+
+                <li class="nav-item">
+                    <a class="nav-link  " th:href="@{/admin/product}">SẢN PHẨM</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/sale}">BÁN HÀNG</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/orders}">ĐƠN HÀNG</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/category}">DANH MỤC</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/suppliers}">NHÀ CUNG CẤP</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" th:href="@{/admin/import}">NHẬP HÀNG</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/list-account}">QUẢN LÝ TÀI KHOẢN</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/statistic}">THỐNG KÊ</a>
+                </li>
+            </ul>
+        </div>
+        <div class="dropdown me-4">
+            <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Hi, <span th:text="${loggedInUser.lastName}"></span>
+                <span th:text="${loggedInUser.firstName}"></span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end">
+                <li><a class="dropdown-item" th:href="@{/admin/profile}">Thông tin cá nhân</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="px-5">
+    <div class="row align-middle mt-4 mb-4">
+        <div class="col-2" id="manage">
+            <h4 style="color: #5CB85C;">Quản lý nhập hàng</h4>
+        </div>
+        <div id="search" class="col-5">
+            <form class="d-flex" role="search" onsubmit="searchProduct()">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
+                       style="height:50px;" name="searchName" id="searchName">
+
+                <button class="btn btn-success" type="button" onclick="searchProduct()"
+                        style=" margin-left:-100px; height:45px; width:87px; margin-top:3px; background-color:#8FC742; border:0;">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </form>
+        </div>
+        <div class="col-2" id="dropdownSupplier">
+            <select class="form-select" id="supplierDropdown" onchange="getImportBillBySupplierId()" >
+
+                <option th:value="0">Tất cả</option>
+                <th:block th:each="supplier : ${suppliers}">
+
+                    <option th:value="${supplier.supplierID}" th:text="${supplier.supplierName}"></option>
+                </th:block>
+            </select>
+
+        </div>
+        <div class="col-3 text-end" id="btnAdd">
+            <button style="background-color: #5CB85C; color:white;vertical-align: middle;" type="button"
+                    class="btn btn-success shadow-sm border-0"
+                    onclick="openAddNew()">Thêm mới<i style="font-size: 23px; vertical-align: middle;"
+                                                       class="fa-solid fa-square-plus ms-3"></i></button>
+        </div>
+    </div>
+
+
+    <table class="table text-center align-middle border">
+        <thead class="table-secondary">
+        <tr>
+            <th scope="col-1">Mã thêm</th>
+            <th scope="col-1">Tên sản phẩm</th>
+            <th scope="col-1">Số lượng</th>
+            <th scope="col-2">Hạn sử dụng</th>
+            <th scope="col-2">Giá nhập</th>
+            <th scope="col-3">Loại</th>
+            <th scope="col-2">Tổng tiền</th>
+            <th scope="col-5">Chức năng</th>
+        </tr>
+        </thead>
+        <tbody class="list">
+        <tr class="item" th:each="import : ${imports}">
+            <td>[[${import.importProduct.importID}]]</td>
+            <td>[[${import.product.productName}]]</td>
+            <td>[[${import.quantity}]]</td>
+            <td>[[${import.expiry}]]</td>
+            <td>[[${import.importPrice}]]</td>
+            <td>[[${import.unit}]]</td>
+            <td>[[${import.totalAmount}]]</td>
+            <td>
+                <button type="button" class="btn btn-primary" th:onclick="'openView(' + ${import.importProduct.importID} +')'">Xem</button>
+                <button type="button" class="btn btn-danger" th:onclick="'deleteImport(' + ${import.importProduct.importID} + ')'">Xoá</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div style="position: sticky; top:100%; margin:0 auto;">
+        <ul class="listPage">
+            <li class="active">1</li>
+            <li>2</li>
+            <li>3</li>
+        </ul>
+    </div>
+
+</div>
+<div id="view">
+    <div style="background-color: white; border-radius:10px;" class="shadow-lg w-50 mt-5">
+        <form style="padding: 20px">
+            <h6 style="height: 50px; background-color:black; color:white; padding:15px; border-radius:10px 10px 0 0;">
+                Xem chi tiết đơn nhập hàng <span id="nameView" name="nameView"></span>
+            </h6>
+            <div class="border border-secondary rounded p-2">
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label font-weight-bold">Tên sản phẩm:</label>
+                    <div class="col-sm-8">
+                        <input type="text"  class="form-control" id="productNameView" name="productNameView" readonly/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label font-weight-bold">Loại sản phẩm:</label>
+                    <div class="col-sm-8">
+                        <input type="text"  id="categoryView" name="categoryView"  class="form-control" readonly/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label font-weight-bold">Nhà cung cấp:</label>
+                    <div class="col-sm-8">
+                        <input type="text"  id="supplierView" name="supplierView"  class="form-control" readonly/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label font-weight-bold">Ngày thêm:</label>
+                    <div class="col-sm-8">
+                        <input type="text"  class="form-control" id="importDateView" name="importDateView" readonly/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label font-weight-bold">Hạn sử dụng:</label>
+                    <div class="col-sm-8">
+                        <input type="text"  id="expiryView" name="expiryView"  class="form-control" readonly/>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label font-weight-bold">Giá thêm:</label>
+                    <div class="col-sm-8">
+                        <input type="text" name="importPriceView" id="importPriceView"  class="form-control" readonly  />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label font-weight-bold">Giá bán:</label>
+                    <div class="col-sm-8">
+                        <input type="text" name="priceView" id="priceView"  class="form-control" readonly  />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label font-weight-bold">Khối lượng:</label>
+                    <div class="col-sm-8">
+                        <input type="text" name="unitView" id="unitView" class="form-control"  readonly>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label font-weight-bold">Số lượng:</label>
+                    <div class="col-sm-8">
+                        <input type="text"  name="quantityView" id="quantityView"  class="form-control" readonly/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label font-weight-bold">Tổng tiền:</label>
+                    <div class="col-sm-8">
+                        <input type="text"  name="totalAmountView" id="totalAmountView"  class="form-control" readonly />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label font-weight-bold">Mô tả:</label>
+                    <div class="col-sm-8">
+                        <textarea name="descriptionView" id="descriptionView"  cols="40" rows="2"  readonly></textarea>
+                    </div>
+                </div>
+                <div style="float: right; margin-top:20px;">
+
+                    <button type="button" class="btn btn-secondary" onclick="closeView()">Huỷ</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+
+<div id="addNew">
+    <div style="background-color: white; border-radius:10px;" class="shadow-lg w-50 mt-5">
+        <form action="/admin/import/create" class="form-new" method="post" style="padding: 20px" enctype="multipart/form-data">
+            <h6 style="height: 50px; background-color:black; color:white; padding:15px; border-radius:10px 10px 0 0;">
+                Thêm đơn nhập hàng
+            </h6>
+            <div class="border border-secondary rounded p-2">
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label font-weight-bold">Tên sản phẩm:</label>
+                    <div class="col-sm-8">
+                        <input type="text"  class="form-control" id="productName" name="productName" required minlength="3" maxlength="100"/>
+                    </div>
+                </div>
+                <div class="image form-floating mb-3 d-flex justify-content-center" id="imageNewCon" style="display: flex;">
+                    <img class="border" src="" alt="ảnh" width="100" height="100" >
+                    <input type="file" id="imageNew" name="imageNew" style="margin: 70px 10px 0 10px;" accept="image/png, image/jpeg">
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label font-weight-bold">Ngày thêm:</label>
+                    <div class="col-sm-8">
+                        <input type="date"  class="form-control" id="importDate" name="importDate" required/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label font-weight-bold">Hạn sử dụng:</label>
+                    <div class="col-sm-8">
+                        <input type="date" onclick="checkDate()" id="expiry" name="expiry"  class="form-control" required/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label font-weight-bold">Loại sản phẩm:</label>
+                    <div class="col-sm-8">
+                        <select  class="form-control" required id="category" name="category">
+                            <th:block th:each ="cat : ${categories}">
+                                <option th:text="${cat.categoryName}" th:value="${cat.categoryID}"></option>
+                            </th:block>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label font-weight-bold">Nhà cung cấp:</label>
+                    <div class="col-sm-8">
+                        <select  class="form-control" required id="supplier" name="supplier">
+                            <th:block th:each ="sup : ${suppliers}">
+                                <option th:text="${sup.supplierName}" th:value="${sup.supplierID}"></option>
+                            </th:block>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label font-weight-bold">Giá thêm:</label>
+                    <div class="col-sm-8">
+                        <input type="number" name="importPrice" id="importPrice"  class="form-control" required min="0" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label font-weight-bold">Giá bán:</label>
+                    <div class="col-sm-8">
+                        <input type="number" name="price" id="price"  class="form-control" required min="0" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label font-weight-bold">Khối lượng:</label>
+                    <div class="col-sm-8">
+                        <input type="text" name="unit" id="unit" class="form-control"  required>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label font-weight-bold">Số lượng:</label>
+                    <div class="col-sm-8">
+                        <input type="number" min="0" name="quantity" id="quantity"  class="form-control" required/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label font-weight-bold">Tổng tiền:</label>
+                    <div class="col-sm-8">
+                        <input type="number" min="0" name="totalAmount" id="totalAmount"  class="form-control" required/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label font-weight-bold">Mô tả:</label>
+                    <div class="col-sm-8">
+                        <textarea maxlength="300" name="description" id="description"  cols="40" rows="2" placeholder="Mô tả"></textarea>
+                    </div>
+                </div>
+                <div style="float: right; margin-top:20px;">
+                    <button type="submit" class="btn btn-primary">Lưu</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeAddNew()">Huỷ</button>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>
 
 </body>
+<script>
+    let thisPage = 1;
+    let limit = 5;
+    let list = document.querySelectorAll('.list .item');
+
+    function loadItem() {
+        let beginGet = limit * (thisPage - 1);
+        let endGet = limit * thisPage - 1;
+        list.forEach((item, key) => {
+            if (key >= beginGet && key <= endGet) {
+                item.style.display = 'table-row';
+
+            } else {
+                item.style.display = 'none';
+            }
+        })
+        listPage();
+
+    }
+
+    loadItem();
+
+    function listPage() {
+        let count = Math.ceil(list.length / limit);
+        document.querySelector('.listPage').innerHTML = '';
+
+        if (thisPage != 1) {
+            let prev = document.createElement('li');
+            prev.innerHTML = '<i class="fa-solid fa-angles-left"></i>';
+            prev.setAttribute('onclick', "changePage(" + (thisPage - 1) + ")");
+            document.querySelector('.listPage').appendChild(prev);
+        }
+
+        for (i = 1; i <= count; i++) {
+            let newPage = document.createElement('li');
+            newPage.innerText = i;
+            if (i == thisPage) {
+                newPage.classList.add('active');
+            }
+            newPage.setAttribute('onclick', "changePage(" + i + ")");
+            document.querySelector('.listPage').appendChild(newPage);
+        }
+        if (thisPage != count) {
+            let next = document.createElement('li');
+            next.innerHTML = '<i class="fa-solid fa-angles-right"></i>';
+            next.setAttribute('onclick', "changePage(" + (thisPage + 1) + ")");
+            document.querySelector('.listPage').appendChild(next);
+        }
+    }
+
+    function changePage(i) {
+        thisPage = i;
+        loadItem();
+    }
+
+    <!--Open form Add New-->
+    function openAddNew() {
+        let x = document.getElementById("addNew");
+        x.style.display = "flex";
+    }
+
+    function closeAddNew() {
+        let x = document.getElementById("addNew");
+        x.style.display = "none";
+    }
+
+    async function openView(importID) {
+
+        try {
+
+            const response = await fetch(`/admin/import/${importID}`, {
+                method: "GET"
+            });
+
+
+            const data = await response.json();
+            console.log(data)
+
+            // Đổ thông tin nhà cung cấp vào form sửa
+            document.getElementById("nameView").textContent = data.product.productName;
+            document.getElementById("productNameView").value = data.product.productName;
+            document.getElementById("importDateView").value = data.importProduct.importDate;
+            document.getElementById("expiryView").value = data.expiry;
+            document.getElementById("supplierView").value = data.importProduct.supplier.supplierName;
+            document.getElementById("categoryView").value = data.product.category.categoryName;
+            document.getElementById("quantityView").value = data.quantity;
+            document.getElementById("unitView").value = data.unit;
+            document.getElementById("importPriceView").value = data.importPrice;
+            document.getElementById("priceView").value = data.product.price;
+            document.getElementById("totalAmountView").value = data.totalAmount;
+            document.getElementById("descriptionView").value = data.product.description;
+            // Hiển thị form sửa
+            document.getElementById("view").style.display = "flex";
+        } catch (error) {
+            console.error('Lỗi:', error.message);
+        }
+    }
+
+    function closeView() {
+        let x = document.getElementById("view");
+        x.style.display = "none";
+
+    }
+
+
+    async function deleteImport(importID) {
+        const apiUrl = '/admin/import/' + importID;
+
+        const confirmed = confirm('Bạn có chắc chắn muốn xóa đơn nhập hàng này?');
+
+        if (confirmed) {
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'DELETE'
+                });
+
+                if (!response.ok) {
+                    throw new Error('Đã xảy ra lỗi khi xóa nhà cung cấp từ API!');
+                }
+                location.reload();
+
+            } catch (error) {
+                console.error('Lỗi:', error.message);
+                alert('Đã xảy ra lỗi khi xóa nhà cung cấp từ API!');
+            }
+        } else {
+
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const supplierID = localStorage.getItem("selectedSupplierID");
+        if (supplierID) {
+            const supplierDropdown = document.getElementById("supplierDropdown");
+            supplierDropdown.value = supplierID;
+        }
+    });
+    function getImportBillBySupplierId() {
+        let supplierID = document.getElementById("supplierDropdown").value;
+        localStorage.setItem("selectedSupplierID", supplierID);
+        if (supplierID) {
+            const url = new URL(window.location.href);
+            const searchParams = url.searchParams;
+            if (searchParams.has('searchName')) {
+                searchParams.delete('searchName'); // Xóa tham số searchName nếu có
+            }
+            url.searchParams.set('supplierID', supplierID);
+            window.location.href = url;
+        }
+
+    }
+
+    function searchProduct() {
+        let supplierID = document.getElementById("supplierDropdown").value;
+        let searchName = document.getElementById("searchName").value;
+        supplierID = 0 ;
+        localStorage.setItem("selectedSupplierID", supplierID);
+        const url = new URL(window.location.href);
+        const searchParams = url.searchParams;
+        if(searchParams.has('supplierID')){
+            searchParams.delete('supplierID');
+
+        }
+        url.searchParams.set('searchName', searchName);
+        window.location.href = url;
+        //      saveSelectedSupplierID(supplierID);
+    }
+    const imageContainer = document.getElementById("imageNewCon");
+    const inputFile = document.querySelector("input[name='imageNew']");
+
+    inputFile.addEventListener("change", function() {
+        showImageThumnail(this);
+    });
+
+    function showImageThumnail(fileInput){
+        const file = inputFile.files[0];
+        reader = new FileReader();
+        reader.onload = function(e){
+            const image = new Image();
+            image.src = URL.createObjectURL(file);
+            imageContainer.querySelector("img").src = image.src;
+        }
+        reader.readAsDataURL(file);
+    }
+    function checkDate(){
+        const dateimport = document.getElementById("importDate");
+        const expiry = document.getElementById("expiry");
+        expiry.setAttribute("min", dateimport.value);
+    }
+</script>
+
 </html>

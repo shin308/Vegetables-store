@@ -20,17 +20,17 @@
             list-style: none;
         }
 
-        .listPage li {
+        .page-item a {
             background-color: white;
-            padding: 10px 20px;
+            padding: 8px 15px;
             display: inline-block;
             margin: 0 10px;
             cursor: pointer;
         }
 
-        .listPage .active {
-            background-color: #5CB85C;
-            color: white;
+        li.active a{
+            background-color: #5CB85C !important;
+            color: white !important;
         }
 
         #edit,
@@ -47,7 +47,7 @@
             transform: translate(-50%, -50%);
         }
 
-        .active {
+        a.active {
             border: 0;
             border-bottom: #5CB85C 2px solid;
             color: black;
@@ -145,13 +145,13 @@
 <!--                    </button>-->
 <!--                </form>-->
 <!--            </div>-->
-            <div class="col-5" id="search">
-                <form class="d-flex" role="search">
-                    <input id="searchById" class="form-control me-2" type="search" placeholder="Tìm đơn hàng..." aria-label="Search">
-                    <button style="background-color: #5CB85C; color:white;" class="btn btn-outline-success border-0"
-                            type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
-                </form>
-            </div>
+<!--            <div class="col-5" id="search">-->
+<!--                <form class="d-flex" role="search">-->
+<!--                    <input id="searchById" class="form-control me-2" type="search" placeholder="Tìm đơn hàng..." aria-label="Search">-->
+<!--                    <button style="background-color: #5CB85C; color:white;" class="btn btn-outline-success border-0"-->
+<!--                            type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>-->
+<!--                </form>-->
+<!--            </div>-->
 
             <div class="col-2" style="margin-left: 50px;">
                 <strong>Tình trạng đơn hàng: </strong>
@@ -184,19 +184,25 @@
             <th scope="col-5">Ngày đặt</th>
             <th scope="col-5">Ngày giao</th>
             <th scope="col-5">Ngày nhận</th>
-            <th scope="col-2">Chức năng</th>
+            <th scope="col-5"></th>
+            <th scope="col-3">Chức năng</th>
         </tr>
         </thead>
         <tbody class="list">
         </tbody>
     </table>
-    <ul class="listPage">
-        <li class="active">1</li>
-        <li>2</li>
-        <li>3</li>
-    </ul>
 </div>
-
+<!--    <div style="position: sticky; top:100%; margin:0 auto;">-->
+<!--        <ul class="listPage">-->
+<!--            <li class="active">1</li>-->
+<!--            <li>2</li>-->
+<!--            <li>3</li>-->
+<!--        </ul>-->
+<!--    </div>-->
+    <div class="container d-flex align-items-center justify-content-center">
+        <ul class="pagination">
+        </ul>
+    </div>
 <footer class="position-absolute bottom-0 end-0  shadow-lg p-4"
         style="height: 70px; width:100%; background-color:black; color:white;">
     <div class="footer-bottom clearfix">
@@ -555,75 +561,6 @@
 
 
 </body>
-<!--<script>-->
-<!--    let thisPage = 1;-->
-<!--    let limit = 5;-->
-<!--    let list = document.querySelectorAll('.list .item');-->
-
-<!--    function loadItem() {-->
-<!--        let beginGet = limit * (thisPage - 1);-->
-<!--        let endGet = limit * thisPage - 1;-->
-<!--        list.forEach((item, key) => {-->
-<!--            if (key >= beginGet && key <= endGet) {-->
-<!--                item.style.display = 'table-row';-->
-
-<!--            }-->
-<!--            else {-->
-<!--                item.style.display = 'none';-->
-<!--            }-->
-<!--        })-->
-<!--        listPage();-->
-
-<!--    }-->
-<!--    loadItem();-->
-<!--    function listPage() {-->
-<!--        let count = Math.ceil(list.length / limit);-->
-<!--        document.querySelector('.listPage').innerHTML = '';-->
-
-<!--        if (thisPage != 1) {-->
-<!--            let prev = document.createElement('li');-->
-<!--            prev.innerHTML = '<i class="fa-solid fa-angles-left"></i>';-->
-<!--            prev.setAttribute('onclick', "changePage(" + (thisPage - 1) + ")");-->
-<!--            document.querySelector('.listPage').appendChild(prev);-->
-<!--        }-->
-
-<!--        for (i = 1; i <= count; i++) {-->
-<!--            let newPage = document.createElement('li');-->
-<!--            newPage.innerText = i;-->
-<!--            if (i == thisPage) {-->
-<!--                newPage.classList.add('active');-->
-<!--            }-->
-<!--            newPage.setAttribute('onclick', "changePage(" + i + ")");-->
-<!--            document.querySelector('.listPage').appendChild(newPage);-->
-<!--        }-->
-<!--        if (thisPage != count) {-->
-<!--            let next = document.createElement('li');-->
-<!--            next.innerHTML = '<i class="fa-solid fa-angles-right"></i>';-->
-<!--            next.setAttribute('onclick', "changePage(" + (thisPage + 1) + ")");-->
-<!--            document.querySelector('.listPage').appendChild(next);-->
-<!--        }-->
-<!--    }-->
-<!--    function changePage(i) {-->
-<!--        thisPage = i;-->
-<!--        loadItem();-->
-<!--    }-->
-
-<!--    &lt;!&ndash;Nav-Tab&ndash;&gt;-->
-<!--    function openOrder(evt, orderName) {-->
-<!--        var i, x, tablinks;-->
-<!--        x = document.getElementsByClassName("order");-->
-<!--        for (i = 0; i < x.length; i++) {-->
-<!--            x[i].style.display = "none";-->
-<!--        }-->
-<!--        tablinks = document.getElementsByClassName("tablink");-->
-<!--        for (i = 0; i < x.length; i++) {-->
-<!--            tablinks[i].className = tablinks[i].className.replace(" btn-fill", " btn-bd");-->
-<!--        }-->
-<!--        document.getElementById(orderName).style.display = "table";-->
-<!--        evt.currentTarget.classList.remove("btn-bd");-->
-<!--        evt.currentTarget.classList.add("btn-fill");-->
-<!--    }-->
-<!--</script>-->
 
 <script type="text/javascript">
 		$(function() {
@@ -667,4 +604,81 @@
         src="https://cdnjs.cloudflare.com/ajax/libs/jquery.serializeJSON/2.9.0/jquery.serializejson.js"></script>
 
 <script th:src="@{/js/donHangAjax.js}"></script>
+
+<script>
+  let thisPage = 1;
+  let limit = 5;
+  let list = document.querySelectorAll('.list .item');
+
+  function loadItem() {
+    let beginGet = limit * (thisPage - 1);
+    let endGet = limit * thisPage - 1;
+    list.forEach((item, key) => {
+      if (key >= beginGet && key <= endGet) {
+        item.style.display = 'table-row';
+
+      } else {
+        item.style.display = 'none';
+      }
+    })
+    listPage();
+
+  }
+
+  loadItem();
+
+  function listPage() {
+    let count = Math.ceil(list.length / limit);
+    document.querySelector('.listPage').innerHTML = '';
+
+    if (thisPage != 1) {
+      let prev = document.createElement('li');
+      prev.innerHTML = '<i class="fa-solid fa-angles-left"></i>';
+      prev.setAttribute('onclick', "changePage(" + (thisPage - 1) + ")");
+      document.querySelector('.listPage').appendChild(prev);
+    }
+
+    for (i = 1; i <= count; i++) {
+      let newPage = document.createElement('li');
+      newPage.innerText = i;
+      if (i == thisPage) {
+        newPage.classList.add('active');
+      }
+      newPage.setAttribute('onclick', "changePage(" + i + ")");
+      document.querySelector('.listPage').appendChild(newPage);
+    }
+    if (thisPage != count) {
+      let next = document.createElement('li');
+      next.innerHTML = '<i class="fa-solid fa-angles-right"></i>';
+      next.setAttribute('onclick', "changePage(" + (thisPage + 1) + ")");
+      document.querySelector('.listPage').appendChild(next);
+    }
+  }
+
+  function changePage(i) {
+    thisPage = i;
+    loadItem();
+  }
+
+  <!--Open form Add New-->
+  function openAddNew() {
+    let x = document.getElementById("addNew");
+    x.style.display = "flex";
+  }
+
+  function closeAddNew() {
+    let x = document.getElementById("addNew");
+    x.style.display = "none";
+  }
+
+  function openEdit() {
+    let x = document.getElementById("edit");
+    x.style.display = "flex";
+  }
+
+  function closeEdit() {
+    let x = document.getElementById("edit");
+    x.style.display = "none";
+  }
+</script>
 </html>

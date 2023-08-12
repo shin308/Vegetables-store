@@ -20,17 +20,17 @@
             list-style: none;
         }
 
-        .listPage li {
+        .page-item a {
             background-color: white;
-            padding: 10px 20px;
+            padding: 8px 15px;
             display: inline-block;
             margin: 0 10px;
             cursor: pointer;
         }
 
-        .listPage .active {
-            background-color: #5CB85C;
-            color: white;
+        li.active a{
+            background-color: #5CB85C !important;
+            color: white !important;
         }
 
         #edit,
@@ -47,7 +47,7 @@
             transform: translate(-50%, -50%);
         }
 
-        .active {
+        a.active {
             border: 0;
             border-bottom: #5CB85C 2px solid;
             color: black;
@@ -162,16 +162,18 @@
             <th scope="col-5">Ngày đặt</th>
             <th scope="col-5">Ngày giao</th>
             <th scope="col-5">Ngày nhận</th>
-            <th scope="col-2"></th>
+            <th scope="col-1"></th>
+            <th scope="col-2">Chức năng</th>
         </tr>
         </thead>
         <tbody class="list">
         </tbody>
     </table>
-    <ul class="listPage">
-        <li class="active">1</li>
-        <li>2</li>
-        <li>3</li>
+</div>
+
+<!-- Phan trang -->
+<div class="container d-flex align-items-center justify-content-center">
+    <ul class="pagination">
     </ul>
 </div>
 

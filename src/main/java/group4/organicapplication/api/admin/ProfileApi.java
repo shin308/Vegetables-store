@@ -44,22 +44,20 @@ public class ProfileApi {
             result.rejectValue("oldPassword", "error.oldPassword", "Mật khẩu cũ không đúng");
         }
 
-        if (!dto.getNewPassword().equals(dto.getConfirmNewPassword())) {
-            result.rejectValue("confirmNewPassword", "error.confirmNewPassword", "Nhắc lại mật khẩu mới không đúng");
-        }
-
-        if(dto.getOldPassword().length() == 0){
+        if(dto.getOldPassword().trim().length() == 0){
             result.rejectValue("oldPassword", "error.oldPassword", "Không được để trống mật khẩu");
         }
 
-        if(dto.getNewPassword().length() == 0){
+        if(dto.getNewPassword().trim().length() == 0){
             result.rejectValue("newPassword", "error.newPassword", "Không được để trống mật khẩu");
-        }else if(dto.getNewPassword().length() < 8 || dto.getNewPassword().length() > 32){
+        }else if(dto.getNewPassword().trim().length() < 8 || dto.getNewPassword().trim().length() > 32){
             result.rejectValue("newPassword", "error.newPassword", "Mật khẩu mới phải dài từ 8 đến 32 ký tự");
         }
 
-        if(dto.getConfirmNewPassword().length() == 0){
+        if(dto.getConfirmNewPassword().trim().length() == 0){
             result.rejectValue("confirmNewPassword", "error.confirmNewPassword", "Không được để trống mật khẩu");
+        }else if (!dto.getNewPassword().equals(dto.getConfirmNewPassword())) {
+            result.rejectValue("confirmNewPassword", "error.confirmNewPassword", "Nhắc lại mật khẩu mới không đúng");
         }
 
         if (result.hasErrors()) {

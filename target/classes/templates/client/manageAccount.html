@@ -155,7 +155,7 @@
         <div class="col-md-10">
             <br>
             <p style="font-size: 20px">
-                <b>Thông tin tài khoản:</b>
+                <h1><strong>Thông tin tài khoản:</strong></h1>
             </p>
             <br>
             <h3 style="line-height: 2;">
@@ -198,25 +198,25 @@
             <div class="modal-body">
                 <div class="form-group ">
                     <label style="line-height: 2">Tên khách hàng <span style="color: red;">(*)</span></label><br>
-                    <label id="firstNameWarning" style="color: red"></label> <input
+                    <label id="firstNameWarning" style="color: red; display: block;"></label> <input
                         class="form-control" id="firstName" name="firstName" type="text"
                         th:value="${user.firstName}">
                 </div>
                 <div class="form-group ">
                     <label style="line-height: 2">Họ khách hàng <span style="color: red;">(*)</span></label><br> <label
-                        id="lastNameWarning" style="color: red"></label> <input
+                        id="lastNameWarning" style="color: red; display: block;"></label> <input
                         class="form-control" id="lastName" name="lastName" type="text"
                         th:value="${user.lastName}">
                 </div>
                 <div class="form-group ">
                     <label style="line-height: 2">Số điệnt thoại <span style="color: red;">(*)</span></label><br> <label
-                        id="phoneWarning" style="color: red"></label> <input
-                        class="form-control" id="phone" name="phone" type="text"
+                        id="phoneWarning" style="color: red; display: block;"></label> <input
+                        class="form-control" id="phone" name="phone" type="number"
                         th:value="${user.phone}">
                 </div>
                 <div class="form-group">
                     <label style="line-height: 2">Địa chỉ <span style="color: red;">(*)</span></label><br> <label
-                        id="addressWarning" style="color: red"></label>
+                        id="addressWarning" style="color: red; display: block;"></label>
                     <textarea rows="3" cols="1" class="form-control" id="address"
                               th:text="${user.address}"></textarea>
                 </div>
@@ -251,17 +251,17 @@
             <div class="modal-body">
                 <div class="form-group ">
                     <label style="line-height: 2">Mật khẩu cũ <span style="color: red;">(*)</span></label><br> <label
-                        id="oldWarning" style="color: red"></label> <input
+                        id="oldWarning" style="color: red; display: block;"></label> <input
                         class="form-control" id="old" name="old" type="password">
                 </div>
                 <div class="form-group ">
                     <label style="line-height: 2">Mật khẩu mới <span style="color: red;">(*)</span></label><br> <label
-                        id="new1Warning" style="color: red"></label> <input
+                        id="new1Warning" style="color: red; display: block;"></label> <input
                         class="form-control" id="new1" name="new1" type="password">
                 </div>
                 <div class="form-group ">
                     <label style="line-height: 2">Xác nhận lại mật khẩu mới <span style="color: red;">(*)</span></label><br>
-                    <label id="new2Warning" style="color: red"></label> <input
+                    <label id="new2Warning" style="color: red; display: block;"></label> <input
                         class="form-control" id="new2" name="new2" type="password">
                 </div>
             </div>

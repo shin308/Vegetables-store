@@ -144,43 +144,43 @@ body {
 
 				<div class="form-group">
 					<p>Email: <span style="color: red;">(*)</span></p>
-					<input type="email" th:field="*{email}" class="form-control" placeholder="Email" autofocus="true" required="required" />
+					<input type="email" th:field="*{email}" class="form-control" placeholder="Email" autofocus="true" />
 					<div class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
 				</div>
 
 				<div class="form-group">
 					<p>Mật khẩu: <span style="color: red;">(*)</span></p>
-					<input type="password" th:field="*{password}" class="form-control" required="required" placeholder="Mật khẩu" />
+					<input type="password" th:field="*{password}" class="form-control" placeholder="Mật khẩu" />
 					<div class="error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
 				</div>
 
 				<div class="form-group">
 					<p>Nhắc lại mật khẩu: <span style="color: red;">(*)</span></p>
-					<input type="password" th:field="*{confirmPassword}" class="form-control" placeholder="Nhắc lại mật khẩu" required="required" />
+					<input type="password" th:field="*{confirmPassword}" class="form-control" placeholder="Nhắc lại mật khẩu" />
 					<div class="error" th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"></div>
 				</div>
 
 				<div class="form-group">
 					<p>Tên: <span style="color: red;">(*)</span></p>
-					<input type="text" th:field="*{firstName}" class="form-control" placeholder="Tên" required="required" />
+					<input type="text" th:field="*{firstName}" class="form-control" placeholder="Tên" />
 					<div class="error" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></div>
 				</div>
 
 				<div class="form-group">
 					<p>Họ: <span style="color: red;">(*)</span></p>
-					<input type="text" th:field="*{lastName}" class="form-control" placeholder="Họ" required="required" />
+					<input type="text" th:field="*{lastName}" class="form-control" placeholder="Họ" />
 					<div class="error" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></div>
 				</div>
 
 				<div class="form-group">
 					<p>SĐT: <span style="color: red;">(*)</span></p>
-					<input type="number" th:field="*{phone}" class="form-control" placeholder="Số điện thoại" required="required" />
+					<input type="number" th:field="*{phone}" class="form-control" placeholder="Số điện thoại" />
 					<div class="error" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></div>
 				</div>
 
 				<div class="form-group">
 					<p>Địa chỉ: <span style="color: red;">(*)</span></p>
-					<input type="text" th:field="*{address}" class="form-control" placeholder="Địa chỉ" required="required" />
+					<input type="text" th:field="*{address}" class="form-control" placeholder="Địa chỉ" />
 					<div class="error" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></div>
 				</div>
 

@@ -28,17 +28,18 @@ $(document).ready(function() {
 					  taiKhoanRow +='</td>' +
 					                  '<td width="0%">'+'<input type="hidden" id="idTaiKhoan" value=' + taiKhoan.id + '>'+ '</td>'+
 //					                  '<td><button class="btn btn-primary btnCapNhat" >Cập nhật</button></td>' + 
-					                  '<td><button class="btn btn-danger btnXoa" >Xóa</button></td>';			;				                  
-					$('.taiKhoanTable tbody').append(taiKhoanRow);
+					                  '<td><button class="btn btn-danger btnXoa" >Xóa</button></td>' +
+					                  '</tr>';
+					$('.taiKhoanTable tbody.list').append(taiKhoanRow);
 
 				});
-								
-				if(result.totalPages > 1 ){
+
+				if(result.totalPages >= 1 ){
 					for(var numberPage = 1; numberPage <= result.totalPages; numberPage++) {
-						var li = '<li class="page-item "><a class="pageNumber">'+numberPage+'</a></li>';
+						var li = '<li class="page-item"><a class="pageNumber page-link">'+numberPage+'</a></li>';
 					    $('.pagination').append(li);
-					};				
-					
+					};
+
 					// active page pagination
 			    	$(".pageNumber").each(function(index){	
 			    		if($(this).text() == page){
@@ -137,10 +138,20 @@ $(document).ready(function() {
     // reset table after post, put, filter
     function resetData(){   	
     	var page = $('li.active').children().text();
+    	console.log("page: "+ page);
     	$('.taiKhoanTable tbody tr').remove();
     	$('.pagination li').remove();
         ajaxGet(page);
     };
+
+    // event khi click vào phân trang Sản phẩm
+    	$(document).on('click', '.pageNumber', function (event){
+    		event.preventDefault();
+    		var page = $(this).text();
+        	$('.taiKhoanTable tbody tr').remove();
+        	$('.pagination li').remove();
+        	ajaxGet(page);
+    	});
     
     (function ($) {
         $.fn.serializeFormJSON = function () {
@@ -168,4 +179,5 @@ $(document).ready(function() {
             elements[0].parentNode.removeChild(elements[0]);
         }
     }
+
 });

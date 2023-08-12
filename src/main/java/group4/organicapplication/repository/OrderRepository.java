@@ -45,13 +45,13 @@ public interface OrderRepository extends JpaRepository<Orders, Long>, QuerydslPr
     )
     public List<Object> getOrderByMonthAndYear();
 
-    @Query(value = "SELECT DATE_FORMAT(order.receiveDay, '%Y') as year, "
-            + " SUM(purOrder.totalAmount) as total "
-            + " FROM Orders order, PurchaseOrder as purOrder"
-            + " WHERE order.id = purOrder.order.id and order.orderStatus = 'Hoàn thành'"
-            + " GROUP BY DATE_FORMAT(order.receiveDay, '%Y')"
-            + " ORDER BY year asc"
-
-    )
-    public List<Object> getOrderByYear();
+//    @Query(value = "SELECT DATE_FORMAT(order.receiveDay, '%Y') as year, "
+//            + " SUM(purOrder.totalAmount) as total "
+//            + " FROM Orders order, PurchaseOrder as purOrder"
+//            + " WHERE order.id = purOrder.order.id and order.orderStatus = 'Hoàn thành'"
+//            + " GROUP BY DATE_FORMAT(order.receiveDay, '%Y')"
+//            + " ORDER BY year asc"
+//
+//    )
+//    public List<Object> getOrderByYear();
 }

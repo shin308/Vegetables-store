@@ -15,6 +15,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @RestController
@@ -47,30 +48,34 @@ public class AccountApi {
             result.rejectValue("confirmPassword", "error.confirmPassword","Nhắc lại mật khẩu không đúng");
         }
 
-        if(dto.getPassword().length() == 0){
+        if(dto.getPassword().trim().length() == 0){
             result.rejectValue("password", "error.password", "Không được để trống mật khẩu");
         }
         else if(dto.getPassword().length() < 8 || dto.getPassword().length() > 32){
             result.rejectValue("password", "error.password", "Mật khẩu phải dài từ 8 đến 32 ký tự");
         }
 
-        if(dto.getEmail().length() == 0){
+        Pattern pattern = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+        if(dto.getEmail().trim().length() == 0){
             result.rejectValue("email", "error.email", "Không được để trống email");
+        }else if(!(pattern.matcher(dto.getEmail()).matches())){
+            result.rejectValue("email", "error.email", "Địa chỉ email không hợp lệ");
         }
-        if(dto.getFirstName().length() == 0){
+
+        if(dto.getFirstName().trim().length() == 0){
             result.rejectValue("firstName", "error.firstName", "Không được để trống tên");
         }
-        if(dto.getLastName().length() == 0){
+        if(dto.getLastName().trim().length() == 0){
             result.rejectValue("lastName", "error.lastName", "Không được để trống họ");
         }
-        if(dto.getAddress().length() == 0){
+        if(dto.getAddress().trim().length() == 0){
             result.rejectValue("address", "error.address", "Không được để trống địa chỉ");
         }
-        if(dto.getPhone().length() == 0){
+        if(dto.getPhone().trim().length() == 0){
             result.rejectValue("phone", "error.phone", "Không được để trống số điện thoại");
         }
-        else if(dto.getPhone().length() < 9 || dto.getPhone().length() > 10){
-            result.rejectValue("phone", "error.phone", "Hãy nhập số điện thoại từ 9-10 số");
+        else if(dto.getPhone().trim().length() != 10){
+            result.rejectValue("phone", "error.phone", "Hãy nhập đúng số điện thoại");
         }
 
         if (result.hasErrors()) {

@@ -146,7 +146,7 @@
 							<!--                            <li><a class="dropdown-item" href="#">Sửa thông tin cá nhân</a></li>-->
 							<!--                            <li><a class="dropdown-item" href="#">Đổi mật khẩu</a></li>-->
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a></li>
+                            <li><a id="logout" class="dropdown-item" th:href="@{/logout}">Đăng xuất</a></li>
                         </ul>
 
 					</div>
@@ -220,6 +220,11 @@
 	let limit = 10;
 	let list = document.querySelectorAll('.list .item');
 
+	document.getElementById("logout").addEventListener("click", alertLogout);
+	function alertLogout(){
+		alert("Bạn đã đăng xuất thành công!!!");
+	}
+
 	function loadItem() {
 		let beginGet = limit * (thisPage - 1);
 		let endGet = limit * thisPage - 1;
@@ -235,6 +240,7 @@
 		listPage();
 
 	}
+
 	loadItem();
 	function listPage() {
 		let count = Math.ceil(list.length / limit);

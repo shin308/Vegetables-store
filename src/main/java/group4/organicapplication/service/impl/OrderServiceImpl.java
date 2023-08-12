@@ -51,7 +51,7 @@ public class OrderServiceImpl implements OrderService {
             builder.and(QOrders.orders.orderStatus.eq(trangThaiDon));
         }
 
-        return orderRepository.findAll(builder, PageRequest.of(page - 1, 6));
+        return orderRepository.findAll(builder, PageRequest.of(page - 1, 3));
     }
 
     @Override
@@ -111,8 +111,8 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.getOrderByMonthAndYear();
     }
 
-    @Override
-    public List<Object> getOrderByYear(){
-        return orderRepository.getOrderByYear();
-    }
+//    @Override
+//    public List<Object> getOrderByYear(){
+//        return orderRepository.getOrderByYear();
+//    }
 }

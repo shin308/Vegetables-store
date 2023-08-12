@@ -5,32 +5,53 @@ function changeInformation()
 	var phone = document.getElementById("phone").value;
 	var address = document.getElementById("address").value;
 	var flag = 0;
-	if(firstName.length == 0)
+	if(firstName === null || firstName.match(/^ *$/) !== null)
 	{
 		flag = 1;
+		document.getElementById("firstNameWarning").style.display = "block";
 		document.getElementById("firstNameWarning").innerHTML = "Tên không được để trống";
+	}else{
+	    document.getElementById("firstNameWarning").style.display = "none";
 	}
-	if(lastName.length == 0)
+
+	if(lastName === null || lastName.match(/^ *$/) !== null){
+    	flag = 1;
+    	document.getElementById("lastNameWarning").style.display = "block";
+    	document.getElementById("lastNameWarning").innerHTML = "Họ không được để trống";
+    }else{
+        document.getElementById("lastNameWarning").style.display = "none";
+    }
+
+//	if(phone === null || phone.match(/^ *$/) !== null)
+//	{
+//		flag = 1;
+//		document.getElementById("phoneWarning").innerHTML = "Số điện thoại không được để trống";
+//	}else{
+//        document.getElementById("phoneWarning").remove();
+//    }
+
+	if(address === null || address.match(/^ *$/) !== null){
+		flag = 1;
+		document.getElementById("addressWarning").style.display = "block";
+		document.getElementById("addressWarning").innerHTML = "Địa chỉ không được để trống";	
+	}else{
+        document.getElementById("addressWarning").style.display = "none";
+    }
+
+	var pat = "[0-9]+{9,10}";
+	if(phone === null || phone.match(/^ *$/) !== null)
     	{
     		flag = 1;
-    		document.getElementById("lastNameWarning").innerHTML = "Họ không được để trống";
-    	}
-	if(phone.length == 0)
-	{
+    		document.getElementById("phoneWarning").style.display = "block";
+    		document.getElementById("phoneWarning").innerHTML = "Số điện thoại không được để trống";
+    } else if(!/^([0-9]{10})$/.test(phone)){
 		flag = 1;
-		document.getElementById("phoneWarning").innerHTML = "Số điện thoại không được để trống";
+		document.getElementById("phoneWarning").style.display = "block";
+		document.getElementById("phoneWarning").innerHTML = "Hãy nhập đúng số điện thoại";
+	}else{
+	    document.getElementById("phoneWarning").style.display = "none";
 	}
-	if(address.length == 0)
-	{
-		flag = 1;
-		document.getElementById("addressWarning").innerHTML = "Địa chỉ không được để trống";	
-	}
-	var pat = "[0-9]+{9,10}"
-	if(!/^([0-9]{9,10})$/.test(phone))
-	{
-		flag = 1;
-		document.getElementById("phoneWarning").innerHTML = "Hãy nhập số điện thoại từ 9-10 số";
-	}
+
 	if(flag == 1)
 	{
 		return;

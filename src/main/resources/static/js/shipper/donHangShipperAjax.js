@@ -14,20 +14,30 @@ $(document).ready(function() {
 				$.each(result.content, function(i, orders){
 					// tính giá trị đơn hàng\
 					var sum = 0;
+
 					var check = orders.orderStatus == "Hoàn thành" || orders.orderStatus == "Chờ duyệt";
 					if(check){
 						$.each(orders.orderDetailList, function(i, details){
-							sum += details.quantity;
+							sum += details.totalAmount;
 						});
 					} else {
 						$.each(orders.orderDetailList, function(i, details){
-							sum += details.quantity * details.totalAmount;
+							sum += details.totalAmount;
 						});
 					}
+					//format currency
+                    sum = sum.toLocaleString('it-IT', {style : 'currency', currency : 'VND'});
+
+					var receiveUser;
+                    if(orders.user != null){
+                        receiveUser = orders.user.firstName;
+                    }else{
+                        receiveUser = orders.email;
+                    }
 
 					var donHangRow = '<tr class="item">' +
 					                  '<td>' + orders.id+ '</td>' +
-					                  '<td>' + orders.user + '</td>' +
+					                  '<td>' + receiveUser + '</td>' +
 					                  '<td>' + orders.orderStatus + '</td>' +
 					                  '<td>' + sum + '</td>' +
 					                  '<td>' + orders.orderDay + '</td>' +
@@ -48,9 +58,9 @@ $(document).ready(function() {
 					});
 				});
 
-				if(result.totalPages > 1 ){
+				if(result.totalPages >= 1 ){
 					for(var numberPage = 1; numberPage <= result.totalPages; numberPage++) {
-						var li = '<li class="page-item "><a class="pageNumber">'+numberPage+'</a></li>';
+						var li = '<li class="page-item "><a class="pageNumber page-link">'+numberPage+'</a></li>';
 					    $('.pagination').append(li);
 					};
 
@@ -125,7 +135,7 @@ $(document).ready(function() {
 
     // event khi click vào phân trang Đơn hàng
 	$(document).on('click', '.pageNumber', function (event){
-//		event.preventDefault();
+		event.preventDefault();
 		var page = $(this).text();
     	$('.donHangTable tbody tr').remove();
     	$('.pagination li').remove();
@@ -174,11 +184,12 @@ $(document).ready(function() {
 			// thêm bảng:
 			var sum = 0; // tổng giá trị đơn
 			var stt = 1;
+
 			$.each(order.orderDetailList, function(i, chiTiet){
 				var chiTietRow = '<tr>' +
 				'<td>' + stt + '</td>' +
                 '<td>' + chiTiet.product.productName + '</td>' +
-                '<td>' + chiTiet.totalAmount + '</td>'+
+                '<td>' + chiTiet.totalAmount.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}) + '</td>'+
                 '<td>' + chiTiet.quantity + '</td>';
 
 				if(check){
@@ -192,6 +203,8 @@ $(document).ready(function() {
 				$('.chiTietTable tbody').append(chiTietRow);
                 stt++;
 	    	  });
+
+                sum = sum.toLocaleString('it-IT', {style : 'currency', currency : 'VND'});
 
 			$("#tongTien").text("Tổng : "+ sum);
 		});

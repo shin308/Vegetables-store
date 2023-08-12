@@ -133,12 +133,9 @@
         <div id="search" class="col-5">
             <form class="d-flex" role="search" onsubmit="searchProduct()">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
-                       style="height:50px;" name="searchName" id="searchName">
-
-                <button class="btn btn-success" type="button" onclick="searchProduct()"
-                        style=" margin-left:-100px; height:45px; width:87px; margin-top:3px; background-color:#8FC742; border:0;">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                </button>
+                       name="searchName" id="searchName">
+                <button style="background-color: #5CB85C; color:white;" class="btn btn-outline-success border-0"
+                        type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
             </form>
         </div>
         <div class="col-2" id="dropdownSupplier">
@@ -177,17 +174,17 @@
         <th:block th:each="product:${products}">
             <tr class="item">
                 <td>[[${product.productID}]]</td>
-                <td><img th:src="@{${product.getPhotosImagePath}}" height="70" width="70" title="ảnh"></img></td>
+                <td><img th:src="@{${product.getPhotosImagePath}}" height="70" width="70" title="ảnh"></td>
                 <td>[[${product.productName}]]</td>
                 <td>[[${product.unit}]]</td>
                 <td>[[${product.quantity}]]</td>
                 <td>[[${product.price}]] ₫</td>
                 <td>
                     <a th:href="@{'/admin/productInfo/' + ${product.productID}}">
-                        <button type="button" class="btn btn-secondary">Xem</button>
+                        <button type="button" class="btn btn-outline-secondary"><i class="fa-solid fa-file-invoice"></i></button>
                     </a>
-                    <button type="button" class="btn btn-primary" th:onclick="'openEdit(' + ${product.productID} + ')'">Sửa</button>
-                    <button type="button" class="btn btn-danger" th:onclick="'deleteProduct(' + ${product.productID} + ')'">Xóa</button>
+                    <button type="button" class="btn btn-outline-primary" th:onclick="'openEdit(' + ${product.productID} + ')'"><i class="fa-solid fa-pen-to-square"></i></button>
+                    <button type="button" class="btn btn-outline-danger" th:onclick="'deleteProduct(' + ${product.productID} + ')'"><i class="fa-solid fa-trash-can"></i></button>
                 </td>
             </tr>
         </th:block>
@@ -260,7 +257,7 @@
         </h6>
         <form style="padding:10px 30px;" action="/admin/product/create" method="post" enctype="multipart/form-data">
             <div class="image form-floating mb-3" id="imageNewCon" style="display: flex;">
-                <img class="border" src="" alt="ảnh" width="100" height="100" >
+                <img class="border" src="/images/imageNull.png" alt="ảnh" width="100" height="100" >
                 <input type="file" id="imageNew" name="imageNew" style="margin: 70px 10px 0 10px;" accept="image/png, image/jpeg">
             </div>
             <div class="form-floating mb-3">

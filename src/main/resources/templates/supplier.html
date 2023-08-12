@@ -146,22 +146,22 @@
     <table class="table text-center align-middle border">
         <thead class="table-secondary">
         <tr>
-            <th scope="col-1">Mã nhà cung cấp</th>
-            <th scope="col-2">Tên nhà cung cấp</th>
-            <th scope="col-5">Số điện thoại</th>
-            <th scope="col-1">Địa chỉ</th>
-            <th scope="col-2">Chức năng</th>
+            <th class="col-2">Mã nhà cung cấp</th>
+            <th class="col-4">Tên nhà cung cấp</th>
+            <th class="col-1">Số điện thoại</th>
+            <th class="col-3">Địa chỉ</th>
+            <th class="col-2">Chức năng</th>
         </tr>
         </thead>
         <tbody class="list">
         <tr class="item" th:each="supplier : ${suppliers}">
             <td th:text="${supplier.supplierID}"></td>
             <td th:text="${supplier.supplierName}"></td>
-            <td th:text="${supplier.address}"></td>
             <td th:text="${supplier.phone}"></td>
+            <td th:text="${supplier.address}"></td>
             <td>
-                <button type="button" class="btn btn-primary" th:onclick="'openEdit(' + ${supplier.supplierID} + ')'">Sửa</button>
-                <button type="button" class="btn btn-danger" th:onclick="'deleteSupplier(' + ${supplier.supplierID} + ')'">Xoá</button>
+                <button type="button" class="btn btn-outline-primary" th:onclick="'openEdit(' + ${supplier.supplierID} + ')'"><i class="fa-solid fa-pen-to-square"></i></button>
+                <button type="button" class="btn btn-outline-danger" th:onclick="'deleteSupplier(' + ${supplier.supplierID} + ')'"><i class="fa-solid fa-trash-can"></i></button>
             </td>
         </tr>
         </tbody>

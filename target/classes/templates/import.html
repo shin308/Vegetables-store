@@ -36,10 +36,10 @@
     #view,
     #addNew {
         position: absolute;
+        z-index: 2000;
         background-color: rgba(0, 0, 0, 0.5);
         display: none;
         width: 100%;
-        height: 100%;
         justify-content: center;
         align-items: center;
         display: none;
@@ -130,15 +130,11 @@
         <div class="col-2" id="manage">
             <h4 style="color: #5CB85C;">Quản lý nhập hàng</h4>
         </div>
-        <div id="search" class="col-5">
+        <div class="col-5" id="search">
             <form class="d-flex" role="search" onsubmit="searchProduct()">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
-                       style="height:50px;" name="searchName" id="searchName">
-
-                <button class="btn btn-success" type="button" onclick="searchProduct()"
-                        style=" margin-left:-100px; height:45px; width:87px; margin-top:3px; background-color:#8FC742; border:0;">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                </button>
+                <input id="searchName" class="form-control me-2" type="search" placeholder="Tìm đơn nhập hàng..." aria-label="Search">
+                <button style="background-color: #5CB85C; color:white;" class="btn btn-outline-success border-0" onclick="searchProduct()"
+                        type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
             </form>
         </div>
         <div class="col-2" id="dropdownSupplier">
@@ -284,38 +280,43 @@
 </div>
 
 
-<div id="addNew">
+<div id="addNew" class="my-5">
     <div style="background-color: white; border-radius:10px;" class="shadow-lg w-50 mt-5">
         <form action="/admin/import/create" class="form-new" method="post" style="padding: 20px" enctype="multipart/form-data">
             <h6 style="height: 50px; background-color:black; color:white; padding:15px; border-radius:10px 10px 0 0;">
                 Thêm đơn nhập hàng
             </h6>
-            <div class="border border-secondary rounded p-2">
-                <div class="form-group row">
-                    <label class="col-sm-4 col-form-label font-weight-bold">Tên sản phẩm:</label>
-                    <div class="col-sm-8">
+            <div class="border border-secondary rounded p-3">
+                <div class="row image form-floating" id="imageNewCon" style="height: 100px;">
+                    <div class="col-sm-3">
+                        <img class="border" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAZlBMVEXv8PL6+/1/ipDz9Pbv7/Dt8PFueYB5g4n2+fzn6eyAiJB8ho16h4+Ai5Ht7vD19felq69zf4bBxsjS19l1gYTm6+yFjpSZnqKYoaR3hId3gYrh4eWytruOlZmUmqBwfILFy8yqsLTvp419AAAEDklEQVR4nO3b63aiMBSG4ZAQwzkqHqptR3v/NzkJtGptcIo6unfW986PWWuolsfEAA6KJPbEs3fgvwch/yDkH4T8g5B/EPIPQv5ByD8I+Qch/yDkH4T8g5B/F4TWKi5Ze5VQCT4pCCEkH4QQ0g9CCOkHIYT0gxBC+kEIIf0ghJB+EEJIPwghpB+EENIPQgjpByGE9IMQQvpBCCH9IISQfhBCSD8IIaQfhBDS75FCrW/a1SsfjjG8mzDVrvSWuicQoiEpdD+fJNntuZ0SaiTxUWOo15N7tB7/XnyIUDf2xZjNZmNuyT98+zJ2CB8kVLksX0Uq9I29VjIf+0Z80CzNZaX0jUcLv7deOPJZHicc+5BgTpiOfAgzYVnkYx8CIYS/DMKT+hVXh48JMQi1sCLPhQ0vmVEIs7d6Z97bLLg1BmH2ZyaLSu7mNrQ1AqGaz4qikLWc5KFfEoFQ/KkK6du+hQYxBuGqqjth9RHrGL5XshfGOob2bSu7aTppYx3DxjhhXZt1Etoag9DmcmG2k2kWvNKNQahV0s73eRLvOY03Wjt0IR+H8FLMhGr8h5KMhKoRqp2GT68vxEjYCNua2TR4SLgQH6EWWWuk9MShz87S0GrDSJh4oKxn0ywNE7t/VfZsKx+hbRelu0SS9WI6cDXvP85Qr/OMqdAB+/NrWZvB5UarvD6/EOYitO1GylNiYBjdCOarH9f6LIRa2+49eMgtN+n5oqLdTy1X/kJqts/E8RVgIUyPU/SzxTRwFprqsnQj7BajeXJcVTkIm8wBi2/C6vy4qN17sFlUlRdKN1GPWzkIk3ZRnAk98fuCkqrl10T+HEUuQv1zivYMf1zs56L/K7V5XZ1sNp6YshCmZ4vMQSjN9Hhw96uoqU+3H1ZU2kLVHyaKENGN0+dxsRvBrw/cDq/Abm/pC1XTAesw0BOTXqiWdfnjp3b7hLqwdCeZrRkawf696BFuFTXnI+j/9CsqVaHuhLadDfI6x8JfaailO2MNvgBzd9SkKuzG0K2iVWjXv42issuiGpjIWzeKlIV18DBxlvnIV8ER9FWLeeaEJO/F8LP0V9WlHB7noprNa6pjmP5S+A+/LGVB9I6h+wi709TIhdILR8ZQSHMMl/cCFsH//H6+UNxROPZXc5ulRNdSd1m4Dl41jc6sLc17hFPV3Ok+bzHwAfKThf29+smNt+v3O9XQXGn8zLrL9y0E1e9bPLPHCfUdvvd0zRNgDCGkH4QQ0g9CCOkHIYT0gxBC+kEIIf0ghJB+EEJIPwghpB+EENIPQgjpByGE9IMQQvpBCCH9IISQfhBCSD8IIaQfhBDSD8Jw1iouWXuVMJIg5B+E/IOQfxDyD0L+Qcg/CPkHIf8g5B+E/IOQfxDyL37hX1Wmjti02vgMAAAAAElFTkSuQmCC" alt="ảnh" width="100" height="100" >
+                    </div>
+                    <div class="col-sm-9">
+                        <input type="file" id="imageNew" name="imageNew" accept="image/png, image/jpeg">
+                    </div>
+                </div>
+                <div class="form-group row mb-2">
+                    <label class="col-sm-3 col-form-label font-weight-bold">Tên sản phẩm:</label>
+                    <div class="col-sm-9">
                         <input type="text"  class="form-control" id="productName" name="productName" required minlength="3" maxlength="100"/>
                     </div>
                 </div>
-                <div class="image form-floating mb-3 d-flex justify-content-center" id="imageNewCon" style="display: flex;">
-                    <img class="border" src="" alt="ảnh" width="100" height="100" >
-                    <input type="file" id="imageNew" name="imageNew" style="margin: 70px 10px 0 10px;" accept="image/png, image/jpeg">
-                </div>
-                <div class="form-group row">
-                    <label class="col-sm-4 col-form-label font-weight-bold">Ngày thêm:</label>
-                    <div class="col-sm-8">
+
+                <div class="form-group row mb-2">
+                    <label class="col-sm-3 col-form-label font-weight-bold">Ngày thêm:</label>
+                    <div class="col-sm-9">
                         <input type="date"  class="form-control" id="importDate" name="importDate" required/>
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label class="col-sm-4 col-form-label font-weight-bold">Hạn sử dụng:</label>
-                    <div class="col-sm-8">
+                <div class="form-group row mb-2">
+                    <label class="col-sm-3 col-form-label font-weight-bold">Hạn sử dụng:</label>
+                    <div class="col-sm-9">
                         <input type="date" onclick="checkDate()" id="expiry" name="expiry"  class="form-control" required/>
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label class="col-sm-4 col-form-label font-weight-bold">Loại sản phẩm:</label>
-                    <div class="col-sm-8">
+                <div class="form-group row mb-2">
+                    <label class="col-sm-3 col-form-label font-weight-bold">Loại sản phẩm:</label>
+                    <div class="col-sm-9">
                         <select  class="form-control" required id="category" name="category">
                             <th:block th:each ="cat : ${categories}">
                                 <option th:text="${cat.categoryName}" th:value="${cat.categoryID}"></option>
@@ -323,9 +324,9 @@
                         </select>
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label class="col-sm-4 col-form-label font-weight-bold">Nhà cung cấp:</label>
-                    <div class="col-sm-8">
+                <div class="form-group row mb-2">
+                    <label class="col-sm-3 col-form-label font-weight-bold">Nhà cung cấp:</label>
+                    <div class="col-sm-9">
                         <select  class="form-control" required id="supplier" name="supplier">
                             <th:block th:each ="sup : ${suppliers}">
                                 <option th:text="${sup.supplierName}" th:value="${sup.supplierID}"></option>
@@ -333,43 +334,43 @@
                         </select>
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label class="col-sm-4 col-form-label font-weight-bold">Giá thêm:</label>
-                    <div class="col-sm-8">
+                <div class="form-group row mb-2">
+                    <label class="col-sm-3 col-form-label font-weight-bold">Giá thêm:</label>
+                    <div class="col-sm-9">
                         <input type="number" name="importPrice" id="importPrice"  class="form-control" required min="0" />
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label class="col-sm-4 col-form-label font-weight-bold">Giá bán:</label>
-                    <div class="col-sm-8">
+                <div class="form-group row mb-2">
+                    <label class="col-sm-3 col-form-label font-weight-bold">Giá bán:</label>
+                    <div class="col-sm-9">
                         <input type="number" name="price" id="price"  class="form-control" required min="0" />
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label class="col-sm-4 col-form-label font-weight-bold">Khối lượng:</label>
-                    <div class="col-sm-8">
+                <div class="form-group row mb-2">
+                    <label class="col-sm-3 col-form-label font-weight-bold">Khối lượng:</label>
+                    <div class="col-sm-9">
                         <input type="text" name="unit" id="unit" class="form-control"  required>
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label class="col-sm-4 col-form-label font-weight-bold">Số lượng:</label>
-                    <div class="col-sm-8">
+                <div class="form-group row mb-2">
+                    <label class="col-sm-3 col-form-label font-weight-bold">Số lượng:</label>
+                    <div class="col-sm-9">
                         <input type="number" min="0" name="quantity" id="quantity"  class="form-control" required/>
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label class="col-sm-4 col-form-label font-weight-bold">Tổng tiền:</label>
-                    <div class="col-sm-8">
+                <div class="form-group row mb-2">
+                    <label class="col-sm-3 col-form-label font-weight-bold">Tổng tiền:</label>
+                    <div class="col-sm-9">
                         <input type="number" min="0" name="totalAmount" id="totalAmount"  class="form-control" required/>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-sm-4 col-form-label font-weight-bold">Mô tả:</label>
-                    <div class="col-sm-8">
-                        <textarea maxlength="300" name="description" id="description"  cols="40" rows="2" placeholder="Mô tả"></textarea>
+                    <label class="col-sm-3 col-form-label font-weight-bold">Mô tả:</label>
+                    <div class="col-sm-9">
+                        <textarea class="w-100 p-2" name="description" id="description" rows="3" placeholder="Mô tả"></textarea>
                     </div>
                 </div>
-                <div style="float: right; margin-top:20px;">
+                <div class="text-end mt-2">
                     <button type="submit" class="btn btn-primary">Lưu</button>
                     <button type="button" class="btn btn-secondary" onclick="closeAddNew()">Huỷ</button>
                 </div>

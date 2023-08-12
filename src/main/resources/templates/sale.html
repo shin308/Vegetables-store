@@ -15,43 +15,42 @@
     ul>li {
         margin: 0 10px;
     }
-
-    header {
-        position: fixed;
-        z-index: 2;
-        width: 100%;
-    }
-    footer {
-        position: fixed;
-        z-index: 2;
-        width: 100%;
-    }
-
-    #listProduct {
-        margin: 0px 70px 100px 70px;
-        border-radius: 10px;
-        display: grid;
-        grid-template-columns: auto auto auto;
-        padding: 30px;
-        gap: 50px;
-    }
     .item {
         background-color: white;
         text-align: center;
-        border-radius: 5px;
-        border: 1px solid #8FC742;
-        height: 250px;
-        padding-top: 10px;
+        border-radius: 10px;
+        border: 1px solid #5CB85C;
+        margin: 0 5% 15px 5%;
+        padding: 15px;
+        max-width: 160px;
+        min-width: 160px;
     }
-
     .addCart {
-        width: 80%;
-        height: 50px;
+        width: 100%;
+        height: 35px;
         border: 0;
         border-radius: 5px;
-        background-color: #8FC742;
+        background-color: #5CB85C;
         color: white;
-        margin: 10px;
+    }
+    .listPage {
+        padding: 10px;
+        text-align: center;
+        list-style: none;
+        margin: 0 auto;
+    }
+
+    .listPage li {
+        background-color: white;
+        padding: 10px 20px;
+        display: inline-block;
+        margin: 0 10px;
+        cursor: pointer;
+    }
+
+    .listPage .active {
+        background-color: #5CB85C;
+        color: white;
     }
     .counter {
         display: flex;
@@ -60,9 +59,9 @@
     }
 
     .counter input {
-        width: 50px;
-        line-height: 30px;
-        font-size: 20px;
+        width: 30px;
+        line-height: 20px;
+        font-size: 15px;
         text-align: center;
         appearance: none;
         border: 0.5px solid gray;
@@ -70,7 +69,7 @@
 
     .counter span {
         display: block;
-        font-size: 25px;
+        font-size: 15px;
         padding: 0 10px;
         cursor: pointer;
         user-select: none;
@@ -79,24 +78,28 @@
         display: grid;
         grid-template-columns: auto auto;
     }
-    .row1 > h6{
+    .row1 > p{
         text-align: right;
     }
     .active {
         border: 0;
-        border-bottom: #8FC742 2px solid;
+        border-bottom: #5CB85C 2px solid;
+        color: black;
     }
 </style>
 
 <body>
-<header class="sticky top-0">
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid shadow-sm" style="height: 100px;">
+<nav class="navbar navbar-expand-lg bg-body-tertiary sticky-top shadow-sm">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02"
+                aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
             <a class="navbar-brand" th:href="@{/}"><img
                     src="https://img.freepik.com/premium-vector/organic-icon-100-percent-organic-product-label_349999-1003.jpg?w=2000"
-                    alt="brand_icon" width="150"></a>
-            <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                <ul class="navbar-nav">
+                    alt="brand_icon" width="100"></a>
+            <div class="collapse navbar-collapse ms-3" id="navbarTogglerDemo02">
+                <ul class="navbar-nav me-auto">
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/admin/product}">SẢN PHẨM</a>
                     </li>
@@ -123,7 +126,7 @@
                     </li>
                 </ul>
             </div>
-            <div class="dropdown me-5">
+            <div class="dropdown me-4">
                 <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Hi, <span th:text="${loggedInUser.lastName}"></span>
                     <span th:text="${loggedInUser.firstName}"></span>
@@ -137,46 +140,50 @@
         </div>
     </nav>
 
-</header>
-<div class="row" style="margin: 150px 0;">
-    <div class="col">
-        <div style="width: 80%;margin: 0 auto;">
+<div class="row px-5 py-4" >
+    <div class="col pt-2">
+        <div class="px-4 pb-3">
             <form class="d-flex" role="search" th:action="@{/admin/sale}">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
-                       style="height:50px;" name="searchProductName">
-                <button class="btn btn-success" type="submit"
-                        style=" margin-left:-100px; height:45px; width:87px; margin-top:3px; background-color:#8FC742; border:0;">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                </button>
+                <input class="form-control me-2" type="search" placeholder="Tìm sản phẩm..." aria-label="Search" name="searchProductName">
+                <button style="background-color: #5CB85C; color:white;" class="btn btn-outline-success border-0"
+                        type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
             </form>
         </div>
 
-        <div id="listProduct">
+        <div class="row list ms-1">
             <th:block th:each="product:${products}">
                 <div class="col item">
                     <a th:href="@{'/productInfo/' + ${product.productID}}">
-                        <img  th:src="@{${product.getPhotosImagePath}}" width="100px" height="100px">
+                        <img  th:src="@{${product.getPhotosImagePath}}" width="80px" height="80px">
                     </a>
                     <h6>[[${product.productName}]]</h6>
                     <div style="position: sticky; top:100%;">
-                        <span><span>[[${product.price}]] ₫</span> / <span>[[${product.unit}]]</span></span>
+                        <p><span>[[${product.price}]] ₫</span> / <span>[[${product.unit}]]</span></p>
                         <button class="addCart" th:attr="onclick=|addToCart('${product.productID}', '${product.productName}', 1, ${product.price},'${product.img}', ${product.quantity})|">Thêm vào giỏ</button>
                     </div>
                 </div>
             </th:block>
 
         </div>
-
+        <div style="width:100%; position:sticky; top:100%;">
+            <ul class="listPage">
+                <li class="active">1</li>
+                <li>2</li>
+                <li>3</li>
+            </ul>
+        </div>
 
     </div>
-    <div class="col me-5">
+    <div class="col">
+        <h4>Giỏ hàng</h4>
+        <hr>
         <table class="table text-center align-middle border">
             <thead>
             <tr>
                 <th scope="col-1">STT</th>
                 <th scope="col-1"></th>
-                <th scope="col-6">Tên sản phẩm</th>
-                <th scope="col-1">Số lượng</th>
+                <th scope="col-5">Tên sản phẩm</th>
+                <th scope="col-2">Số lượng</th>
                 <th scope="col-1">Giá bán</th>
                 <th scope="col-1">Thành tiền</th>
                 <th scope="col-1"></th>
@@ -203,39 +210,29 @@
             </tbody>
         </table>
 
-        <div style="padding: 20px 30px; border:#8FC742 1px solid;">
+        <div class="border px-4 pt-3">
 
             <div class="row1">
-                <h5>Tổng số lượng</h5>
-                <h6 th:text="${totalQuantity}" th:attr="id='totalQuantity'">3</h6>
+                <h6>Tổng số lượng</h6>
+                <p th:text="${totalQuantity}" th:attr="id='totalQuantity'">3</p>
             </div>
             <div class="row1">
-                <h5>Tạm tính</h5>
-                <h6 th:text="${totalPrice}+ ' ₫'" th:attr="class='totalPrice'">30000</h6>
+                <h6>Tạm tính</h6>
+                <p th:text="${totalPrice}+ ' ₫'" th:attr="class='totalPrice'">30000</p>
             </div>
             <hr>
             <div class="row1">
-                <h5>Thành tiền</h5>
-                <h6 th:text="${totalPrice}+ ' ₫'" th:attr="class='totalPrice'">30000</h6>
+                <h6>Thành tiền</h6>
+                <p th:text="${totalPrice}+ ' ₫'" th:attr="class='totalPrice'">30000</p>
             </div>
         </div>
 
 
-        <button class="btn btn-success mt-5 w-100" onclick="purchaseOrder()">Thanh toán</button>
+        <button style="background-color: #5CB85C;" class="btn btn-success mt-5 w-100 border-0" onclick="purchaseOrder()">Thanh toán</button>
     </div>
 </div>
 
 
-<footer class="bottom-0 end-0  shadow-lg p-4"
-        style="height: 70px; width:100%; background-color:black; color:white;">
-    <div class="footer-bottom clearfix">
-        <div class="container">
-            <div class="row">
-                &copy; 2023 - Vegetables Store by Group 4
-            </div>
-        </div>
-    </div>
-</footer>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
@@ -537,6 +534,39 @@
 
     }
 
+
+    <!--Phân trang-->
+    let thisPage = 1;
+    let limit = 9;
+    let list = document.querySelectorAll('.list .item');
+
+    function loadItem() {
+        let beginGet = limit * (thisPage - 1);
+        let endGet = limit * thisPage - 1;
+        list.forEach((item, key) => {
+            if (key >= beginGet && key <= endGet) { item.style.display = 'block'; } else { item.style.display = 'none'; }
+        })
+        listPage();
+    } loadItem(); function listPage() {
+        let count = Math.ceil(list.length / limit);
+        document.querySelector('.listPage').innerHTML = ''; if (thisPage != 1) {
+            let prev = document.createElement('li');
+            prev.innerHTML = '<i class="fa-solid fa-angles-left"></i>'; prev.setAttribute('onclick', "changePage(" + (thisPage - 1)
+                + ")"); document.querySelector('.listPage').appendChild(prev);
+        } for (i = 1; i <= count; i++) {
+            let
+                newPage = document.createElement('li'); newPage.innerText = i; if (i == thisPage) { newPage.classList.add('active'); }
+            newPage.setAttribute('onclick', "changePage(" + i + ")"); document.querySelector('.listPage').appendChild(newPage);
+        }
+        if (thisPage != count) {
+            let next = document.createElement('li');
+            next.innerHTML = '<i class="fa-solid fa-angles-right"></i>'; next.setAttribute('onclick', "changePage(" + (thisPage +
+                1) + ")"); document.querySelector('.listPage').appendChild(next);
+        }
+    } function changePage(i) {
+        thisPage = i;
+        loadItem();
+    }
 </script>
 
 </html>

@@ -119,15 +119,15 @@
         <div class="mb-3 row">
             <label for="staticName" class="col-3 col-form-label">Họ tên:<span style="color:red">*</span></label>
             <div class="col-9">
-                <input type="text"  id="staticName" th:value="${user.lastName} +' '+ ${user.firstName}" required pattern="[A-Za-z]*" title="Vui lòng nhập tên đúng định dạng!">
-                <div id="nameError" class="error-message">Tên không hợp lệ. Tên không được chứa ký tự đặc biệt hoặc số</div>
+                <input type="text"  id="staticName" th:value="${user.lastName} +' '+ ${user.firstName}" title="Vui lòng nhập tên đúng định dạng!">
+                <div id="nameError" class="error-message">Tên không hợp lệ. Tên không được để trống hoặc chứa ký tự đặc biệt hoặc số</div>
             </div>
 
         </div>
         <div class="mb-3 row">
             <label for="staticPhone" class="col-3 col-form-label">Số điện thoại:<span style="color:red">*</span></label>
             <div class="col-9">
-                <input type="tel" id="staticPhone" th:field="${user.phone}">
+                <input type="tel" id="staticPhone" th:field="${user.phone}" title="Vui lòng nhập số điện thoại đúng 10 số!">
                 <div id="phoneError" class="error-message">Số điện thoại không hợp lệ. Vui lòng nhập 10 chữ số</div>
             </div>
         </div>
@@ -135,16 +135,16 @@
             <label for="staticEmail" class="col-3 col-form-label">Email:<span style="color:red">*</span></label>
             <div class="col-9">
                 <input type="email" id="staticEmail"
-                       th:field="${user.email}">
-                <div id="emailError" class="error-message">Email không hợp lệ</div>
+                       th:field="${user.email}" title="Vui lòng nhập email đúng định dạng!">
+                <div id="emailError" class="error-message">Email không hợp lệ hoặc không được để trống</div>
             </div>
         </div>
         <div class="mb-3 row">
             <label for="staticAddress" class="col-3 col-form-label">Địa chỉ giao hàng:<span style="color:red">*</span></label>
             <div class="col-9">
                 <input type="text" id="staticAddress"
-                       th:field="${user.address}">
-                <div id="addressError" class="error-message">Địa chỉ không hợp lệ. Địa chỉ không được chứa ký tự đặc biệt ngoại trừ dấu phẩy và dấu gạch ngang</div>
+                       th:field="${user.address}" title="Vui lòng nhập địa chỉ đúng định dạng!">
+                <div id="addressError" class="error-message">Địa chỉ không hợp lệ. Địa chỉ không được để trống hoặc chứa ký tự đặc biệt ngoại trừ dấu phẩy và dấu gạch ngang</div>
             </div>
         </div>
         <div class="mb-3 row">
@@ -228,7 +228,7 @@
 <script th:inline="javascript">
 
     function isValidEmail(email) {
-        var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+        var emailPattern = /^[a-zA-Z0-9._-]+@gmail\.com$/;
         return emailPattern.test(email);
     }
 
@@ -242,7 +242,7 @@
         return namePattern.test(name);
     }
     function isValidAddress(address) {
-        var addressPattern = /^[a-zA-Z0-9\s,-]+$/;
+        var addressPattern = /^[a-zA-Z0-9\s,-àáâãèéêìíòóôõùúưứừửứựÁÀÂÃÈÉÊÌÍÒÓÔÕÙÚƯỨỪỬỰỦÝỲỴỶỸđĐạẠảẢắẮằẰẳẲặẶẵẴếẾềỀệỆểỂịỊọỌốỐồỒổỔộỘớỚờỜợỢụỤủỦứỨừỪựỰửỬựỶỴỹỸ\s]+$/;
         return addressPattern.test(address);
     }
     async function purchaseOrder() {
@@ -251,30 +251,59 @@
 
         let cartItems = [[${cartItems}]];
 
-        console.log(cartItems)
-
         let inputNameDOM = document.getElementById("staticName")
         let inputPhoneDOM = document.getElementById("staticPhone")
         let inputEmailDOM = document.getElementById("staticEmail")
         let inputAddressDOM = document.getElementById("staticAddress")
         let inputNoteDOM = document.getElementById("inputNotes")
 
+        let nameError = document.getElementById("nameError")
+        let emailError = document.getElementById("emailError")
+        let phoneError = document.getElementById("phoneError")
+        let addressError = document.getElementById("addressError")
 
-        if(inputNameDOM.value == ""|| inputPhoneDOM.value=="" || inputEmailDOM.value=="" || inputAddressDOM.value== "") {
-            alert("Vui lòng không để trống")
-        }else if (!isValidEmail(inputEmailDOM.value)) {
-            alert("Email không hợp lệ");
-        } else if (!isValidPhoneNumber(inputPhoneDOM.value)) {
-            alert("Số điện thoại không hợp lệ. Vui lòng nhập 10 chữ số");
-        } else if (!isValidName(inputNameDOM.value)) {
-            alert("Tên không hợp lệ. Tên không được chứa ký tự đặc biệt hoặc số");
-        } else if (!isValidAddress(inputAddressDOM.value)) {
-            alert("Địa chỉ không hợp lệ. Địa chỉ không được chứa ký tự đặc biệt ngoại trừ dấu phẩy và dấu gạch ngang");
+
+        let isValid = true;
+
+        if (!isValidEmail(inputEmailDOM.value)) {
+            emailError.style.display = 'block'
+            isValid = false;
+        } else {
+            emailError.style.display = 'none'
+        }
+
+        if (!isValidPhoneNumber(inputPhoneDOM.value)) {
+            phoneError.style.display = 'block'
+            isValid = false;
         }else {
+            phoneError.style.display = 'none'
+        }
 
-            const confirmation = window.confirm("Bạn có chắc muốn đặt hàng?");
-            if (confirmation) {
-                console.log(inputNameDOM.value)
+        if (!isValidName(inputNameDOM.value)) {
+            nameError.style.display = 'block'
+            isValid = false;
+        }else {
+            nameError.style.display = 'none'
+        }
+        if (!isValidAddress(inputAddressDOM.value)) {
+            addressError.style.display = 'block'
+            isValid = false;
+        }else {
+            addressError.style.display = 'none'
+        }
+
+        if(isValid)
+        {
+            const result = await Swal.fire({
+                title: 'Xác nhận',
+                text: 'Bạn có chắc chắn muốn đặt hàng?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Đồng ý',
+                cancelButtonText: 'Hủy bỏ'
+            });
+
+            if (result.isConfirmed) {
 
                 let orderDetailList = [];
                 cartItems.forEach(item => {
@@ -297,7 +326,6 @@
                     orderDetailList: orderDetailList,
                 };
 
-                console.log(orderData)
 
                 try {
                     const response = await fetch('/purchase/place-order', {
@@ -331,14 +359,12 @@
                     console.error('Error:', error);
                 }
             }else {
-
             }
 
         }
 
 
     }
-
     async function sendEmail(email, name, orderDay, phone, address) {
         try {
             const response = await fetch('/purchase/sendEmail', {

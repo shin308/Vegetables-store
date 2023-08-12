@@ -187,9 +187,17 @@
   });
 
   async function cancelOrder(orderID) {
-    const confirmation = window.confirm("Bạn có chắc chắn muốn hủy đơn hàng?");
 
-    if (confirmation) {
+    const result = await Swal.fire({
+      title: 'Xác nhận',
+      text: 'Bạn có chắc chắn muốn hủy đơn hàng?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Đồng ý',
+      cancelButtonText: 'Hủy bỏ'
+    });
+
+    if (result.isConfirmed) {
       try {
         const response = await fetch(`/order/cancel/${orderID}`, {
           method: 'POST',

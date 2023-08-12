@@ -18,6 +18,7 @@ import com.querydsl.core.BooleanBuilder;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -26,6 +27,22 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private OrderDetailRepository orderDetailRepository;
+
+    @Override
+    public List<Orders> findByUserId(Long userId) {
+        return orderRepository.findByUserId(userId);
+    }
+
+
+    @Override
+    public void cancelOrder(Long orderID) {
+        Optional<Orders> optionalOrder = orderRepository.findById(orderID);
+        if (optionalOrder.isPresent()) {
+            Orders order = optionalOrder.get();
+            order.setOrderStatus("Đã bị hủy");
+            orderRepository.save(order);
+        }
+    }
 
     @Override
     public Orders placeOrder(Orders order, List<PurchaseOrder> purchaseOrders) {

@@ -15,6 +15,8 @@ public interface OrderRepository extends JpaRepository<Orders, Long>, QuerydslPr
 
     public int countByOrderStatus(String orderStatus);
 
+    List<Orders> findByUserId(Long userId);
+
     @Query(value = "SELECT DATE_FORMAT(order.receiveDay, '%d') as day, "
             + " DATE_FORMAT(order.receiveDay, '%U') as week, SUM(purOrder.totalAmount) as total "
             + " FROM Orders order, PurchaseOrder as purOrder"

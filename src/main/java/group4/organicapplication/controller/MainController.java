@@ -1,10 +1,7 @@
 package group4.organicapplication.controller;
 
 import group4.organicapplication.exception.CategoryNotFoundException;
-import group4.organicapplication.model.CartItem;
-import group4.organicapplication.model.Category;
-import group4.organicapplication.model.Product;
-import group4.organicapplication.model.User;
+import group4.organicapplication.model.*;
 import group4.organicapplication.service.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -35,7 +32,7 @@ public class MainController {
 
     @Autowired private CartService cartService;
 
-
+    @Autowired private OrderService orderService;
     @ModelAttribute("loggedInUser")
     public User loggedInUser(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -130,8 +127,16 @@ public class MainController {
 
     @GetMapping("/order_user")
     public String showOrderUserPage(Model model){
+
+        List<CartItem> cartItems = cartService.getCartItems();
+
         List<Category> categoryList = categoryService.listCategory();
         model.addAttribute(("categoryList"),categoryList);
+        List<Orders> orders = orderService.findByUserId(loggedInUser().getId());
+        model.addAttribute(("orders"),orders);
+
+        int totalQuantity = cartService.sumQuantity(cartItems);
+        model.addAttribute("totalQuantity", totalQuantity);
         return "order_user";
     }
 

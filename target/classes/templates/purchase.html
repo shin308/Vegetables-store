@@ -14,6 +14,11 @@
     label{
         font-weight: bold;
     }
+    .error-message {
+        color: red;
+        font-size: 12px;
+        display: none;
+    }
     #search {
         width: 40%;
     }
@@ -112,33 +117,38 @@
         <h4>Địa chỉ đặt hàng</h4>
         <hr>
         <div class="mb-3 row">
-            <label for="staticName" class="col-3 col-form-label">Họ tên</label>
+            <label for="staticName" class="col-3 col-form-label">Họ tên:<span style="color:red">*</span></label>
             <div class="col-9">
-                <input type="text"  id="staticName" th:value="${user.lastName} +' '+ ${user.firstName}">
+                <input type="text"  id="staticName" th:value="${user.lastName} +' '+ ${user.firstName}" required pattern="[A-Za-z]*" title="Vui lòng nhập tên đúng định dạng!">
+                <div id="nameError" class="error-message">Tên không hợp lệ. Tên không được chứa ký tự đặc biệt hoặc số</div>
             </div>
+
         </div>
         <div class="mb-3 row">
-            <label for="staticPhone" class="col-3 col-form-label">Số điện thoại</label>
+            <label for="staticPhone" class="col-3 col-form-label">Số điện thoại:<span style="color:red">*</span></label>
             <div class="col-9">
                 <input type="tel" id="staticPhone" th:field="${user.phone}">
+                <div id="phoneError" class="error-message">Số điện thoại không hợp lệ. Vui lòng nhập 10 chữ số</div>
             </div>
         </div>
         <div class="mb-3 row">
-            <label for="staticEmail" class="col-3 col-form-label">Email</label>
+            <label for="staticEmail" class="col-3 col-form-label">Email:<span style="color:red">*</span></label>
             <div class="col-9">
                 <input type="email" id="staticEmail"
                        th:field="${user.email}">
+                <div id="emailError" class="error-message">Email không hợp lệ</div>
             </div>
         </div>
         <div class="mb-3 row">
-            <label for="staticAddress" class="col-3 col-form-label">Địa chỉ</label>
+            <label for="staticAddress" class="col-3 col-form-label">Địa chỉ giao hàng:<span style="color:red">*</span></label>
             <div class="col-9">
                 <input type="text" id="staticAddress"
                        th:field="${user.address}">
+                <div id="addressError" class="error-message">Địa chỉ không hợp lệ. Địa chỉ không được chứa ký tự đặc biệt ngoại trừ dấu phẩy và dấu gạch ngang</div>
             </div>
         </div>
         <div class="mb-3 row">
-            <label for="inputNotes" class="col-3 col-form-label">Ghi chú</label>
+            <label for="inputNotes" class="col-3 col-form-label">Ghi chú:</label>
             <div class="col-9">
                 <textarea class="form-control" id="inputNotes" rows="3"></textarea>
             </div>
@@ -216,6 +226,25 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
 <script th:inline="javascript">
+
+    function isValidEmail(email) {
+        var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+        return emailPattern.test(email);
+    }
+
+    function isValidPhoneNumber(phoneNumber) {
+        var phonePattern = /^\d{10}$/;
+        return phonePattern.test(phoneNumber);
+    }
+
+    function isValidName(name) {
+        var namePattern = /^[\p{L}]+(?: [\p{L}]+)*$/u;
+        return namePattern.test(name);
+    }
+    function isValidAddress(address) {
+        var addressPattern = /^[a-zA-Z0-9\s,-]+$/;
+        return addressPattern.test(address);
+    }
     async function purchaseOrder() {
 
         const formattedTime = new Date(Date.now() + 7 * 60 * 60 * 1000).toISOString().slice(0, 16).replace('T', ' ');
@@ -231,64 +260,83 @@
         let inputNoteDOM = document.getElementById("inputNotes")
 
 
+        if(inputNameDOM.value == ""|| inputPhoneDOM.value=="" || inputEmailDOM.value=="" || inputAddressDOM.value== "") {
+            alert("Vui lòng không để trống")
+        }else if (!isValidEmail(inputEmailDOM.value)) {
+            alert("Email không hợp lệ");
+        } else if (!isValidPhoneNumber(inputPhoneDOM.value)) {
+            alert("Số điện thoại không hợp lệ. Vui lòng nhập 10 chữ số");
+        } else if (!isValidName(inputNameDOM.value)) {
+            alert("Tên không hợp lệ. Tên không được chứa ký tự đặc biệt hoặc số");
+        } else if (!isValidAddress(inputAddressDOM.value)) {
+            alert("Địa chỉ không hợp lệ. Địa chỉ không được chứa ký tự đặc biệt ngoại trừ dấu phẩy và dấu gạch ngang");
+        }else {
 
-        console.log(inputNameDOM.value)
+            const confirmation = window.confirm("Bạn có chắc muốn đặt hàng?");
+            if (confirmation) {
+                console.log(inputNameDOM.value)
 
-        let orderDetailList = [];
-        cartItems.forEach(item => {
-            const product = {
-                product: {productID: item.productId},
-                quantity: item.quantity,
-                totalAmount: item.totalPrice
-            };
-            orderDetailList.push(product);
-        });
-
-        const orderData = {
-            address: inputAddressDOM.value,
-            email: inputEmailDOM.value,
-            note: inputNoteDOM.value,
-            orderDay: formattedTime,
-            orderStatus: "Đang chờ giao",
-            totalPrice: [[${totalPrice}]] + 5000,
-            phone: inputPhoneDOM.value,
-            orderDetailList: orderDetailList,
-        };
-
-        console.log(orderData)
-
-        try {
-            const response = await fetch('/purchase/place-order', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(orderData)
-            });
-
-            if (response.ok) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Đặt hàng thành công!',
-                    toast: true,
-                    position: 'top-end',
-                    showConfirmButton: false,
-                    timer: 3000
+                let orderDetailList = [];
+                cartItems.forEach(item => {
+                    const product = {
+                        product: {productID: item.productId},
+                        quantity: item.quantity,
+                        totalAmount: item.totalPrice
+                    };
+                    orderDetailList.push(product);
                 });
 
-                setTimeout(function () {
-                    window.location.href = '/order_user';
-                }, 1000)
+                const orderData = {
+                    address: inputAddressDOM.value,
+                    email: inputEmailDOM.value,
+                    note: inputNoteDOM.value,
+                    orderDay: formattedTime,
+                    orderStatus: "Đang chờ giao",
+                    totalPrice: [[${totalPrice}]] + 5000,
+                    phone: inputPhoneDOM.value,
+                    orderDetailList: orderDetailList,
+                };
 
-                await sendEmail(inputEmailDOM.value, inputNameDOM.value, formattedTime, inputPhoneDOM.value,inputAddressDOM.value)
+                console.log(orderData)
 
-            } else {
-                console.error('Error:', response.statusText);
+                try {
+                    const response = await fetch('/purchase/place-order', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(orderData)
+                    });
+
+                    if (response.ok) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Đặt hàng thành công!',
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000
+                        });
+
+                        setTimeout(function () {
+                            window.location.href = '/order_user';
+                        }, 1000)
+
+                        await sendEmail(inputEmailDOM.value, inputNameDOM.value, formattedTime, inputPhoneDOM.value,inputAddressDOM.value)
+
+                    } else {
+                        console.error('Error:', response.statusText);
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                }
+            }else {
+
             }
 
-        } catch (error) {
-            console.error('Error:', error);
         }
+
+
     }
 
     async function sendEmail(email, name, orderDay, phone, address) {

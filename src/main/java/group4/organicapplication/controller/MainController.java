@@ -51,7 +51,7 @@ public class MainController {
         if (searchProductName != null && !searchProductName.isEmpty()) {
             productList = selectProductService.findProductByName(searchProductName);
         } else {
-            // Nếu không có tên để tìm kiếm, hiển thị tất cả nhà cung cấp
+            // Nếu không có tên để tìm kiếm, hiển thị tất cả sản phẩm
             productList = selectProductService.selectAll();
         }
         model.addAttribute("productList",productList);

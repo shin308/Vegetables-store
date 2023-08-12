@@ -119,7 +119,7 @@
         </thead>
         <tbody>
         <tr th:each="orderItem : ${order.orderDetailList}">
-          <th><img th:src="@{'/images/' + ${orderItem.product.img}} " width="50px" height="50px"></th>
+          <th><img th:src="@{${orderItem.product.getPhotosImagePath}}" width="50px" height="50px"></th>
           <td th:text="${orderItem.product.productName}"></td>
           <td th:text="'x ' + ${orderItem.quantity}"></td>
           <td class="text-center" th:text="${orderItem.totalAmount} + ' đ'"></td>

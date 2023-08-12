@@ -47,7 +47,7 @@ public class MainController {
 
     @GetMapping("/")
     public String showHomePage(@RequestParam(value = "searchProductName", required = false)String searchProductName,Model model){
-        List<Category> categoryList = categoryService.listAll();
+        List<Category> categoryList = categoryService.listCategory();
         model.addAttribute(("categoryList"),categoryList);
 
         List<Product> productList;
@@ -67,7 +67,7 @@ public class MainController {
 
     @GetMapping("/{categoryID}")
     public  String selectProductByCategory(@PathVariable("categoryID") Integer categoryID, Model model){
-        List<Category> categoryList = categoryService.listAll();
+        List<Category> categoryList = categoryService.listCategory();
         model.addAttribute(("categoryList"),categoryList);
 
         Category category = null;
@@ -102,7 +102,7 @@ public class MainController {
     public String showproductInfoUser(@PathVariable("productID") Integer productID, Model model){
         Product productInfo = productService.get(productID);
         model.addAttribute("productInfo",productInfo);
-        List<Category> categoryList = categoryService.listAll();
+        List<Category> categoryList = categoryService.listCategory();
         model.addAttribute(("categoryList"),categoryList);
 
         List<CartItem> cartItems = cartService.getCartItems();
@@ -130,7 +130,7 @@ public class MainController {
 
     @GetMapping("/order_user")
     public String showOrderUserPage(Model model){
-        List<Category> categoryList = categoryService.listAll();
+        List<Category> categoryList = categoryService.listCategory();
         model.addAttribute(("categoryList"),categoryList);
         return "order_user";
     }
@@ -138,7 +138,7 @@ public class MainController {
     @GetMapping("/cart")
     public String getCart(@RequestParam(value = "searchProductName", required = false)String searchProductName,Model model) {
         List<CartItem> cartItems = cartService.getCartItems();
-        List<Category> categoryList = categoryService.listAll();
+        List<Category> categoryList = categoryService.listCategory();
         model.addAttribute(("categoryList"),categoryList);
         List<Product> products;
         if (searchProductName != null && !searchProductName.isEmpty()) {

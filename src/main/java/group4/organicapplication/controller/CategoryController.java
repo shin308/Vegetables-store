@@ -31,14 +31,23 @@ public class CategoryController {
         if (searchCategory != null && !searchCategory.isEmpty()) {
             categoryList = service.findCategoryByName(searchCategory);
         } else {
-            // Nếu không có tên để tìm kiếm, hiển thị tất cả nhà cung cấp
-            categoryList = service.listAll();
+            // Nếu không có tên để tìm kiếm, hiển thị tất cả Danh Mục
+            categoryList = service.listCategory();
         }
 
 //        model.addAttribute("category", categoryList);
         model.addAttribute("category",new Category());
         model.addAttribute("categoryList", categoryList);
         return "category";
+    }
+
+    @GetMapping("/category/garbage")
+    public String showGarbageCategoryList(Model model){
+        List<Category> categoryList;
+            categoryList = service.listCategoryGarbage();
+
+        model.addAttribute("categoryList", categoryList);
+        return "category_garbage";
     }
 
     @GetMapping("/category/new")
@@ -66,6 +75,16 @@ public class CategoryController {
         }
     }
 
+    @GetMapping("/category/softdelete/{categoryID}")
+    public String SoftDeleteCategory(@PathVariable("categoryID") Integer categoryID){
+        try {
+            service.softdelete(categoryID);
+        } catch (CategoryNotFoundException e) {
+            return "redirect:/admin/category";
+        }
+        return "redirect:/admin/category";
+    }
+
     @GetMapping("/category/delete/{categoryID}")
     public String DeleteCategory(@PathVariable("categoryID") Integer categoryID){
         try {
@@ -76,20 +95,16 @@ public class CategoryController {
         return "redirect:/admin/category";
     }
 
-    @GetMapping("/category/search")
-    public String SearchCategory(@RequestParam(value = "searchCategory", required = false)String searchCategory,Model model){
-        List<Category> category;
-
-        if (searchCategory != null && !searchCategory.isEmpty()) {
-            category = service.findCategoryByName(searchCategory);
-        } else {
-            // Nếu không có tên để tìm kiếm, hiển thị tất cả nhà cung cấp
-            category = service.listAll();
+    @GetMapping("/category/restore/{categoryID}")
+    public String RestoreCategory(@PathVariable("categoryID") Integer categoryID){
+        try {
+            service.restore(categoryID);
+        } catch (CategoryNotFoundException e) {
+            return "redirect:/admin/category";
         }
-
-        model.addAttribute("category", category);
         return "redirect:/admin/category";
     }
+
 
     @ModelAttribute("loggedInUser")
     public User loggedInUser() {

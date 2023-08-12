@@ -24,6 +24,8 @@ public class QProduct extends EntityPathBase<Product> {
 
     public final QCategory category;
 
+    public final BooleanPath deleted = createBoolean("deleted");
+
     public final StringPath description = createString("description");
 
     public final StringPath img = createString("img");

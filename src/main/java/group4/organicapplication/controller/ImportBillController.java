@@ -49,7 +49,7 @@ public class ImportBillController {
 
         List<Product> products = productService.getAllProduct();
 
-        List<Category> categories = categoryService.listAll();
+        List<Category> categories = categoryService.listCategory();
 
         model.addAttribute("imports", importBills);
         model.addAttribute("products" , products);

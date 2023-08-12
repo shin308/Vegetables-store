@@ -137,7 +137,13 @@
                 type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
       </form>
     </div>
-    <div class="col-5 text-end" id="btnAdd">
+    <div class="col-3 text-end" id="btnGarbage">
+      <a th:href="@{/admin/category/garbage}">
+        <button type="button">Thùng Rác<i style="font-size: 23px; vertical-align: middle;"
+                                          class="bi bi-trash ms-3"></i></button>
+      </a>
+    </div>
+    <div class="col-2 text-end" id="btnAdd">
       <button style="background-color: #5CB85C; color:white;vertical-align: middle;" type="button"
               class="btn btn-success shadow-sm border-0"
               onclick="openAddNew()">Thêm mới<i style="font-size: 23px; vertical-align: middle;"
@@ -163,7 +169,7 @@
           <a class="h4 m-3" th:href="@{'/admin/category/edit/' + ${category.categoryID}}">
             <button type="button" class="btn btn-primary">Sửa</button>
           </a>
-          <a class="h4" th:href="@{'/admin/category/delete/' + ${category.categoryID}}">
+          <a class="h4" th:href="@{'/admin/category/softdelete/' + ${category.categoryID}}">
             <button type="button" class="btn btn-danger">Xoá</button>
           </a>
         </td>

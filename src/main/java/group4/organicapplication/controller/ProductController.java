@@ -75,7 +75,7 @@ public class ProductController {
             products = productService.getAllProduct();
         }
         model.addAttribute("products", products);
-        List<Category> listCate = categoryService.listAll();
+        List<Category> listCate = categoryService.listCategory();
         // Truyền danh sách nhà cung cấp vào model
         List<Supplier> suppliers = supplierService.getAllSuppliers();
         model.addAttribute("suppliers", suppliers);

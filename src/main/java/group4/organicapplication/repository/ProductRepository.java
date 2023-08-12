@@ -25,4 +25,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     @Query("SELECT p FROM Product p WHERE p.productID = :productID")
     Product findByProductID(@Param("productID") int productID);
+
+    @Query("SELECT p FROM Product p WHERE p.deleted = false")
+    List<Product> findProduct();
 }

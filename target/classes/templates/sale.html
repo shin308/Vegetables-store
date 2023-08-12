@@ -40,18 +40,18 @@
         text-align: center;
         border-radius: 5px;
         border: 1px solid #8FC742;
-        height: 290px;
-        padding-top: 30px;
+        height: 250px;
+        padding-top: 10px;
     }
 
     .addCart {
         width: 80%;
-        height: 42px;
+        height: 50px;
         border: 0;
         border-radius: 5px;
         background-color: #8FC742;
         color: white;
-        margin-top: 30px;
+        margin: 10px;
     }
     .counter {
         display: flex;
@@ -101,13 +101,13 @@
                         <a class="nav-link" th:href="@{/admin/product}">SẢN PHẨM</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/admin/sale}">BÁN HÀNG</a>
+                        <a class="nav-link active" th:href="@{/admin/sale}">BÁN HÀNG</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/admin/orders}">ĐƠN HÀNG</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" th:href="@{/admin/category}">DANH MỤC</a>
+                        <a class="nav-link" th:href="@{/admin/category}">DANH MỤC</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/admin/suppliers}">NHÀ CUNG CẤP</a>
@@ -159,7 +159,7 @@
                     </a>
                     <h6>[[${product.productName}]]</h6>
                     <div style="position: sticky; top:100%;">
-                        <p><span>[[${product.price}]] ₫</span> / <span>[[${product.unit}]]</span></p>
+                        <span><span>[[${product.price}]] ₫</span> / <span>[[${product.unit}]]</span></span>
                         <button class="addCart" th:attr="onclick=|addToCart('${product.productID}', '${product.productName}', 1, ${product.price},'${product.img}', ${product.quantity})|">Thêm vào giỏ</button>
                     </div>
                 </div>

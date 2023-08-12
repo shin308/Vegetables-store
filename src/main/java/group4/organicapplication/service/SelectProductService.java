@@ -12,7 +12,7 @@ public class SelectProductService {
     @Autowired private ProductRepository repo;
 
     public List<Product> selectAll(){
-        return (List<Product>) repo.findAll();
+        return (List<Product>) repo.findProduct();
     }
 
     public List<Product> findProductByName(String searchProductName) {

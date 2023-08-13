@@ -275,7 +275,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 <script>
     let thisPage = 1;
-    let limit = 9;
+    let limit = 6;
     let list = document.querySelectorAll('.list .item');
 
     function loadItem() {
@@ -328,49 +328,61 @@
 
     async function addToCart(productId, productName, quantity, unitPrice, imageProduct, limitQuantity) {
 
-        try {
-            const response = await fetch('/cart/add', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    productId: productId,
-                    productName: productName,
-                    quantity: quantity,
-                    unitPrice: unitPrice,
-                    imageProduct: imageProduct,
-                    limitQuantity: limitQuantity
+        if(limitQuantity > 0) {
+            try {
+                const response = await fetch('/cart/add', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        productId: productId,
+                        productName: productName,
+                        quantity: quantity,
+                        unitPrice: unitPrice,
+                        imageProduct: imageProduct,
+                        limitQuantity: limitQuantity
 
-                })
-            });
-
-            if (response.ok) {
-                console.log('Thêm vào giỏ hàng thành công!');
-                animateProductFly(imageProduct);
-
-            } else if (response.status === 400) {
-                const data = await response.text();
-
-                console.error(data); // Hiển thị thông báo lỗi "Hết hàng"
-                // var button = document.querySelector('.addCart');
-                // button.disabled = true;
-
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Sản phẩm đã hết hàng!',
-                    toast: true,
-                    position: 'top-end',
-                    showConfirmButton: false,
-                    timer: 3000
+                    })
                 });
 
-            } else {
-                console.error('Thêm vào giỏ hàng thất bại!');
+                if (response.ok) {
+                    console.log('Thêm vào giỏ hàng thành công!');
+                    animateProductFly(imageProduct);
+
+                } else if (response.status === 400) {
+                    const data = await response.text();
+
+                    console.error(data); // Hiển thị thông báo lỗi "Hết hàng"
+                    // var button = document.querySelector('.addCart');
+                    // button.disabled = true;
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Bạn đã thêm vào giỏ hàng quá tối đa số lượng sản phẩm có sẵn!',
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000
+                    });
+
+                } else {
+                    console.error('Thêm vào giỏ hàng thất bại!');
+                }
+            } catch (error) {
+                console.error(error);
             }
-        } catch (error) {
-            console.error(error);
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Sản phẩm đã hết hàng!',
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000
+            });
         }
+
 
     }
     async function removeFromCart(productId) {

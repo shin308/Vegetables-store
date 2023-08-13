@@ -221,7 +221,7 @@
               </div>
             </div>
           </div>
-          <button class="btn btn-success border-0" style="background-color: #5CB85C; float:right;" th:attr="onclick=|addToCart('${productInfo.productID}', '${productInfo.productName}',${productInfo.price},'${productInfo.img}', ${productInfo.quantity})|">Thêm vào
+          <button class="btn btn-success border-0" style="background-color: #5CB85C; float:right;" th:attr="onclick=|addToCart('${productInfo.productID}', '${productInfo.productName}',${productInfo.price},'${productInfo.img}', ${productInfo.quantity})|"><i class="fa-solid fa-basket-shopping"></i> Thêm vào
             giỏ
           </button>
 
@@ -378,22 +378,21 @@
 
     let checkquantityDOM = document.getElementById("checkQuantity");
 
-    if(limitQuantity - quantityInCart === 0) {
-      checkquantityDOM.innerText = "Hết hàng"
+    if(limitQuantity === 0) {
+      checkquantityDOM.innerText = "Hết hàng" + `(${0})`
     } else {
-      checkquantityDOM.innerText = "Còn hàng"
+      checkquantityDOM.innerText = "Còn hàng" + `(${limitQuantity})`
     }
   });
 
 
 
   async function addToCart(productId, productName, unitPrice, imageProduct, limitQuantity) {
-    // console.log([[${quantityInCart}]]);
-    // console.log(limitQuantity)
+
     let quantityDOM = document.getElementById("inputQuantity")
     let quantity = quantityDOM.value;
 
-    if(quantity > 0) {
+    if(quantity > 0 && limitQuantity > 0 && quantity <= limitQuantity) {
       try {
         const response = await fetch('/cart/add', {
           method: 'POST',
@@ -425,7 +424,7 @@
 
           Swal.fire({
             icon: 'error',
-            title: 'Sản phẩm đã hết hàng hoặc không đủ số lượng!',
+            title: 'Bạn đã thêm vào giỏ hàng quá tối đa số lượng sản phẩm có sẵn!',
             toast: true,
             position: 'top-end',
             showConfirmButton: false,
@@ -438,7 +437,29 @@
       } catch (error) {
         console.error(error);
       }
-    } else {
+    } else if(limitQuantity <= 0){
+      Swal.fire({
+        icon: 'error',
+        title: 'Sản phẩm này đã hết hàng!',
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000
+      });
+    }
+    else if (quantity > limitQuantity){
+      Swal.fire({
+        icon: 'error',
+        title: 'Không đủ số lượng sản phẩm!',
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000
+      });
+
+      quantityDOM.value = limitQuantity;
+    }
+    else {
       Swal.fire({
         icon: 'error',
         title: 'Vui lòng nhập số lượng ít nhất một sản phẩm!',
@@ -450,9 +471,6 @@
 
       quantityDOM.value = 1;
     }
-
-
-
 
   }
   function animateProductFly(imageProduct) {

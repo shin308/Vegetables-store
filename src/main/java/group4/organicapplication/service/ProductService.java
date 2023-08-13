@@ -24,6 +24,9 @@ public class ProductService {
     @Autowired
     private ImportProductRepository imProductRepository;
 
+    public Product getProductById(Integer productId) {
+        return productRepository.findByProductID(productId);
+    }
     public List<Product> getProductsBySupplierId(int supplierId) {
         return productRepository.findProductsBySupplierId(supplierId);
     }

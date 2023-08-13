@@ -134,11 +134,14 @@
                         type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
             </form>
         </div>
-            <div class="col-4 text-end" id="btnAdd">
+            <div class="col text-end" id="btnAdd">
+                <a th:href="@{/admin/suppliers/garbage}">
+                    <button type="button" class="btn btn-outline-secondary me-3">Thùng rác<i class="fa-solid fa-trash-can ms-3"></i></button>
+                </a>
                 <button style="background-color: #5CB85C; color:white;vertical-align: middle;" type="button"
                         class="btn btn-success shadow-sm border-0"
                         onclick="openAddNew()">Thêm mới<i style="font-size: 23px; vertical-align: middle;"
-                                                               class="fa-solid fa-square-plus ms-3"></i></button>
+                                                           class="fa-solid fa-square-plus ms-3"></i></button>
             </div>
     </div>
 
@@ -146,22 +149,22 @@
     <table class="table text-center align-middle border">
         <thead class="table-secondary">
         <tr>
-            <th scope="col-1">Mã nhà cung cấp</th>
-            <th scope="col-2">Tên nhà cung cấp</th>
-            <th scope="col-5">Số điện thoại</th>
-            <th scope="col-1">Địa chỉ</th>
-            <th scope="col-2">Chức năng</th>
+            <th class="col-2">Mã nhà cung cấp</th>
+            <th class="col-4">Tên nhà cung cấp</th>
+            <th class="col-1">Số điện thoại</th>
+            <th class="col-3">Địa chỉ</th>
+            <th class="col-2">Chức năng</th>
         </tr>
         </thead>
         <tbody class="list">
         <tr class="item" th:each="supplier : ${suppliers}">
             <td th:text="${supplier.supplierID}"></td>
             <td th:text="${supplier.supplierName}"></td>
-            <td th:text="${supplier.address}"></td>
             <td th:text="${supplier.phone}"></td>
+            <td th:text="${supplier.address}"></td>
             <td>
-                <button type="button" class="btn btn-primary" th:onclick="'openEdit(' + ${supplier.supplierID} + ')'">Sửa</button>
-                <button type="button" class="btn btn-danger" th:onclick="'deleteSupplier(' + ${supplier.supplierID} + ')'">Xoá</button>
+                <button type="button" class="btn btn-outline-primary" th:onclick="'openEdit(' + ${supplier.supplierID} + ')'"><i class="fa-solid fa-pen-to-square"></i></button>
+                <button type="button" class="btn btn-outline-danger" th:onclick="'deleteSupplier(' + ${supplier.supplierID} + ')'"><i class="fa-solid fa-trash-can"></i></button>
             </td>
         </tr>
         </tbody>
@@ -358,7 +361,7 @@ async function submitEditForm() {
 
 
   async function deleteSupplier(supplierID) {
-      const apiUrl = '/admin/suppliers/' + supplierID;
+      const apiUrl = '/admin/suppliers/softdelete/' + supplierID;
 
       const confirmed = confirm('Bạn có chắc chắn muốn xóa nhà cung cấp này?');
 

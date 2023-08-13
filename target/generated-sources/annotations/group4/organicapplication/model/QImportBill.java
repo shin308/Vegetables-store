@@ -22,7 +22,7 @@ public class QImportBill extends EntityPathBase<ImportBill> {
 
     public static final QImportBill importBill = new QImportBill("importBill");
 
-    public final DateTimePath<java.util.Date> expiry = createDateTime("expiry", java.util.Date.class);
+    public final DatePath<java.util.Date> expiry = createDate("expiry", java.util.Date.class);
 
     public final QImportBill_ImportBillId id;
 

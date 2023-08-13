@@ -83,10 +83,10 @@ public class AdminController {
         model.addAttribute("totalPrice", cartService.sumTotalPrice(cartItems));
         return "sale";
     }
-    @GetMapping("/import")
-    public String showImportPage(){
-        return "import";
-    }
+//    @GetMapping("/import")
+//    public String showImportPage(){
+//        return "import";
+//    }
 
     @GetMapping("/statistic")
     public String showStatisticPage(){

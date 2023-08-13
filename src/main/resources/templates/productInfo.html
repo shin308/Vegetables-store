@@ -72,7 +72,7 @@
             <ul class="navbar-nav me-auto">
 
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/admin/product}">SẢN PHẨM</a>
+                    <a class="nav-link active" th:href="@{/admin/product}">SẢN PHẨM</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/admin/sale}">BÁN HÀNG</a>
@@ -81,7 +81,7 @@
                     <a class="nav-link" th:href="@{/admin/orders}">ĐƠN HÀNG</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" th:href="@{/admin/category}">DANH MỤC</a>
+                    <a class="nav-linkx" th:href="@{/admin/category}">DANH MỤC</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/admin/suppliers}">NHÀ CUNG CẤP</a>
@@ -125,7 +125,7 @@
         <div class="col">
             <div class="row">
                 <div class="col-6" id="info">
-                    <img th:src="@{'/images/'+ ${productInfo.img}}" width="200" height="200">
+                    <img th:src="@{'/images/'+ ${productInfo.productID} + '/' +${productInfo.img}}" width="200" height="200">
                     <div class="mt-2 row gx-1">
                         <div class="col-2"><span>5</span> <i style="color:#FFD700;" class="fa-solid fa-star"></i></div>
                         <div class="col-4"><span>20</span> Đánh giá</div>

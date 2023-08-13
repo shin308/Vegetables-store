@@ -14,6 +14,11 @@
     label{
         font-weight: bold;
     }
+    .error-message {
+        color: red;
+        font-size: 12px;
+        display: none;
+    }
     #search {
         width: 40%;
     }
@@ -112,33 +117,38 @@
         <h4>Địa chỉ đặt hàng</h4>
         <hr>
         <div class="mb-3 row">
-            <label for="staticName" class="col-3 col-form-label">Họ tên</label>
+            <label for="staticName" class="col-3 col-form-label">Họ tên:<span style="color:red">*</span></label>
             <div class="col-9">
-                <input type="text"  id="staticName" th:value="${user.lastName} +' '+ ${user.firstName}">
+                <input type="text"  id="staticName" th:value="${user.lastName} +' '+ ${user.firstName}" title="Vui lòng nhập tên đúng định dạng!">
+                <div id="nameError" class="error-message">Tên không hợp lệ. Tên không được để trống hoặc chứa ký tự đặc biệt hoặc số</div>
+            </div>
+
+        </div>
+        <div class="mb-3 row">
+            <label for="staticPhone" class="col-3 col-form-label">Số điện thoại:<span style="color:red">*</span></label>
+            <div class="col-9">
+                <input type="tel" id="staticPhone" th:field="${user.phone}" title="Vui lòng nhập số điện thoại đúng 10 số!">
+                <div id="phoneError" class="error-message">Số điện thoại không hợp lệ. Vui lòng nhập 10 chữ số</div>
             </div>
         </div>
         <div class="mb-3 row">
-            <label for="staticPhone" class="col-3 col-form-label">Số điện thoại</label>
-            <div class="col-9">
-                <input type="tel" id="staticPhone" th:field="${user.phone}">
-            </div>
-        </div>
-        <div class="mb-3 row">
-            <label for="staticEmail" class="col-3 col-form-label">Email</label>
+            <label for="staticEmail" class="col-3 col-form-label">Email:<span style="color:red">*</span></label>
             <div class="col-9">
                 <input type="email" id="staticEmail"
-                       th:field="${user.email}">
+                       th:field="${user.email}" title="Vui lòng nhập email đúng định dạng!">
+                <div id="emailError" class="error-message">Email không hợp lệ hoặc không được để trống</div>
             </div>
         </div>
         <div class="mb-3 row">
-            <label for="staticAddress" class="col-3 col-form-label">Địa chỉ</label>
+            <label for="staticAddress" class="col-3 col-form-label">Địa chỉ giao hàng:<span style="color:red">*</span></label>
             <div class="col-9">
                 <input type="text" id="staticAddress"
-                       th:field="${user.address}">
+                       th:field="${user.address}" title="Vui lòng nhập địa chỉ đúng định dạng!">
+                <div id="addressError" class="error-message">Địa chỉ không hợp lệ. Địa chỉ không được để trống hoặc chứa ký tự đặc biệt ngoại trừ dấu phẩy và dấu gạch ngang</div>
             </div>
         </div>
         <div class="mb-3 row">
-            <label for="inputNotes" class="col-3 col-form-label">Ghi chú</label>
+            <label for="inputNotes" class="col-3 col-form-label">Ghi chú:</label>
             <div class="col-9">
                 <textarea class="form-control" id="inputNotes" rows="3"></textarea>
             </div>
@@ -162,7 +172,7 @@
             <tbody>
             <tr th:each="cartItem, index: ${cartItems}">
                 <td th:text="${index.count}">1</td>
-                <td><img th:src="@{'/images/' + ${cartItem.imageProduct}}" alt="" width="50"></td>
+                <td><img th:src="@{'/images/' +${cartItem.productId}+'/' + ${cartItem.imageProduct}}" alt="" width="50"></td>
                 <td th:text="${cartItem.productName}">Cà chua</td>
                 <td th:text="${cartItem.quantity}">1</td>
                 <td th:text="${cartItem.unitPrice} + ' ₫'">15.000</td>
@@ -216,13 +226,30 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
 <script th:inline="javascript">
+
+    function isValidEmail(email) {
+        var emailPattern = /^[a-zA-Z0-9._-]+@gmail\.com$/;
+        return emailPattern.test(email);
+    }
+
+    function isValidPhoneNumber(phoneNumber) {
+        var phonePattern = /^\d{10}$/;
+        return phonePattern.test(phoneNumber);
+    }
+
+    function isValidName(name) {
+        var namePattern = /^[\p{L}]+(?: [\p{L}]+)*$/u;
+        return namePattern.test(name);
+    }
+    function isValidAddress(address) {
+        var addressPattern = /^[a-zA-Z0-9\s,-àáâãèéêìíòóôõùúưứừửứựÁÀÂÃÈÉÊÌÍÒÓÔÕÙÚƯỨỪỬỰỦÝỲỴỶỸđĐạẠảẢắẮằẰẳẲặẶẵẴếẾềỀệỆểỂịỊọỌốỐồỒổỔộỘớỚờỜợỢụỤủỦứỨừỪựỰửỬựỶỴỹỸ\s]+$/;
+        return addressPattern.test(address);
+    }
     async function purchaseOrder() {
 
         const formattedTime = new Date(Date.now() + 7 * 60 * 60 * 1000).toISOString().slice(0, 16).replace('T', ' ');
 
         let cartItems = [[${cartItems}]];
-
-        console.log(cartItems)
 
         let inputNameDOM = document.getElementById("staticName")
         let inputPhoneDOM = document.getElementById("staticPhone")
@@ -230,67 +257,122 @@
         let inputAddressDOM = document.getElementById("staticAddress")
         let inputNoteDOM = document.getElementById("inputNotes")
 
+        let nameError = document.getElementById("nameError")
+        let emailError = document.getElementById("emailError")
+        let phoneError = document.getElementById("phoneError")
+        let addressError = document.getElementById("addressError")
 
 
-        console.log(inputNameDOM.value)
+        let isValid = true;
 
-        let orderDetailList = [];
-        cartItems.forEach(item => {
-            const product = {
-                product: {productID: item.productId},
-                quantity: item.quantity,
-                totalAmount: item.totalPrice
-            };
-            orderDetailList.push(product);
-        });
+        if (!isValidEmail(inputEmailDOM.value)) {
+            emailError.style.display = 'block'
+            isValid = false;
+        } else {
+            emailError.style.display = 'none'
+        }
 
-        const orderData = {
-            address: inputAddressDOM.value,
-            email: inputEmailDOM.value,
-            note: inputNoteDOM.value,
-            orderDay: formattedTime,
-            orderStatus: "Đang chờ giao",
-            totalPrice: [[${totalPrice}]] + 5000,
-            phone: inputPhoneDOM.value,
-            orderDetailList: orderDetailList,
-        };
+        if (!isValidPhoneNumber(inputPhoneDOM.value)) {
+            phoneError.style.display = 'block'
+            isValid = false;
+        }else {
+            phoneError.style.display = 'none'
+        }
 
-        console.log(orderData)
+        if (!isValidName(inputNameDOM.value)) {
+            nameError.style.display = 'block'
+            isValid = false;
+        }else {
+            nameError.style.display = 'none'
+        }
+        if (!isValidAddress(inputAddressDOM.value)) {
+            addressError.style.display = 'block'
+            isValid = false;
+        }else {
+            addressError.style.display = 'none'
+        }
 
-        try {
-            const response = await fetch('/purchase/place-order', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(orderData)
+        if(isValid)
+        {
+            const result = await Swal.fire({
+                title: 'Xác nhận',
+                text: 'Bạn có chắc chắn muốn đặt hàng?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Đồng ý',
+                cancelButtonText: 'Hủy bỏ'
             });
 
-            if (response.ok) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Đặt hàng thành công!',
-                    toast: true,
-                    position: 'top-end',
-                    showConfirmButton: false,
-                    timer: 3000
+            if (result.isConfirmed) {
+
+                let orderDetailList = [];
+                cartItems.forEach(item => {
+                    const product = {
+                        product: {productID: item.productId},
+                        quantity: item.quantity,
+                        totalAmount: item.totalPrice
+                    };
+                    orderDetailList.push(product);
                 });
 
-                setTimeout(function () {
-                    window.location.href = '/order_user';
-                }, 1000)
+                const orderData = {
+                    address: inputAddressDOM.value,
+                    email: inputEmailDOM.value,
+                    note: inputNoteDOM.value,
+                    orderDay: formattedTime,
+                    orderStatus: "Đang chờ giao",
+                    totalPrice: [[${totalPrice}]] + 5000,
+                    phone: inputPhoneDOM.value,
+                    orderDetailList: orderDetailList,
+                };
 
-                await sendEmail(inputEmailDOM.value, inputNameDOM.value, formattedTime, inputPhoneDOM.value,inputAddressDOM.value)
 
-            } else {
-                console.error('Error:', response.statusText);
+                try {
+                    const response = await fetch('/purchase/place-order', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(orderData)
+                    });
+
+                    if (response.ok) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Đặt hàng thành công!',
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000
+                        });
+
+                        setTimeout(function () {
+                            window.location.href = '/order_user';
+                        }, 1000)
+
+                        await sendEmail(inputEmailDOM.value, inputNameDOM.value, formattedTime, inputPhoneDOM.value,inputAddressDOM.value)
+
+                    } else {
+                        console.error('Error:', response.statusText);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Không thể đặt hàng, vui lòng kiểm tra lại sản phẩm trong giỏ hàng!',
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000
+                        });
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                }
+            }else {
             }
 
-        } catch (error) {
-            console.error('Error:', error);
         }
-    }
 
+
+    }
     async function sendEmail(email, name, orderDay, phone, address) {
         try {
             const response = await fetch('/purchase/sendEmail', {

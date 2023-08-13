@@ -190,7 +190,7 @@
 			<th:block th:each="product:${productList}">
 				<div class="col item">
 					<a th:href="@{'/productInfoUser/' + ${product.productID}}">
-						<img  th:src="@{'/images/'+ ${product.img}}" width="100px" height="100px">
+						<td><img th:src="@{${product.getPhotosImagePath}}" height="100" width="100" title="ảnh"></img></td>
 					</a>
 					<h6>[[${product.productName}]]</h6>
 					<div style="position: sticky; top:100%;">
@@ -276,59 +276,71 @@
 
 	async function addToCart(productId, productName, quantity, unitPrice, imageProduct, limitQuantity) {
 
-		try {
-			const response = await fetch('/cart/add', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({
-					productId: productId,
-					productName: productName,
-					quantity: quantity,
-					unitPrice: unitPrice,
-					imageProduct: imageProduct,
-					limitQuantity: limitQuantity
+		if(limitQuantity > 0) {
+			try {
+				const response = await fetch('/cart/add', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify({
+						productId: productId,
+						productName: productName,
+						quantity: quantity,
+						unitPrice: unitPrice,
+						imageProduct: imageProduct,
+						limitQuantity: limitQuantity
 
-				})
-			});
-
-			if (response.ok) {
-				console.log('Thêm vào giỏ hàng thành công!');
-				animateProductFly(imageProduct);
-
-			} else if (response.status === 400) {
-				const data = await response.text();
-
-				console.error(data); // Hiển thị thông báo lỗi "Hết hàng"
-				// var button = document.querySelector('.addCart');
-				// button.disabled = true;
-
-				Swal.fire({
-					icon: 'error',
-					title: 'Sản phẩm đã hết hàng!',
-					toast: true,
-					position: 'top-end',
-					showConfirmButton: false,
-					timer: 3000
+					})
 				});
 
-			} else {
-				console.error('Thêm vào giỏ hàng thất bại!');
+				if (response.ok) {
+					console.log('Thêm vào giỏ hàng thành công!');
+					animateProductFly(imageProduct,productId);
+
+				} else if (response.status === 400) {
+					const data = await response.text();
+
+					console.error(data); // Hiển thị thông báo lỗi "Hết hàng"
+					// var button = document.querySelector('.addCart');
+					// button.disabled = true;
+
+					Swal.fire({
+						icon: 'error',
+						title: 'Bạn đã thêm vào giỏ hàng quá tối đa số lượng sản phẩm có sẵn!',
+						toast: true,
+						position: 'top-end',
+						showConfirmButton: false,
+						timer: 3000
+					});
+
+				} else {
+					console.error('Thêm vào giỏ hàng thất bại!');
+				}
+			} catch (error) {
+				console.error(error);
 			}
-		} catch (error) {
-			console.error(error);
+		} else {
+			Swal.fire({
+				icon: 'error',
+				title: 'Sản phẩm đã hết hàng!',
+				toast: true,
+				position: 'top-end',
+				showConfirmButton: false,
+				timer: 3000
+			});
 		}
 
+
 	}
-	function animateProductFly(imageProduct) {
+	function animateProductFly(imageProduct,productId) {
 		const productImage = document.querySelector(`img[src$='${imageProduct}']`);
 		if (productImage) {
 			// Tạo div để tạo hiệu ứng bay vào giỏ
 			const productFly = document.createElement('div');
 			productFly.classList.add('product-fly');
 			// đặt nền là ảnh product
-			productFly.style.backgroundImage = `url('/images/${imageProduct}')`;
+			productFly.style.backgroundImage = `url('/images/${productId	}/${imageProduct}')`;
 
 			// Lấy vị trí của ảnh product
 			const { left, top } = productImage.getBoundingClientRect();

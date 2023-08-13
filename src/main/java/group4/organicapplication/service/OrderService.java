@@ -14,6 +14,9 @@ import java.util.List;
 public interface OrderService {
 
     Orders placeOrder(Orders order, List<PurchaseOrder> orderDetails);
+    void cancelOrder(Long orderID);
+
+    List<Orders> findByUserId(Long userId);
     Page<Orders> getAllOrderByFilter(SearchOrderObject object, int page) throws ParseException;
     List<Orders> findByOrderStatusAndShipper(String orderStatus, User shipper);
     int countByOrderStatus(String orderStatus);

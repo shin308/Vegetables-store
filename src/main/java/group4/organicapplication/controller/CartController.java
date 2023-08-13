@@ -65,6 +65,7 @@ public class CartController {
 
     @GetMapping("cart/get-cart-items")
     public ResponseEntity<List<CartItem>> getCartItems() {
+
         List<CartItem> cartItems = cartService.getCartItems();
         return ResponseEntity.status(HttpStatus.OK).body(cartItems);
     }

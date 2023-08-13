@@ -23,6 +23,8 @@ public class QCategory extends EntityPathBase<Category> {
 
     public final StringPath categoryName = createString("categoryName");
 
+    public final BooleanPath deleted = createBoolean("deleted");
+
     public QCategory(String variable) {
         super(Category.class, forVariable(variable));
     }

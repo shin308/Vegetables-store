@@ -133,15 +133,15 @@
         <div id="search" class="col-5">
             <form class="d-flex" role="search" onsubmit="searchProduct()">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
-                       name="searchName">
+                       name="searchName" id="searchName">
                 <button style="background-color: #5CB85C; color:white;" class="btn btn-outline-success border-0"
                         type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
             </form>
         </div>
         <div class="col-2" id="dropdownSupplier">
-            <select class="form-select" id="supplierDropdown" onchange="getProductBySupplierId()">
+            <select class="form-select" id="supplierDropdown" onchange="getProductBySupplierId()" >
 
-                <option th:value="0">Tất cả nhà cung cấp</option>
+                <option th:value="0">Tất cả</option>
                 <th:block th:each="supplier : ${suppliers}">
 
                     <option th:value="${supplier.supplierID}" th:text="${supplier.supplierName}"></option>
@@ -149,12 +149,12 @@
             </select>
 
         </div>
-        <div class="col-3 text-end" id="btnAdd">
-            <button style="background-color: #5CB85C; color:white;vertical-align: middle;" type="button"
-                    class="btn btn-success shadow-sm border-0"
-                    onclick="openAddNew()">Thêm mới<i style="font-size: 23px; vertical-align: middle;"
-                                                       class="fa-solid fa-square-plus ms-3"></i></button>
-        </div>
+<!--        <div class="col-3 text-end" id="btnAdd">-->
+<!--            <button style="background-color: #5CB85C; color:white;vertical-align: middle;" type="button"-->
+<!--                    class="btn btn-success shadow-sm border-0"-->
+<!--                    onclick="openAddNew()">Thêm mới<i style="font-size: 23px; vertical-align: middle;"-->
+<!--                                                       class="fa-solid fa-square-plus ms-3"></i></button>-->
+<!--        </div>-->
     </div>
 
 
@@ -174,17 +174,17 @@
         <th:block th:each="product:${products}">
             <tr class="item">
                 <td>[[${product.productID}]]</td>
-                <td><img th:src="@{'/images/'+ ${product.img}}" width="70"></td>
+                <td><img th:src="@{${product.getPhotosImagePath}}" height="70" width="70" title="ảnh"></td>
                 <td>[[${product.productName}]]</td>
                 <td>[[${product.unit}]]</td>
                 <td>[[${product.quantity}]]</td>
                 <td>[[${product.price}]] ₫</td>
                 <td>
                     <a th:href="@{'/admin/productInfo/' + ${product.productID}}">
-                        <button type="button" class="btn btn-secondary">Xem</button>
+                        <button type="button" class="btn btn-outline-secondary"><i class="fa-solid fa-file-invoice"></i></button>
                     </a>
-                    <button type="button" class="btn btn-primary" onclick="openEdit()">Sửa</button>
-                    <button type="button" class="btn btn-danger">Xoá</button>
+                    <button type="button" class="btn btn-outline-primary" th:onclick="'openEdit(' + ${product.productID} + ')'"><i class="fa-solid fa-pen-to-square"></i></button>
+                    <button type="button" class="btn btn-outline-danger" th:onclick="'deleteProduct(' + ${product.productID} + ')'"><i class="fa-solid fa-trash-can"></i></button>
                 </td>
             </tr>
         </th:block>
@@ -202,45 +202,48 @@
 <div id="edit">
     <div style="background-color: white; border-radius:10px;" class="shadow-lg w-50 mt-5">
         <h6 style="background-color:black; color:white; padding:15px; border-radius:10px 10px 0 0;">
-            Cập nhật thông tin sản phẩm ID: <span>1</span>
+            Cập nhật thông tin sản phẩm ID: <span id="productIdEdit">1</span>
         </h6>
         <form style="padding: 10px 30px;">
-            <div class="form-floating mb-3" style="display: flex;">
-                <img class="border" src="/images/image10.png" alt="" width="80" height="80">
-                <input type="file" id="imageP" name="imageP" style="margin: 50px 10px 0 10px;">
+            <div class="form-floating mb-3" style="display: flex;" id="imageEditCon">
+                <img class="border" src="" alt="ảnh sản phẩm" width="80" height="80">
+                <input type="file" id="imageEdit" name="imageEdit" style="margin: 70px 10px 0 10px;" accept="image/png, image/jpeg" >
             </div>
             <div class="form-floating mb-2">
-                <input type="text" class="form-control" id="productName">
-                <label for="productName">Tên sản phẩm</label>
+               <input type="text" hidden class="form-control" name="imgName" id = "imgName">
+             </div>
+            <div class="form-floating mb-2">
+                <input type="text" class="form-control" id="productNameEdit">
+                <label for="productNameEdit">Tên sản phẩm</label>
             </div>
             <div class="form-floating mb-2">
-                <input type="text" class="form-control" id="unit">
-                <label for="unit">Khối lượng</label>
+                <input type="text" class="form-control" id="unitEdit">
+                <label for="unitEdit">Khối lượng</label>
             </div>
             <div class="form-floating mb-2">
-                <input type="text" class="form-control" id="quantity">
-                <label for="quantity">Số lượng</label>
+                <input type="text" class="form-control" id="quantityEdit">
+                <label for="quantityEdit">Số lượng</label>
             </div>
             <div class="form-floating mb-2">
-                <input type="text" class="form-control" id="price">
-                <label for="price">Giá bán</label>
+                <input type="text" class="form-control" id="priceEdit">
+                <label for="priceEdit">Giá bán</label>
             </div>
 
             <div class="form-floating mb-2">
-                <textarea class="form-control" id="description" rows="3"></textarea>
-                <label for="description">Mô tả</label>
+                <textarea class="form-control" id="descriptionEdit" rows="3"></textarea>
+                <label for="descriptionEdit">Mô tả</label>
             </div>
             <div>
-                <label for="typeP" class="me-3">Loại sản phẩm: </label>
-                <select id="typeP" name="roles">
-                    <option value="none">Không</option>
-                    <option value="fruits">Trái cây</option>
-                    <option value="leaf">Rau ăn lá</option>
+                <label for="categoryEdit" class="me-3">Loại sản phẩm: </label>
+                <select id="categoryEdit" name="categoryEdit" required>
+                    <th:block th:each ="cat : ${categories}">
+                        <option th:text="${cat.categoryName}" th:value="${cat.categoryID}"></option>
+                    </th:block>
                 </select>
             </div>
             <div style="float: right; margin-bottom:10px;">
-                <button type="submit" class="btn btn-primary">Lưu</button>
-                <button type="submit" class="btn btn-secondary" onclick="closeEdit()">Huỷ</button>
+                <button type="button" class="btn btn-primary" onclick="submitEditForm()">Lưu</button>
+                <button type="button" class="btn btn-secondary" onclick="closeEdit()">Huỷ</button>
             </div>
         </form>
     </div>
@@ -252,43 +255,43 @@
         <h6 style="background-color:black; color:white; padding:15px; border-radius:10px 10px 0 0;">
             Thêm sản phẩm mới
         </h6>
-        <form style="padding: 10px 30px;">
-            <div class="form-floating mb-3" style="display: flex;">
-                <img class="border" src="/images/image10.png" alt="" width="80" height="80">
-                <input type="file" id="imageP1" name="imageP" style="margin: 50px 10px 0 10px;">
+        <form style="padding:10px 30px;" action="/admin/product/create" method="post" enctype="multipart/form-data">
+            <div class="image form-floating mb-3" id="imageNewCon" style="display: flex;">
+                <img class="border" src="/images/imageNull.png" alt="ảnh" width="100" height="100" >
+                <input type="file" id="imageNew" name="imageNew" style="margin: 70px 10px 0 10px;" accept="image/png, image/jpeg">
             </div>
-            <div class="form-floating mb-2">
-                <input type="text" class="form-control" id="productName1">
-                <label for="productName1">Tên sản phẩm</label>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="productName" name="productName" required min="3">
+                <label for="productName">Tên sản phẩm</label>
             </div>
-            <div class="form-floating mb-2">
-                <input type="text" class="form-control" id="unit1">
-                <label for="unit1">Khối lượng</label>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="unit" name="unit">
+                <label for="unit">Khối lượng</label>
             </div>
-            <div class="form-floating mb-2">
-                <input type="text" class="form-control" id="quantity1">
-                <label for="quantity1">Số lượng</label>
+            <div class="form-floating mb-3">
+                <input type="number" min="0" class="form-control" id="quantity" name="quantity" required>
+                <label for="quantity">Số lượng</label>
             </div>
-            <div class="form-floating mb-2">
-                <input type="text" class="form-control" id="price1">
-                <label for="price1">Giá bán</label>
+            <div class="form-floating mb-3">
+                <input type="number" min="0" class="form-control" id="price" name="price" required>
+                <label for="price">Giá bán</label>
             </div>
 
-            <div class="form-floating mb-2">
-                <textarea class="form-control" id="description1" rows="3"></textarea>
-                <label for="description1">Mô tả</label>
+            <div class="form-floating mb-3">
+                <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                <label for="description">Mô tả</label>
             </div>
             <div>
-                <label for="typeP1" class="me-3">Loại sản phẩm: </label>
-                <select id="typeP1" name="roles">
-                    <option value="none">Không</option>
-                    <option value="fruits">Trái cây</option>
-                    <option value="leaf">Rau ăn lá</option>
+                <label for="category" class="me-3">Loại sản phẩm: </label>
+                <select id="category" name="category" required>
+                    <th:block th:each ="cat : ${categories}">
+                        <option th:text="${cat.categoryName}" th:value="${cat.categoryID}"></option>
+                    </th:block>
                 </select>
             </div>
-            <div style="float: right; margin-bottom:10px;">
+            <div style="float: right; margin-bottom:20px;">
                 <button type="submit" class="btn btn-primary">Lưu</button>
-                <button type="submit" class="btn btn-secondary" onclick="closeAddNew()">Huỷ</button>
+                <button type="button" class="btn btn-secondary" onclick="closeAddNew()">Huỷ</button>
             </div>
         </form>
     </div>
@@ -361,9 +364,94 @@
         x.style.display = "none";
     }
 
-    function openEdit() {
-        let x = document.getElementById("edit");
-        x.style.display = "flex";
+    async function openEdit(productID) {
+        const imageContainer = document.getElementById("imageEditCon");
+        try {
+            const response = await fetch(`/admin/product/${productID}`,{
+                method:"GET"
+            });
+            const data = await response.json();
+            console.log(data);
+
+            document.getElementById("productIdEdit").textContent = data.productID;
+            document.getElementById("productNameEdit").value = data.productName;
+            imageContainer.querySelector("img").src  = data.photosImagePath;
+            document.getElementById("unitEdit").value = data.unit;
+            document.getElementById("quantityEdit").value = data.quantity;
+            document.getElementById("priceEdit").value = data.price;
+            document.getElementById("descriptionEdit").value = data.description;
+            document.getElementById("imgName").value = data.img;
+            document.getElementById("categoryEdit").value = data.category.categoryID
+
+            document.getElementById("edit").style.display = "flex";
+        }
+        catch(error) {
+            console.error('Lỗi', error.message);
+        }
+    }
+
+    async function submitEditForm(){
+        const inputFileEdit = document.querySelector("input[name='imageEdit']");
+        const productID = document.getElementById("productIdEdit").textContent;
+        const productName = document.getElementById("productNameEdit").value;
+        const imgName = document.getElementById("imgName").value;
+        const img = inputFileEdit.files[0];
+        const unit = document.getElementById("unitEdit").value;
+        const quantity = document.getElementById("quantityEdit").value;
+        const price = document.getElementById("priceEdit").value;
+        const description = document.getElementById("descriptionEdit").value;
+        const categoryID = document.getElementById("categoryEdit").value;
+        let categoryName = document.getElementById("categoryEdit").textContent;
+        let category = document.getElementById("categoryEdit");
+        for (let i = 0; i < category.length; i++) {
+            let option = category.options[i];
+            if (option.value == categoryID) {
+                categoryName = option.text;
+            }
+        }
+        var formData = new FormData();
+        if(img == null){
+            formData.append('product', new Blob([ JSON.stringify({
+                "productName" : productName,
+                "unit" : unit,
+                "img" : imgName,
+                "quantity" : quantity,
+                "price" : price,
+                "description" : description,
+                "category" : {categoryID : categoryID, categoryName : categoryName}
+            })], {
+                type: "application/json"
+            }));
+
+        }
+        else
+        {
+            formData.append("image", img);
+            formData.append('product', new Blob([ JSON.stringify({
+                "productName" : productName,
+                "unit" : unit,
+                "quantity" : quantity,
+                "price" : price,
+                "description" : description,
+                "category" : {categoryID : categoryID, categoryName : categoryName}
+            })], {
+                type: "application/json"
+            }));
+        }
+        try {
+            const response = await fetch(`/admin/product/${productID}`, {
+                method: "POST",
+                body:formData
+            });
+
+            document.getElementById("edit").style.display = "none";
+
+
+        } catch (error) {
+            console.error('Lỗi:', error.message);
+        }
+         location.reload(true);
+
     }
 
     function closeEdit() {
@@ -371,14 +459,35 @@
         x.style.display = "none";
     }
 
-    document.addEventListener("DOMContentLoaded", function () {
+    async function deleteProduct(productID) {
+        const apiUrl = "/admin/product/" + productID;
+        const confirmed = confirm("Bạn có chắc chắn muốn xóa sản phẩm này?");
+        if(confirmed) {
+            try {
+                const responese = await fetch(apiUrl, {
+                    method: 'DELETE'
+                });
+                if(!responese.ok) {
+                    throw new Error('Đã xảy ra lỗi');
+                }
+                location.reload();
+            }
+            catch (error) {
+                console.error('Lỗi:', error.message);
+                alert("Đã xảy ra lỗi")
+            }
+        }
+        else{
+
+        }
+    }
+    document.addEventListener("DOMContentLoaded", function() {
         const supplierID = localStorage.getItem("selectedSupplierID");
         if (supplierID) {
             const supplierDropdown = document.getElementById("supplierDropdown");
             supplierDropdown.value = supplierID;
         }
     });
-
     function getProductBySupplierId() {
         let supplierID = document.getElementById("supplierDropdown").value;
         localStorage.setItem("selectedSupplierID", supplierID);
@@ -392,16 +501,56 @@
             url.searchParams.set('supplierID', supplierID);
             window.location.href = url;
         }
-        saveSelectedSupplierID(supplierID);
-    }
 
+    }
     function searchProduct() {
+        let supplierID = document.getElementById("supplierDropdown").value;
+        let searchName = document.getElementById("searchName").value;
+        supplierID = 0 ;
+        localStorage.setItem("selectedSupplierID", supplierID);
         const url = new URL(window.location.href);
         const searchParams = url.searchParams;
-        // Kiểm tra và xóa tham số supplierID nếu có
-        if (searchParams.has('supplierID')) {
+        if(searchParams.has('supplierID')){
             searchParams.delete('supplierID');
+
         }
+        url.searchParams.set('searchName', searchName);
+        window.location.href = url;
+    }
+    const imageContainer = document.getElementById("imageNewCon");
+    const inputFile = document.querySelector("input[name='imageNew']");
+
+    inputFile.addEventListener("change", function() {
+        showImageThumnail(this);
+    });
+
+    const imageContEdit = document.getElementById("imageEditCon");
+    const inputFileEdit = document.querySelector("input[name='imageEdit']");
+
+    inputFileEdit.addEventListener("change", function() {
+        showImageThumnailEdit(this);
+    });
+
+    function showImageThumnail(fileInput){
+        const file = inputFile.files[0];
+        reader = new FileReader();
+        reader.onload = function(e){
+            const image = new Image();
+            image.src = URL.createObjectURL(file);
+            imageContainer.querySelector("img").src = image.src;
+        }
+        reader.readAsDataURL(file);
+    }
+    function showImageThumnailEdit(fileInputEdit){
+        const fileEdit = inputFileEdit.files[0];
+        document.getElementById("imgName").value = fileEdit.name;
+        readerEdit = new FileReader();
+        readerEdit.onload = function(e){
+            const imageEdit = new Image();
+            imageEdit.src = URL.createObjectURL(fileEdit);
+            imageContEdit.querySelector("img").src = imageEdit.src;
+        }
+        readerEdit.readAsDataURL(fileEdit);
     }
 </script>
 

@@ -16,8 +16,12 @@ public class CategoryService {
     @Autowired private CategoryRepository repo;
 
     @Autowired private ProductRepository productRepository;
-    public List<Category> listAll(){
-        return (List<Category>) repo.findAll();
+//    public List<Category> listAll(){
+//        return (List<Category>) repo.findAll();
+//    }
+
+    public List<Category> listCategory(){
+        return (List<Category>) repo.findCategory();
     }
 
     public void save(Category category) {
@@ -32,6 +36,20 @@ public class CategoryService {
         throw  new CategoryNotFoundException("Could not find any category with ID: " + categoryID);
     }
 
+    public void softdelete(Integer categoryID) throws CategoryNotFoundException {
+        List<Product>products = productRepository.findByCategoryId(categoryID);
+//        productRepository.deleteAll(products);
+        for (Product product : products) {
+            product.setDeleted(true);
+            productRepository.save(product);
+        }
+
+        Optional<Category> optionalCategory = repo.findById(categoryID);
+        Category category = optionalCategory.get();
+        category.setDeleted(true);
+        repo.save(category);
+    }
+
     public void delete(Integer categoryID) throws CategoryNotFoundException {
         List<Product>products = productRepository.findByCategoryId(categoryID);
         productRepository.deleteAll(products);
@@ -39,7 +57,25 @@ public class CategoryService {
         repo.deleteById(categoryID);
     }
 
+    public void restore(Integer categoryID) throws CategoryNotFoundException {
+        List<Product>products = productRepository.findByCategoryId(categoryID);
+//        productRepository.deleteAll(products);
+        for (Product product : products) {
+            product.setDeleted(false);
+            productRepository.save(product);
+        }
+
+        Optional<Category> optionalCategory = repo.findById(categoryID);
+        Category category = optionalCategory.get();
+        category.setDeleted(false);
+        repo.save(category);
+    }
+
     public List<Category> findCategoryByName(String searchCategory) {
         return repo.findByCategoryNameContainingIgnoreCase(searchCategory);
+    }
+
+    public List<Category> listCategoryGarbage() {
+        return (List<Category>) repo.findCategoryGarbage();
     }
 }

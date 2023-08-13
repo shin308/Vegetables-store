@@ -166,9 +166,7 @@
                             <span th:text="${loggedInUser.firstName}"></span>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" th:href="@{/account}">Thông tin cá nhân</a></li>
-                            <li><a class="dropdown-item" href="#">Sửa thông tin cá nhân</a></li>
-                            <li><a class="dropdown-item" href="#">Đổi mật khẩu</a></li>
+                            <li><a class="dropdown-item" th:href="@{/manage-user-account}">Thông tin cá nhân</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a></li>
                         </ul>
@@ -189,7 +187,7 @@
     <div class="col">
       <div class="row">
         <div class="col-6" id="info">
-          <img th:src="@{'/images/'+ ${productInfo.img}}" width="200" height="200">
+          <img th:src="@{${productInfo.photosImagePath}}" width="200" height="200">
           <div class="mt-2">
             <div style="display: flex;"><span>5 </span>
               <p style="color: yellow; width:108px;margin-bottom: 0;">
@@ -223,7 +221,7 @@
               </div>
             </div>
           </div>
-          <button class="btn btn-success border-0" style="background-color: #5CB85C; float:right;" th:attr="onclick=|addToCart('${productInfo.productID}', '${productInfo.productName}',${productInfo.price},'${productInfo.img}', ${productInfo.quantity})|">Thêm vào
+          <button class="btn btn-success border-0" style="background-color: #5CB85C; float:right;" th:attr="onclick=|addToCart('${productInfo.productID}', '${productInfo.productName}',${productInfo.price},'${productInfo.img}', ${productInfo.quantity})|"><i class="fa-solid fa-basket-shopping"></i> Thêm vào
             giỏ
           </button>
 
@@ -246,7 +244,7 @@
       <div class="list border" style="padding:10px 10px 0 10px;">
         <div class="item border mb-3 p-3">
           <div class="row">
-            <div class="col-1"><img src="/images/image10.png" alt="imgUser" width="50" height="50"
+            <div class="col-1"><img src="/images/4/image10.png" alt="imgUser" width="50" height="50"
                                     class="border">
             </div>
             <div class="col-7">
@@ -380,22 +378,21 @@
 
     let checkquantityDOM = document.getElementById("checkQuantity");
 
-    if(limitQuantity - quantityInCart === 0) {
-      checkquantityDOM.innerText = "Hết hàng"
+    if(limitQuantity === 0) {
+      checkquantityDOM.innerText = "Hết hàng" + `(${0})`
     } else {
-      checkquantityDOM.innerText = "Còn hàng"
+      checkquantityDOM.innerText = "Còn hàng" + `(${limitQuantity})`
     }
   });
 
 
 
   async function addToCart(productId, productName, unitPrice, imageProduct, limitQuantity) {
-    // console.log([[${quantityInCart}]]);
-    // console.log(limitQuantity)
+
     let quantityDOM = document.getElementById("inputQuantity")
     let quantity = quantityDOM.value;
 
-    if(quantity > 0) {
+    if(quantity > 0 && limitQuantity > 0 && quantity <= limitQuantity) {
       try {
         const response = await fetch('/cart/add', {
           method: 'POST',
@@ -415,7 +412,7 @@
 
         if (response.ok) {
           console.log('Thêm vào giỏ hàng thành công!');
-          animateProductFly(imageProduct);
+          animateProductFly(imageProduct,productId);
 
 
         } else if (response.status === 400) {
@@ -427,7 +424,7 @@
 
           Swal.fire({
             icon: 'error',
-            title: 'Sản phẩm đã hết hàng hoặc không đủ số lượng!',
+            title: 'Bạn đã thêm vào giỏ hàng quá tối đa số lượng sản phẩm có sẵn!',
             toast: true,
             position: 'top-end',
             showConfirmButton: false,
@@ -440,7 +437,29 @@
       } catch (error) {
         console.error(error);
       }
-    } else {
+    } else if(limitQuantity <= 0){
+      Swal.fire({
+        icon: 'error',
+        title: 'Sản phẩm này đã hết hàng!',
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000
+      });
+    }
+    else if (quantity > limitQuantity){
+      Swal.fire({
+        icon: 'error',
+        title: 'Không đủ số lượng sản phẩm!',
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000
+      });
+
+      quantityDOM.value = limitQuantity;
+    }
+    else {
       Swal.fire({
         icon: 'error',
         title: 'Vui lòng nhập số lượng ít nhất một sản phẩm!',
@@ -453,18 +472,15 @@
       quantityDOM.value = 1;
     }
 
-
-
-
   }
-  function animateProductFly(imageProduct) {
+  function animateProductFly(imageProduct,productId) {
     const productImage = document.querySelector(`img[src$='${imageProduct}']`);
     if (productImage) {
       // Tạo div để tạo hiệu ứng bay vào giỏ
       const productFly = document.createElement('div');
       productFly.classList.add('product-fly');
       // đặt nền là ảnh product
-      productFly.style.backgroundImage = `url('/images/${imageProduct}')`;
+      productFly.style.backgroundImage = `url('/images/${productId}/${imageProduct}')`;
 
       // Lấy vị trí của ảnh product
       const { left, top, width } = productImage.getBoundingClientRect();

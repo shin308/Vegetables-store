@@ -60,7 +60,7 @@
       width: 100%;
     }
 
-    #manage, #btnAdd {
+    #manage, #btnGarbage {
       width: 100%;
       text-align: center;
       margin: 10px auto;
@@ -137,12 +137,18 @@
                 type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
       </form>
     </div>
-    <div class="col-5 text-end" id="btnAdd">
+    <div class="col text-end" id="btnGarbage">
+      <a th:href="@{/admin/category/garbage}">
+        <button type="button" class="btn btn-outline-secondary me-3">Thùng rác<i class="fa-solid fa-trash-can ms-3"></i></button>
+      </a>
       <button style="background-color: #5CB85C; color:white;vertical-align: middle;" type="button"
               class="btn btn-success shadow-sm border-0"
               onclick="openAddNew()">Thêm mới<i style="font-size: 23px; vertical-align: middle;"
                                                  class="fa-solid fa-square-plus ms-3"></i></button>
     </div>
+
+
+
   </div>
 
 
@@ -150,7 +156,7 @@
     <thead class="table-secondary">
     <tr>
       <th scope="col-1">Mã danh mục</th>
-      <th scope="col-2">Tên danh mục</th>
+      <th scope="col">Tên danh mục</th>
       <th scope="col-2">Chức năng</th>
     </tr>
     </thead>
@@ -160,11 +166,11 @@
         <td>[[${category.categoryID}]]</td>
         <td>[[${category.categoryName}]]</td>
         <td>
-          <a class="h4 m-3" th:href="@{'/admin/category/edit/' + ${category.categoryID}}">
-            <button type="button" class="btn btn-primary">Sửa</button>
+          <a class="h4" th:href="@{'/admin/category/edit/' + ${category.categoryID}}">
+            <button type="button" class="btn btn-outline-primary"><i class="fa-solid fa-pen-to-square"></i></button>
           </a>
-          <a class="h4" th:href="@{'/admin/category/delete/' + ${category.categoryID}}">
-            <button type="button" class="btn btn-danger">Xoá</button>
+          <a class="h4" th:href="@{'/admin/category/softdelete/' + ${category.categoryID}}">
+            <button type="button" class="btn btn-outline-danger"><i class="fa-solid fa-trash-can"></i></button>
           </a>
         </td>
       </tr>

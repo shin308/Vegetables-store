@@ -1,10 +1,7 @@
 package group4.organicapplication.controller;
 
 import group4.organicapplication.exception.CategoryNotFoundException;
-import group4.organicapplication.model.CartItem;
-import group4.organicapplication.model.Category;
-import group4.organicapplication.model.Product;
-import group4.organicapplication.model.User;
+import group4.organicapplication.model.*;
 import group4.organicapplication.service.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -35,7 +32,7 @@ public class MainController {
 
     @Autowired private CartService cartService;
 
-
+    @Autowired private OrderService orderService;
     @ModelAttribute("loggedInUser")
     public User loggedInUser(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -47,14 +44,14 @@ public class MainController {
 
     @GetMapping("/")
     public String showHomePage(@RequestParam(value = "searchProductName", required = false)String searchProductName,Model model){
-        List<Category> categoryList = categoryService.listAll();
+        List<Category> categoryList = categoryService.listCategory();
         model.addAttribute(("categoryList"),categoryList);
 
         List<Product> productList;
         if (searchProductName != null && !searchProductName.isEmpty()) {
             productList = selectProductService.findProductByName(searchProductName);
         } else {
-            // Nếu không có tên để tìm kiếm, hiển thị tất cả nhà cung cấp
+            // Nếu không có tên để tìm kiếm, hiển thị tất cả sản phẩm
             productList = selectProductService.selectAll();
         }
         model.addAttribute("productList",productList);
@@ -67,7 +64,7 @@ public class MainController {
 
     @GetMapping("/{categoryID}")
     public  String selectProductByCategory(@PathVariable("categoryID") Integer categoryID, Model model){
-        List<Category> categoryList = categoryService.listAll();
+        List<Category> categoryList = categoryService.listCategory();
         model.addAttribute(("categoryList"),categoryList);
 
         Category category = null;
@@ -102,7 +99,7 @@ public class MainController {
     public String showproductInfoUser(@PathVariable("productID") Integer productID, Model model){
         Product productInfo = productService.get(productID);
         model.addAttribute("productInfo",productInfo);
-        List<Category> categoryList = categoryService.listAll();
+        List<Category> categoryList = categoryService.listCategory();
         model.addAttribute(("categoryList"),categoryList);
 
         List<CartItem> cartItems = cartService.getCartItems();
@@ -130,15 +127,23 @@ public class MainController {
 
     @GetMapping("/order_user")
     public String showOrderUserPage(Model model){
-        List<Category> categoryList = categoryService.listAll();
+
+        List<CartItem> cartItems = cartService.getCartItems();
+
+        List<Category> categoryList = categoryService.listCategory();
         model.addAttribute(("categoryList"),categoryList);
+        List<Orders> orders = orderService.findByUserId(loggedInUser().getId());
+        model.addAttribute(("orders"),orders);
+
+        int totalQuantity = cartService.sumQuantity(cartItems);
+        model.addAttribute("totalQuantity", totalQuantity);
         return "order_user";
     }
 
     @GetMapping("/cart")
     public String getCart(@RequestParam(value = "searchProductName", required = false)String searchProductName,Model model) {
         List<CartItem> cartItems = cartService.getCartItems();
-        List<Category> categoryList = categoryService.listAll();
+        List<Category> categoryList = categoryService.listCategory();
         model.addAttribute(("categoryList"),categoryList);
         List<Product> products;
         if (searchProductName != null && !searchProductName.isEmpty()) {

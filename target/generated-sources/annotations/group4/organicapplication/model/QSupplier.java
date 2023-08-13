@@ -21,6 +21,8 @@ public class QSupplier extends EntityPathBase<Supplier> {
 
     public final StringPath address = createString("address");
 
+    public final BooleanPath deleted = createBoolean("deleted");
+
     public final StringPath phone = createString("phone");
 
     public final NumberPath<Integer> supplierID = createNumber("supplierID", Integer.class);

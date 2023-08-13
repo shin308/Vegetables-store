@@ -172,7 +172,7 @@
             <tbody>
             <tr th:each="cartItem, index: ${cartItems}">
                 <td th:text="${index.count}">1</td>
-                <td><img th:src="@{'/images/' + ${cartItem.imageProduct}}" alt="" width="50"></td>
+                <td><img th:src="@{'/images/' +${cartItem.productId}+'/' + ${cartItem.imageProduct}}" alt="" width="50"></td>
                 <td th:text="${cartItem.productName}">Cà chua</td>
                 <td th:text="${cartItem.quantity}">1</td>
                 <td th:text="${cartItem.unitPrice} + ' ₫'">15.000</td>

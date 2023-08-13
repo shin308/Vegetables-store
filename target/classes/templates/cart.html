@@ -227,7 +227,7 @@
 
             <tr th:each="item, itemInfo : ${cartItems}">
                 <td th:text="${itemInfo.index + 1}">1</td>
-                <td><img th:src="@{'/images/' + ${item.imageProduct}}" alt="" width="50"></td>
+                <td><img th:src="@{'/images/'+ ${item.productId} +'/' + ${item.imageProduct}}" alt="" width="50"></td>
                 <td th:text="${item.productName}">Cà chua</td>
                 <td>
                     <div class="counter">
@@ -348,7 +348,7 @@
 
                 if (response.ok) {
                     console.log('Thêm vào giỏ hàng thành công!');
-                    animateProductFly(imageProduct);
+                    animateProductFly(imageProduct, productId);
 
                 } else if (response.status === 400) {
                     const data = await response.text();
@@ -527,14 +527,14 @@
 
     }
 
-    function animateProductFly(imageProduct) {
+    function animateProductFly(imageProduct, productId) {
         const productImage = document.querySelector(`img[src$='${imageProduct}']`);
         if (productImage) {
             // Tạo div để tạo hiệu ứng bay vào giỏ
             const productFly = document.createElement('div');
             productFly.classList.add('product-fly');
             // đặt nền là ảnh product
-            productFly.style.backgroundImage = `url('/images/${imageProduct}')`;
+            productFly.style.backgroundImage = `url('/images/${productId}/${imageProduct}')`;
 
             // Lấy vị trí của ảnh product
             const { left, top } = productImage.getBoundingClientRect();

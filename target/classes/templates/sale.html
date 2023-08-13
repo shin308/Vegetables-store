@@ -153,7 +153,7 @@
         <div class="row list ms-1">
             <th:block th:each="product:${products}">
                 <div class="col item">
-                    <a th:href="@{'/productInfo/' + ${product.productID}}">
+                    <a th:href="@{'/admin/productInfo/' + ${product.productID}}">
                         <img  th:src="@{${product.getPhotosImagePath}}" width="80px" height="80px">
                     </a>
                     <h6>[[${product.productName}]]</h6>
@@ -192,7 +192,7 @@
             <tbody>
             <tr th:each="item, itemInfo : ${cartItems}">
                 <td th:text="${itemInfo.index + 1}">1</td>
-                <td><img th:src="@{'/images/' + ${item.imageProduct}}" alt="" width="50"></td>
+                <td><img th:src="@{'/images/'+${item.productId}+'/' + ${item.imageProduct}}" alt="" width="50"></td>
                 <td th:text="${item.productName}">Cà chua</td>
                 <td>
                     <div class="counter">
@@ -239,49 +239,61 @@
 <script th:inline="javascript">
     async function addToCart(productId, productName, quantity, unitPrice, imageProduct, limitQuantity) {
 
-        try {
-            const response = await fetch('/cart/add', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    productId: productId,
-                    productName: productName,
-                    quantity: quantity,
-                    unitPrice: unitPrice,
-                    imageProduct: imageProduct,
-                    limitQuantity: limitQuantity
+        if(limitQuantity > 0) {
+            try {
+                const response = await fetch('/cart/add', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        productId: productId,
+                        productName: productName,
+                        quantity: quantity,
+                        unitPrice: unitPrice,
+                        imageProduct: imageProduct,
+                        limitQuantity: limitQuantity
 
-                })
-            });
-
-            if (response.ok) {
-                console.log('Thêm vào giỏ hàng thành công!');
-                location.reload();
-
-            } else if (response.status === 400) {
-                const data = await response.text();
-
-                console.error(data); // Hiển thị thông báo lỗi "Hết hàng"
-                // var button = document.querySelector('.addCart');
-                // button.disabled = true;
-
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Sản phẩm đã hết hàng!',
-                    toast: true,
-                    position: 'top-end',
-                    showConfirmButton: false,
-                    timer: 3000
+                    })
                 });
 
-            } else {
-                console.error('Thêm vào giỏ hàng thất bại!');
+                if (response.ok) {
+                    console.log('Thêm vào giỏ hàng thành công!');
+                    location.reload();
+
+                } else if (response.status === 400) {
+                    const data = await response.text();
+
+                    console.error(data); // Hiển thị thông báo lỗi "Hết hàng"
+                    // var button = document.querySelector('.addCart');
+                    // button.disabled = true;
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Bạn đã thêm vào giỏ hàng quá tối đa số lượng sản phẩm có sẵn!',
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000
+                    });
+
+                } else {
+                    console.error('Thêm vào giỏ hàng thất bại!');
+                }
+            } catch (error) {
+                console.error(error);
             }
-        } catch (error) {
-            console.error(error);
+        }else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Sản phẩm đã hết hàng!',
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000
+            });
         }
+
 
     }
     async function removeFromCart(productId) {
@@ -460,7 +472,7 @@
                 if (cartItems.length === 0) {
                     Swal.fire({
                         icon: 'error',
-                        title: 'Vui lòng thêm sản phẩm cần mua!',
+                        title: 'Vui lòng thêm sản phẩm cần bán!',
                         toast: true,
                         position: 'top-end',
                         showConfirmButton: false,
@@ -483,13 +495,13 @@
                     });
 
                     const orderData = {
-                        address: "",
-                        email: "",
-                        note: "Mua trực tiếp tại cửa hàng",
+                        address: [[${loggedInUser.address}]],
+                        email: [[${loggedInUser.email}]],
+                        note: "Bán trực tiếp tại cửa hàng",
                         orderDay: formattedTime,
                         orderStatus: "Hoàn thành",
                         totalPrice: [[${totalPrice}]],
-                        phone: "",
+                        phone: [[${loggedInUser.phone}]],
                         orderDetailList: orderDetailList,
                     };
 
@@ -504,7 +516,7 @@
                         if (response.ok) {
                             Swal.fire({
                                 icon: 'success',
-                                title: 'Đặt hàng thành công!',
+                                title: 'Thanh toán thành công!',
                                 toast: true,
                                 position: 'top-end',
                                 showConfirmButton: false,
@@ -537,7 +549,7 @@
 
     <!--Phân trang-->
     let thisPage = 1;
-    let limit = 9;
+    let limit = 6;
     let list = document.querySelectorAll('.list .item');
 
     function loadItem() {

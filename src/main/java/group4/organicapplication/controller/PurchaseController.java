@@ -130,7 +130,7 @@ public class PurchaseController {
             StringBuilder emailContent = new StringBuilder();
             emailContent.append("Xin chào " + name + ",");
             emailContent.append("<br>");
-            emailContent.append("Đơn hàng của bạn đã được đặt thành công.");
+            emailContent.append("Đơn hàng của bạn đã được đặt thành công.<br> Đơn hàng của bạn sẽ được giao trong ngày hôm nay, vui lòng liên hệ với chúng tôi qua email này nếu bạn không nhận được đơn hàng.");
             emailContent.append("<br><br>");
             emailContent.append("<b>THÔNG TIN ĐƠN HÀNG:</b><hr>");
             emailContent.append("<br>");
@@ -141,7 +141,7 @@ public class PurchaseController {
 
             for (Map<String, Object> cartItem : cartItems) {
                 emailContent.append("Tên sản phẩm: ").append(cartItem.get("productName")).append("<br>");
-                emailContent.append("<img src='https://shin308.github.io/Vegetables-store/src/main/resources/static/images/").append(cartItem.get("imageProduct")).append("' width='100' height='100'>").append("<br>");
+                emailContent.append("<img src='https://shin308.github.io/Vegetables-store/src/main/resources/static/images/"+ cartItem.get("productId") + '/').append(cartItem.get("imageProduct")).append("' width='100' height='100'>").append("<br>");
                 emailContent.append("Số lượng: ").append(cartItem.get("quantity")).append("<br>");
                 emailContent.append("Thành tiền: ").append(cartItem.get("totalPrice")).append(" đồng").append("<br>");
                 emailContent.append("<hr>");

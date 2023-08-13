@@ -187,7 +187,7 @@
     <div class="col">
       <div class="row">
         <div class="col-6" id="info">
-          <img th:src="@{'/images/'+ ${productInfo.img}}" width="200" height="200">
+          <img th:src="@{${productInfo.photosImagePath}}" width="200" height="200">
           <div class="mt-2">
             <div style="display: flex;"><span>5 </span>
               <p style="color: yellow; width:108px;margin-bottom: 0;">
@@ -412,7 +412,7 @@
 
         if (response.ok) {
           console.log('Thêm vào giỏ hàng thành công!');
-          animateProductFly(imageProduct);
+          animateProductFly(imageProduct,productId);
 
 
         } else if (response.status === 400) {
@@ -473,14 +473,14 @@
     }
 
   }
-  function animateProductFly(imageProduct) {
+  function animateProductFly(imageProduct,productId) {
     const productImage = document.querySelector(`img[src$='${imageProduct}']`);
     if (productImage) {
       // Tạo div để tạo hiệu ứng bay vào giỏ
       const productFly = document.createElement('div');
       productFly.classList.add('product-fly');
       // đặt nền là ảnh product
-      productFly.style.backgroundImage = `url('/images/${imageProduct}')`;
+      productFly.style.backgroundImage = `url('/images/${productId}/${imageProduct}')`;
 
       // Lấy vị trí của ảnh product
       const { left, top, width } = productImage.getBoundingClientRect();

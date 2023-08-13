@@ -48,7 +48,7 @@ public class Orders {
     private long totalPrice;
     private String orderStatus;
     private String note;
-
+    private String imgDelivery;
     public Long getId() {
         return id;
     }
@@ -155,5 +155,13 @@ public class Orders {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getImgDelivery() {
+        return imgDelivery;
+    }
+
+    public void setImgDelivery(String imgDelivery) {
+        this.imgDelivery = imgDelivery;
     }
 }

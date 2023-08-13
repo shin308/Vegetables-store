@@ -140,7 +140,8 @@
             <div class="form-group form-inline">
                 <input id="idShipper" type="hidden" th:value="${loggedInUser.id}">
                 <select class="form-control form-select" id="status">
-                    <option value="Đang giao">Được phân công</option>
+                    <option value="Đang chờ giao">Được phân công</option>
+                    <option value="Đang giao">Đang giao</option>
                     <option value="Chờ duyệt">Chờ duyệt</option>
                     <option value="Hoàn thành">Hoàn thành</option>
                 </select>
@@ -162,6 +163,7 @@
             <th scope="col-5">Ngày đặt</th>
             <th scope="col-5">Ngày giao</th>
             <th scope="col-5">Ngày nhận</th>
+            <th scope="col-5">Ảnh giao hàng</th>
             <th scope="col-1"></th>
             <th scope="col-2">Chức năng</th>
         </tr>
@@ -425,6 +427,11 @@
                                 <input type="hidden" th:id="donHangId" value=""/>
                             </div>
                             <div class="form-group">
+                                <div id="img-delivery">
+                                    <h4>Hình ảnh xác nhận đơn: </h4>
+                                    <img id="imageDeliveryOrder" class="border" src="/images/image10.png" alt="" width="80" height="80">
+                                    <input type="file" id="imageDO" name="imageP" style="margin: 50px 10px 0 10px;">
+                                </div>
                                 <div class="col-md-12">
                                     <table class="table chiTietCapNhatTable text-center">
                                         <thead>
@@ -450,6 +457,52 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Hủy</button>
                             <input class="btn btn-primary" id="btnXacNhan" type="button" value="Xác nhận" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- Nhận đơn hàng -->
+<div class="col-md-6">
+    <form class="nhanDonModal" id="form">
+        <div>
+            <div class="modal fade" id="nhanDonModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Nhận đơn hàng này</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <input type="hidden" th:id="donHangId" value=""/>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <table class="table chiTietNhanDonTable text-center">
+                                        <thead>
+                                        <tr>
+                                            <th class="border-0 text-uppercase small font-weight-bold">STT</th>
+                                            <th class="border-0 text-uppercase small font-weight-bold">Tên sản phẩm</th>
+                                            <th class="border-0 text-uppercase small font-weight-bold">Đơn giá</th>
+                                            <th class="border-0 text-uppercase small font-weight-bold">Số lượng đặt</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <!-- You can add your table rows here -->
+                                        </tbody>
+                                    </table>
+                                    <h4 th:id="tongTienCapNhat" style="float: right; font-weight: bold;padding-right: 50px"></h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Hủy</button>
+                            <input class="btn btn-primary" id="btnNhanDon" type="button" value="Nhận đơn" />
                         </div>
                     </div>
                 </div>

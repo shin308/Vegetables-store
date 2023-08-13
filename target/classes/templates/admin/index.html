@@ -82,7 +82,7 @@
             <ul class="dropdown-menu dropdown-menu-end">
                 <li><a class="dropdown-item" th:href="@{/admin/profile}">Thông tin cá nhân</a></li>
                 <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a></li>
+                <li><a id="logout" class="dropdown-item" th:href="@{/logout}">Đăng xuất</a></li>
             </ul>
         </div>
     </div>
@@ -165,6 +165,12 @@
 
 </body>
 <script>
+
+    document.getElementById("logout").addEventListener("click", alertLogout);
+	function alertLogout(){
+		alert("Bạn đã đăng xuất thành công!!!");
+	}
+
     <!--Nav-Tab-->
     function openOrder(evt, orderName) {
         var i, x, tablinks;

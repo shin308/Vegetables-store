@@ -43,11 +43,15 @@ $(document).ready(function() {
 					                  '<td>' + orders.orderDay + '</td>' +
 					                  '<td>' + orders.deliveryDay + '</td>' +
 					                  '<td>' + orders.receiveDay + '</td>' +
+					                  '<td> <img id="imageDeliveryOrder" class="border" src="/images/ImageShipperDelivery/' + orders.imgDelivery + '" alt="" width="80" height="80"></td>' +
 					                  '<td width="0%">'+'<input type="hidden" class="donHangId" value=' + orders.id + '>'+ '</td>'+
 					                  '<td><button class="btn btn-warning btnChiTiet" data-bs-toggle="modal" data-bs-target="#chiTietModal">Chi Tiết</button>';
-					     if(orders.orderStatus == "Đang giao"){
-                         					    	 donHangRow += ' &nbsp;<button class="btn btn-warning btnCapNhat" data-bs-toggle="modal" data-bs-target="#capNhatTrangThaiModal">Cập Nhật</button> </td>';
-                         					     }
+					                if(orders.orderStatus == "Đang chờ giao"){
+                                        donHangRow += ' &nbsp;<button class="btn btn-warning btnNhanDon" data-bs-toggle="modal" data-bs-target="#nhanDonModal">Nhận đơn</button>';
+                                    }
+					                if(orders.orderStatus == "Đang giao"){
+                         			    donHangRow += ' &nbsp;<button class="btn btn-warning btnCapNhat" data-bs-toggle="modal" data-bs-target="#capNhatTrangThaiModal">Cập nhật đơn</button> </td>';
+                         			}
 
 					$('.donHangTable tbody').append(donHangRow);
 
@@ -265,6 +269,13 @@ $(document).ready(function() {
 		}
 	});
 
+    var myImage = "";
+        $('input[type="file"]').change(function(e) {
+            myImage = e.target.files[0].name;
+            console.log(imageDeliveryOrder);
+            $("#imageDeliveryOrder").attr("src","/images/ImageShipperDelivery/"+myImage);
+        });
+
     // event khi click vào button cập nhật đơn
 	$(document).on('click', '.btnCapNhat', function (event){
 		event.preventDefault();
@@ -310,9 +321,9 @@ $(document).ready(function() {
     		      listChiTietCapNhat.push(chiTietCapNhat);
     		 });
 
-
         	 var data = { idDonHang : $("#donHangId").val(),
         			      ghiChuShipper: $("#ghiChuShipper").val(),
+                          imgDeliveryOrder : myImage,
         			      danhSachCapNhatChiTietDon: listChiTietCapNhat } ;
         	 console.log(data);
         	 $.ajax({
@@ -336,6 +347,76 @@ $(document).ready(function() {
         }
 
 
+    // event khi click vào button nhận đơn
+    	$(document).on('click', '.btnNhanDon', function (event){
+    		event.preventDefault();
+    		var donHangId = $(this).parent().prev().children().val();
+    		$("#donHangId").val(donHangId);
+    		var href = "http://localhost:8080/api/shipper/orders/"+donHangId;
+    		$.get(href, function(order) {
+    			// thêm bảng:
+    			var stt = 1;
+    			$.each(order.orderDetailList, function(i, chiTiet){
+    				var chiTietRow = '<tr>' +
+    				'<td>' + stt + '</td>' +
+                    '<td>' + chiTiet.product.productName + '</td>' +
+                    '<td>' + chiTiet.totalAmount + '</td>'+
+                    '<td>' + chiTiet.quantity + '</td>'+
+                    '<td><input type="hidden" value="'+chiTiet.id+'" ></td>'
+    				 $('.chiTietNhanDonTable tbody').append(chiTietRow);
+                    stt++;
+    	    	  });
+    			var sum = 0;
+    			$.each(order.orderDetailList, function(i, chiTiet){
+    				sum += chiTiet.totalAmount;
+    				//* chiTiet.soLuongNhanHang;
+    			});
+    			$("#tongTienXacNhan").text("Tổng : "+ sum);
+    		});
+    		$("#nhanDonModal").modal();
+    	});
+
+    $(document).on('click', '#btnNhanDon', function (event) {
+        	event.preventDefault();
+        	ajaxPostNhanDonShipper();
+    		resetData();
+        });
+
+    // post request nhận đơn cho shipper
+        	function ajaxPostNhanDonShipper() {
+
+           	     var listChiTietCapNhat = [] ;
+        		 var table = $(".chiTietNhanDonTable tbody");
+             	 table.find('tr').each(function (i) {
+        		      var chiTietCapNhat = { idChiTiet : $(this).find("td:eq(4) input[type='hidden']").val() };
+        		      listChiTietCapNhat.push(chiTietCapNhat);
+        		 });
+
+            	 var data = { idDonHang : $("#donHangId").val(),
+            			      danhSachCapNhatChiTietDon: listChiTietCapNhat } ;
+            	 console.log(data);
+            	 $.ajax({
+             		async:false,
+         			type : "POST",
+         			contentType : "application/json",
+         			url : "http://localhost:8080/api/shipper/orders/receive-order",
+         			enctype: 'multipart/form-data',
+
+        			data : JSON.stringify(data),
+                    // dataType : 'json',
+        			success : function(response) {
+        				$("#nhanDonModal").modal('hide');
+        				alert("Nhận đơn hàng thành công");
+        			},
+        			error : function(e) {
+        				alert("Error!")
+        				console.log("ERROR: ", e);
+        			}
+        		});
+            }
+
+
+
 	// event khi ẩn modal chi tiết
 	$('#chiTietModal,#capNhatTrangThaiModal').on('hidden.bs.modal', function(e) {
 		e.preventDefault();
@@ -346,4 +427,5 @@ $(document).ready(function() {
 		$('.chiTietTable tbody tr').remove();
 		$('.chiTietCapNhatTable tbody tr').remove();
 	});
+
 });

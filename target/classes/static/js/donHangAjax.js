@@ -30,6 +30,9 @@ $(document).ready(function() {
                     }else{
                         receiveUser = orders.email;
                     }
+                    //format currency
+                    sum = sum.toLocaleString('it-IT', {style : 'currency', currency : 'VND'});
+
 					var donHangRow = '<tr class="item">' +
 					                  '<td>' + orders.id+ '</td>' +
 					                  '<td>' + receiveUser + '</td>' +
@@ -38,11 +41,12 @@ $(document).ready(function() {
 					                  '<td>' + orders.orderDay + '</td>' +
 					                  '<td>' + orders.deliveryDay + '</td>' +
 					                  '<td>' + orders.receiveDay + '</td>' +
+					                  '<td> <img id="imageDeliveryOrder" class="border" src="/images/ImageShipperDelivery/' + orders.imgDelivery + '" alt="" width="80" height="80"></td>'+
 					                  '<td width="0%">'+'<input type="hidden" class="donHangId" value=' + orders.id + '>'+ '</td>'+
 					                  '<td><button class="btn btn-warning btnChiTiet" data-bs-toggle="modal" data-bs-target="#chiTietModal">Chi Tiết</button>';
 					     if(orders.orderStatus == "Đang chờ giao" || orders.orderStatus == "Đang giao"){
-					    	 donHangRow += ' &nbsp;<button class="btn btn-primary btnPhanCong" data-bs-toggle="modal" data-bs-target="#phanCongModal">Phân công</button>'+
-					    	               ' &nbsp;<button class="btn btn-danger btnHuy">Hủy đơn</button>' ;
+					    	 donHangRow += ' &nbsp;<button class="btn btn-primary btnPhanCong" data-bs-toggle="modal" data-bs-target="#phanCongModal">Phân công</button>';
+					    	               //' &nbsp;<button class="btn btn-danger btnHuy">Hủy đơn</button>' ;
 					     } else if (orders.orderStatus == "Chờ duyệt"){
 					         donHangRow += ' &nbsp;<button class="btn btn-primary btnCapNhat" data-bs-toggle="modal" data-bs-target="#capNhatTrangThaiModal" >Duyệt đơn</button> </td>';
 					     }
@@ -56,9 +60,9 @@ $(document).ready(function() {
 					});
 				});
 
-				if(result.totalPages > 1 ){
+				if(result.totalPages >= 1 ){
 					for(var numberPage = 1; numberPage <= result.totalPages; numberPage++) {
-						var li = '<li class="page-item "><a class="pageNumber">'+numberPage+'</a></li>';
+						var li = '<li class="page-item "><a class="pageNumber page-link">'+numberPage+'</a></li>';
 					    $('.pagination').append(li);
 					};
 
@@ -133,7 +137,7 @@ $(document).ready(function() {
     
     // event khi click vào phân trang Đơn hàng
 	$(document).on('click', '.pageNumber', function (event){
-//		event.preventDefault();
+		event.preventDefault();
 		var page = $(this).text();	
     	$('.donHangTable tbody tr').remove();
     	$('.pagination li').remove();
@@ -182,11 +186,12 @@ $(document).ready(function() {
 			// thêm bảng:
 			var sum = 0; // tổng giá trị đơn
 			var stt = 1;
+
 			$.each(order.orderDetailList, function(i, chiTiet){
 				var chiTietRow = '<tr>' +
 				'<td>' + stt + '</td>' +
                 '<td>' + chiTiet.product.productName + '</td>' +
-                '<td>' + chiTiet.totalAmount + '</td>'+
+                '<td>' + chiTiet.totalAmount.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}) + '</td>'+
                 '<td>' + chiTiet.quantity + '</td>';
 
 				if(check){
@@ -200,6 +205,8 @@ $(document).ready(function() {
 				$('.chiTietTable tbody').append(chiTietRow);
                 stt++;
 	    	  });		
+                //format currency
+                sum = sum.toLocaleString('it-IT', {style : 'currency', currency : 'VND'});
 
 			$("#tongTien").text("Tổng : "+ sum);
 		});

@@ -30,6 +30,8 @@ public class QOrders extends EntityPathBase<Orders> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
+    public final StringPath imgDelivery = createString("imgDelivery");
+
     public final StringPath note = createString("note");
 
     public final DateTimePath<java.util.Date> orderDay = createDateTime("orderDay", java.util.Date.class);

@@ -44,6 +44,25 @@ public class OrdersShipperApi {
         return orderService.findById(id);
     }
 
+    @PostMapping("/receive-order")
+    public void nhanDonHang(@RequestBody UpdateOrderShipper updateOrderShipper) {
+        Orders donHang = orderService.findById(updateOrderShipper.getIdDonHang());
+
+        donHang.setOrderStatus("Đang giao");
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+
+            String dateStr = format.format(new Date());
+            Date date = format.parse(dateStr);
+            donHang.setDeliveryDay(date);
+        } catch (java.text.ParseException e) {
+            e.printStackTrace();
+        }
+
+        orderService.save(donHang);
+    }
+
     @PostMapping("/update")
     public void capNhatTrangThaiDonHang(@RequestBody UpdateOrderShipper updateOrderShipper) {
         Orders donHang = orderService.findById(updateOrderShipper.getIdDonHang());
@@ -65,6 +84,8 @@ public class OrdersShipperApi {
         if (!ghiChu.equals("")) {
             donHang.setNote("Ghi chú shipper: \n" + updateOrderShipper.getGhiChuShipper());
         }
+        donHang.setImgDelivery(updateOrderShipper.getImgDeliveryOrder());
+
         orderService.save(donHang);
     }
 }

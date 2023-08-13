@@ -44,18 +44,18 @@ public class OrderApi {
     public void phanCongDonHang(@RequestParam("shipper") String emailShipper,
                                 @RequestParam("donHangId") long donHangId) {
         Orders dh = orderService.findById(donHangId);
-        dh.setOrderStatus("Đang giao");
+        //dh.setOrderStatus("Đang giao");
         dh.setShipper(userService.findByEmail(emailShipper));
 
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        try {
-
-            String dateStr = format.format(new Date());
-            Date date = format.parse(dateStr);
-            dh.setDeliveryDay(date);
-        } catch (java.text.ParseException e) {
-            e.printStackTrace();
-        }
+//        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        try {
+//
+//            String dateStr = format.format(new Date());
+//            Date date = format.parse(dateStr);
+//            dh.setDeliveryDay(date);
+//        } catch (java.text.ParseException e) {
+//            e.printStackTrace();
+//        }
 
         orderService.save(dh);
     }

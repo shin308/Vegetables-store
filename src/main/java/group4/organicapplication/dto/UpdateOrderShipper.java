@@ -6,6 +6,7 @@ public class UpdateOrderShipper {
 
     private long idDonHang;
     private String ghiChuShipper;
+    private String imgDeliveryOrder;
     private List<UpdatePurchaseOrder> danhSachCapNhatChiTietDon;
 
     public static class UpdatePurchaseOrder {
@@ -43,5 +44,13 @@ public class UpdateOrderShipper {
 
     public void setDanhSachCapNhatChiTietDon(List<UpdatePurchaseOrder> danhSachCapNhatChiTietDon) {
         this.danhSachCapNhatChiTietDon = danhSachCapNhatChiTietDon;
+    }
+
+    public String getImgDeliveryOrder() {
+        return imgDeliveryOrder;
+    }
+
+    public void setImgDeliveryOrder(String imgDeliveryOrder) {
+        this.imgDeliveryOrder = imgDeliveryOrder;
     }
 }

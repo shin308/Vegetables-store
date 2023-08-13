@@ -14,30 +14,44 @@ $(document).ready(function() {
 				$.each(result.content, function(i, orders){
 					// tính giá trị đơn hàng\
 					var sum = 0;
+
 					var check = orders.orderStatus == "Hoàn thành" || orders.orderStatus == "Chờ duyệt";
 					if(check){
 						$.each(orders.orderDetailList, function(i, details){
-							sum += details.quantity;
+							sum += details.totalAmount;
 						});
 					} else {
 						$.each(orders.orderDetailList, function(i, details){
-							sum += details.quantity * details.totalAmount;
+							sum += details.totalAmount;
 						});
 					}
+					//format currency
+                    sum = sum.toLocaleString('it-IT', {style : 'currency', currency : 'VND'});
+
+					var receiveUser;
+                    if(orders.user != null){
+                        receiveUser = orders.user.firstName;
+                    }else{
+                        receiveUser = orders.email;
+                    }
 
 					var donHangRow = '<tr class="item">' +
 					                  '<td>' + orders.id+ '</td>' +
-					                  '<td>' + orders.user + '</td>' +
+					                  '<td>' + receiveUser + '</td>' +
 					                  '<td>' + orders.orderStatus + '</td>' +
 					                  '<td>' + sum + '</td>' +
 					                  '<td>' + orders.orderDay + '</td>' +
 					                  '<td>' + orders.deliveryDay + '</td>' +
 					                  '<td>' + orders.receiveDay + '</td>' +
+					                  '<td> <img id="imageDeliveryOrder" class="border" src="/images/ImageShipperDelivery/' + orders.imgDelivery + '" alt="" width="80" height="80"></td>' +
 					                  '<td width="0%">'+'<input type="hidden" class="donHangId" value=' + orders.id + '>'+ '</td>'+
 					                  '<td><button class="btn btn-warning btnChiTiet" data-bs-toggle="modal" data-bs-target="#chiTietModal">Chi Tiết</button>';
-					     if(orders.orderStatus == "Đang giao"){
-                         					    	 donHangRow += ' &nbsp;<button class="btn btn-warning btnCapNhat" data-bs-toggle="modal" data-bs-target="#capNhatTrangThaiModal">Cập Nhật</button> </td>';
-                         					     }
+					                if(orders.orderStatus == "Đang chờ giao"){
+                                        donHangRow += ' &nbsp;<button class="btn btn-warning btnNhanDon" data-bs-toggle="modal" data-bs-target="#nhanDonModal">Nhận đơn</button>';
+                                    }
+					                if(orders.orderStatus == "Đang giao"){
+                         			    donHangRow += ' &nbsp;<button class="btn btn-warning btnCapNhat" data-bs-toggle="modal" data-bs-target="#capNhatTrangThaiModal">Cập nhật đơn</button> </td>';
+                         			}
 
 					$('.donHangTable tbody').append(donHangRow);
 
@@ -48,9 +62,9 @@ $(document).ready(function() {
 					});
 				});
 
-				if(result.totalPages > 1 ){
+				if(result.totalPages >= 1 ){
 					for(var numberPage = 1; numberPage <= result.totalPages; numberPage++) {
-						var li = '<li class="page-item "><a class="pageNumber">'+numberPage+'</a></li>';
+						var li = '<li class="page-item "><a class="pageNumber page-link">'+numberPage+'</a></li>';
 					    $('.pagination').append(li);
 					};
 
@@ -125,7 +139,7 @@ $(document).ready(function() {
 
     // event khi click vào phân trang Đơn hàng
 	$(document).on('click', '.pageNumber', function (event){
-//		event.preventDefault();
+		event.preventDefault();
 		var page = $(this).text();
     	$('.donHangTable tbody tr').remove();
     	$('.pagination li').remove();
@@ -174,11 +188,12 @@ $(document).ready(function() {
 			// thêm bảng:
 			var sum = 0; // tổng giá trị đơn
 			var stt = 1;
+
 			$.each(order.orderDetailList, function(i, chiTiet){
 				var chiTietRow = '<tr>' +
 				'<td>' + stt + '</td>' +
                 '<td>' + chiTiet.product.productName + '</td>' +
-                '<td>' + chiTiet.totalAmount + '</td>'+
+                '<td>' + chiTiet.totalAmount.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}) + '</td>'+
                 '<td>' + chiTiet.quantity + '</td>';
 
 				if(check){
@@ -192,6 +207,8 @@ $(document).ready(function() {
 				$('.chiTietTable tbody').append(chiTietRow);
                 stt++;
 	    	  });
+
+                sum = sum.toLocaleString('it-IT', {style : 'currency', currency : 'VND'});
 
 			$("#tongTien").text("Tổng : "+ sum);
 		});
@@ -252,6 +269,13 @@ $(document).ready(function() {
 		}
 	});
 
+    var myImage = "";
+        $('input[type="file"]').change(function(e) {
+            myImage = e.target.files[0].name;
+            console.log(imageDeliveryOrder);
+            $("#imageDeliveryOrder").attr("src","/images/ImageShipperDelivery/"+myImage);
+        });
+
     // event khi click vào button cập nhật đơn
 	$(document).on('click', '.btnCapNhat', function (event){
 		event.preventDefault();
@@ -297,9 +321,9 @@ $(document).ready(function() {
     		      listChiTietCapNhat.push(chiTietCapNhat);
     		 });
 
-
         	 var data = { idDonHang : $("#donHangId").val(),
         			      ghiChuShipper: $("#ghiChuShipper").val(),
+                          imgDeliveryOrder : myImage,
         			      danhSachCapNhatChiTietDon: listChiTietCapNhat } ;
         	 console.log(data);
         	 $.ajax({
@@ -323,6 +347,76 @@ $(document).ready(function() {
         }
 
 
+    // event khi click vào button nhận đơn
+    	$(document).on('click', '.btnNhanDon', function (event){
+    		event.preventDefault();
+    		var donHangId = $(this).parent().prev().children().val();
+    		$("#donHangId").val(donHangId);
+    		var href = "http://localhost:8080/api/shipper/orders/"+donHangId;
+    		$.get(href, function(order) {
+    			// thêm bảng:
+    			var stt = 1;
+    			$.each(order.orderDetailList, function(i, chiTiet){
+    				var chiTietRow = '<tr>' +
+    				'<td>' + stt + '</td>' +
+                    '<td>' + chiTiet.product.productName + '</td>' +
+                    '<td>' + chiTiet.totalAmount + '</td>'+
+                    '<td>' + chiTiet.quantity + '</td>'+
+                    '<td><input type="hidden" value="'+chiTiet.id+'" ></td>'
+    				 $('.chiTietNhanDonTable tbody').append(chiTietRow);
+                    stt++;
+    	    	  });
+    			var sum = 0;
+    			$.each(order.orderDetailList, function(i, chiTiet){
+    				sum += chiTiet.totalAmount;
+    				//* chiTiet.soLuongNhanHang;
+    			});
+    			$("#tongTienXacNhan").text("Tổng : "+ sum);
+    		});
+    		$("#nhanDonModal").modal();
+    	});
+
+    $(document).on('click', '#btnNhanDon', function (event) {
+        	event.preventDefault();
+        	ajaxPostNhanDonShipper();
+    		resetData();
+        });
+
+    // post request nhận đơn cho shipper
+        	function ajaxPostNhanDonShipper() {
+
+           	     var listChiTietCapNhat = [] ;
+        		 var table = $(".chiTietNhanDonTable tbody");
+             	 table.find('tr').each(function (i) {
+        		      var chiTietCapNhat = { idChiTiet : $(this).find("td:eq(4) input[type='hidden']").val() };
+        		      listChiTietCapNhat.push(chiTietCapNhat);
+        		 });
+
+            	 var data = { idDonHang : $("#donHangId").val(),
+            			      danhSachCapNhatChiTietDon: listChiTietCapNhat } ;
+            	 console.log(data);
+            	 $.ajax({
+             		async:false,
+         			type : "POST",
+         			contentType : "application/json",
+         			url : "http://localhost:8080/api/shipper/orders/receive-order",
+         			enctype: 'multipart/form-data',
+
+        			data : JSON.stringify(data),
+                    // dataType : 'json',
+        			success : function(response) {
+        				$("#nhanDonModal").modal('hide');
+        				alert("Nhận đơn hàng thành công");
+        			},
+        			error : function(e) {
+        				alert("Error!")
+        				console.log("ERROR: ", e);
+        			}
+        		});
+            }
+
+
+
 	// event khi ẩn modal chi tiết
 	$('#chiTietModal,#capNhatTrangThaiModal').on('hidden.bs.modal', function(e) {
 		e.preventDefault();
@@ -333,4 +427,5 @@ $(document).ready(function() {
 		$('.chiTietTable tbody tr').remove();
 		$('.chiTietCapNhatTable tbody tr').remove();
 	});
+
 });

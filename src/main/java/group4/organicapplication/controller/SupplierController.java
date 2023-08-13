@@ -1,6 +1,8 @@
 package group4.organicapplication.controller;
 
 ;
+import group4.organicapplication.exception.CategoryNotFoundException;
+import group4.organicapplication.model.Category;
 import group4.organicapplication.model.Supplier;
 import group4.organicapplication.model.User;
 import group4.organicapplication.service.SupplierService;
@@ -67,6 +69,17 @@ public class SupplierController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
+    @DeleteMapping("/softdelete/{supplierID}")
+    public ResponseEntity<String> softdeleteSupplier(@PathVariable int supplierID) {
+        String message = supplierService.softdeleteSupplier(supplierID);
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
+    @GetMapping("/restore/{supplierID}")
+    public ResponseEntity<String> RestoreSupplier(@PathVariable int supplierID) {
+        String message = supplierService.restore(supplierID);
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
     //get all supplier
     @GetMapping
     public String getSupplierList(@RequestParam(value = "searchName", required = false) String searchName, Model model) {
@@ -82,6 +95,13 @@ public class SupplierController {
 
         model.addAttribute("suppliers", suppliers);
         return "supplier"; // Tên của file supplier.html trong thư mục templates
+    }
+
+    @GetMapping("/garbage")
+    public String showGarbageSupplierList(Model model){
+        List<Supplier> suppliers = supplierService.getGarbageSuppliers();
+        model.addAttribute("suppliers", suppliers);
+        return "supplier_garbage";
     }
 
     @ModelAttribute("loggedInUser")

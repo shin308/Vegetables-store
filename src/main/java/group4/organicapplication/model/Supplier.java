@@ -28,5 +28,6 @@ public class Supplier {
     @Column(name = "phone", unique = true)
     private String phone;
 
-
+    @Column(name = "deleted")
+    private boolean deleted = false;
 }

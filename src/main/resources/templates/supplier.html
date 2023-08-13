@@ -134,11 +134,14 @@
                         type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
             </form>
         </div>
-            <div class="col-4 text-end" id="btnAdd">
+            <div class="col text-end" id="btnAdd">
+                <a th:href="@{/admin/suppliers/garbage}">
+                    <button type="button" class="btn btn-outline-secondary me-3">Thùng rác<i class="fa-solid fa-trash-can ms-3"></i></button>
+                </a>
                 <button style="background-color: #5CB85C; color:white;vertical-align: middle;" type="button"
                         class="btn btn-success shadow-sm border-0"
                         onclick="openAddNew()">Thêm mới<i style="font-size: 23px; vertical-align: middle;"
-                                                               class="fa-solid fa-square-plus ms-3"></i></button>
+                                                           class="fa-solid fa-square-plus ms-3"></i></button>
             </div>
     </div>
 
@@ -358,7 +361,7 @@ async function submitEditForm() {
 
 
   async function deleteSupplier(supplierID) {
-      const apiUrl = '/admin/suppliers/' + supplierID;
+      const apiUrl = '/admin/suppliers/softdelete/' + supplierID;
 
       const confirmed = confirm('Bạn có chắc chắn muốn xóa nhà cung cấp này?');
 

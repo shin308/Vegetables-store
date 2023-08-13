@@ -87,10 +87,38 @@ public class SupplierService {
     // Phương thức lấy danh sách tất cả nhà cung cấp
     public List<Supplier> getAllSuppliers() {
         // Logic để lấy danh sách tất cả nhà cung cấp
-        return supplierRepository.findAll();
+        return supplierRepository.findSuppliers();
     }
 
     public List<Supplier> findSuppliersByName(String searchName) {
         return supplierRepository.findBySupplierNameContainingIgnoreCase(searchName);
+    }
+
+    public String softdeleteSupplier(int supplierID) {
+        Optional<Supplier> supplierOptional = supplierRepository.findById(supplierID);
+        if (supplierOptional.isPresent()) {
+            Supplier supplier = supplierOptional.get();
+            supplier.setDeleted(true);
+            supplierRepository.save(supplier);
+            return "Xóa nhà cung cấp thành công!";
+        } else {
+            return "Không tìm thấy nhà cung cấp để xóa!";
+        }
+    }
+
+    public List<Supplier> getGarbageSuppliers() {
+        return supplierRepository.findGarbageSuppliers();
+    }
+
+    public String restore(Integer supplierID) {
+        Optional<Supplier> supplierOptional = supplierRepository.findById(supplierID);
+        if (supplierOptional.isPresent()) {
+            Supplier supplier = supplierOptional.get();
+            supplier.setDeleted(false);
+            supplierRepository.save(supplier);
+            return "Khôi phục nhà cung cấp thành công!";
+        } else {
+            return "Không tìm thấy nhà cung cấp để xóa!";
+        }
     }
 }

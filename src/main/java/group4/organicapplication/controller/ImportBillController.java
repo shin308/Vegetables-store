@@ -83,6 +83,7 @@ public class ImportBillController {
             importBill.setImportProduct(importProduct);
             importBill.setProduct(product);
             importBill.setId(id);
+            importBill.setTotalAmount(importBill.getImportPrice() * importBill.getQuantity());
             ImportBill billcreate =  imBillService.createImportBill(importBill);
 
             return "redirect:/admin/import";

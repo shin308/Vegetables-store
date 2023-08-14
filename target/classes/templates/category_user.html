@@ -145,7 +145,7 @@
           </a>
           <h6>[[${product.productName}]]</h6>
           <div style="position: sticky; top:100%;">
-            <p><span>[[${product.price}]] ₫</span> / <span>[[${product.unit}]]</span></p>
+            <p><span>[[${#numbers.formatDecimal(product.price, 1 , 'POINT', 0 , 'DEFAULT')}]] ₫</span> / <span>[[${product.unit}]]</span></p>
             <button class="addCart">Thêm vào giỏ</button>
           </div>
         </div>

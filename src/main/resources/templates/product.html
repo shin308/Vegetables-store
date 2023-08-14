@@ -178,7 +178,7 @@
                 <td>[[${product.productName}]]</td>
                 <td>[[${product.unit}]]</td>
                 <td>[[${product.quantity}]]</td>
-                <td>[[${product.price}]] ₫</td>
+                <td>[[${#numbers.formatDecimal(product.price, 1 , 'POINT', 0 , 'DEFAULT')}]] ₫</td>
                 <td>
                     <a th:href="@{'/admin/productInfo/' + ${product.productID}}">
                         <button type="button" class="btn btn-outline-secondary"><i class="fa-solid fa-file-invoice"></i></button>

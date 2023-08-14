@@ -192,7 +192,7 @@
                     </a>
                     <h6>[[${product.productName}]]</h6>
                     <div style="position: sticky; top:100%;">
-                        <p><span>[[${product.price}]] ₫</span> / <span>[[${product.unit}]]</span></p>
+                        <p><span>[[${#numbers.formatDecimal(product.price, 1 , 'POINT', 0 , 'DEFAULT')}]] ₫</span> / <span>[[${product.unit}]]</span></p>
                         <button class="addCart" th:attr="onclick=|addToCart('${product.productID}', '${product.productName}', 1, ${product.price},'${product.img}', ${product.quantity})|">Thêm vào giỏ</button>
                     </div>
                 </div>
@@ -236,8 +236,8 @@
                         <span class="up" th:attr="onclick=|increaseCount('${item.productId}', this, '${item.limitQuantity}')|" >+</span>
                     </div>
                 </td>
-                <td th:attr="id='unitPrice' + ${item.productId}" th:text="${item.unitPrice}+ ' ₫'">15.000</td>
-                <td th:attr="id='itemTotalPrice' + ${item.productId}" th:text="${item.totalPrice}+ ' ₫'">15.000</td>
+                <td th:attr="id='unitPrice' + ${item.productId}" th:text="${#numbers.formatDecimal(item.unitPrice, 1 , 'POINT', 0 , 'DEFAULT')}+ ' ₫'">15.000</td>
+                <td th:attr="id='itemTotalPrice' + ${item.productId}" th:text="${#numbers.formatDecimal(item.totalPrice, 1 , 'POINT', 0 , 'DEFAULT')}+ ' ₫'">15.000</td>
                 <td>
                     <i class="fa-regular fa-trash-can" th:attr="onclick=|removeFromCart('${item.productId}')|" style="cursor: pointer;"></i>
                 </td>
@@ -255,12 +255,12 @@
             </div>
             <div class="row1">
                 <h6>Tạm tính</h6>
-                <p th:text="${totalPrice}+ ' ₫'" th:attr="class='totalPrice'">45000</p>
+                <p th:text="${#numbers.formatDecimal(totalPrice, 1 , 'POINT', 0 , 'DEFAULT')}+ ' ₫'" th:attr="class='totalPrice'">45000</p>
             </div>
             <hr>
             <div class="row1">
                 <h6>Thành tiền</h6>
-                <p th:text="${totalPrice}+ ' ₫'" th:attr="class='totalPrice'">60000</p>
+                <p th:text="${#numbers.formatDecimal(totalPrice, 1 , 'POINT', 0 , 'DEFAULT')}+ ' ₫'" th:attr="class='totalPrice'">60000</p>
             </div>
         </div>
 
@@ -411,6 +411,7 @@
     }
 
     async function decreaseCount(productId, element, limitQuantity) {
+        const config = {style : 'currency', currency: 'VND'}
         var inputElement = element.parentElement.querySelector('input');
         var quantity = parseInt(inputElement.value);
 
@@ -424,9 +425,9 @@
             await updateCartItem(productId, quantity, limitQuantity);
 
             //update ui
-            let unitPrice = parseInt(unitPriceDOM.innerText);
-            let itemTotalPrice = quantity * unitPrice
-            itemTotalPriceDOM.innerText = itemTotalPrice.toString();
+            let unitPrice = parseInt(unitPriceDOM.innerText.replace(".", ""));
+            let itemTotalPrice = new Intl.NumberFormat('vi-VN', config).format(quantity * unitPrice);
+            itemTotalPriceDOM.innerText = itemTotalPrice.toString() ;
 
             //update total quantity, total price
             updateTotal()
@@ -435,6 +436,7 @@
         }
     }
     async function increaseCount(productId, element, limitQuantity) {
+        const config = {style : 'currency', currency: 'VND'};
         var inputElement = element.parentElement.querySelector('input');
         var quantity = parseInt(inputElement.value);
 
@@ -450,8 +452,8 @@
             await updateCartItem(productId, quantity, limitQuantity);
 
             //update ui
-            let unitPrice = parseInt(unitPriceDOM.innerText);
-            let itemTotalPrice = quantity * unitPrice
+            let unitPrice = parseInt(unitPriceDOM.innerText.replace(".",""));
+            let itemTotalPrice = new Intl.NumberFormat('vi-VN', config).format(quantity * unitPrice);
 
             itemTotalPriceDOM.innerText = itemTotalPrice.toString();
 
@@ -564,7 +566,7 @@
         }
     }
     function updateTotal() {
-
+        const config = {style : 'currency', currency: 'VND'};
         const itemQuantityDOM = document.querySelectorAll("input[data-product-id]")
         const itemTotalPriceDOM = document.querySelectorAll("[id^='itemTotalPrice']")
 
@@ -576,7 +578,8 @@
             totalQuantity += quantity
         });
         itemTotalPriceDOM.forEach((item)=> {
-            const itemTotalPrice = parseInt(item.innerText);
+            const itemTotalPrice = parseInt(item.innerText.replace(".",""));
+            console.log(itemTotalPrice);
             totalPrice+= itemTotalPrice;
         })
 
@@ -586,7 +589,7 @@
 
         totalQuantityDOM.innerText = totalQuantity.toString();
         totalPriceDOMs.forEach((totalPriceDOM) => {
-            totalPriceDOM.innerText = totalPrice.toString();
+            totalPriceDOM.innerText = new Intl.NumberFormat('vi-VN', config).format(totalPrice);
         });
 
         //update cartbadge

@@ -175,8 +175,8 @@
                 <td><img th:src="@{'/images/' +${cartItem.productId}+'/' + ${cartItem.imageProduct}}" alt="" width="50"></td>
                 <td th:text="${cartItem.productName}">Cà chua</td>
                 <td th:text="${cartItem.quantity}">1</td>
-                <td th:text="${cartItem.unitPrice} + ' ₫'">15.000</td>
-                <td th:text="${cartItem.totalPrice}+ ' ₫'">15.000</td>
+                <td th:text="${#numbers.formatDecimal(cartItem.unitPrice, 1 , 'POINT', 0 , 'DEFAULT')} + ' ₫'">15.000</td>
+                <td th:text="${#numbers.formatDecimal(cartItem.totalPrice, 1 , 'POINT', 0 , 'DEFAULT')}+ ' ₫'">15.000</td>
             </tr>
 
             </tbody>
@@ -189,16 +189,16 @@
             </div>
             <div class="row1">
                 <h6>Tạm tính</h6>
-                <p th:text="${totalPrice} + 0 + '  ₫'">40000</p>
+                <p th:text="${#numbers.formatDecimal(totalPrice, 1 , 'POINT', 0 , 'DEFAULT')} + 0 + '  ₫'">40000</p>
             </div>
             <div class="row1">
                 <h6>Phí vận chuyển</h6>
-                <p>5000 ₫</p>
+                <p>5.000 ₫</p>
             </div>
             <hr>
             <div class="row1">
                 <h6>Tổng tiền</h6>
-                <p th:text="${totalPrice} + 5000 + ' ₫'">60000</p>
+                <p th:text="${#numbers.formatDecimal(totalPrice + 5000, 1 , 'POINT', 0 , 'DEFAULT')} + ' ₫'">60000</p>
             </div>
         </div>
 

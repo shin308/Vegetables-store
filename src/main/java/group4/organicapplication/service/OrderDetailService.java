@@ -8,4 +8,8 @@ import java.util.List;
 @Service
 public interface OrderDetailService {
     List<PurchaseOrder> save(List<PurchaseOrder> list);
+
+    List<Integer> getProductOfOrder(Long orderID);
+
+    Long sumProductOrder(int productID);
 }

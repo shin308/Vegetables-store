@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -33,6 +34,10 @@ public class MainController {
     @Autowired private CartService cartService;
 
     @Autowired private OrderService orderService;
+
+    @Autowired private ReviewService reviewService;
+
+    @Autowired private OrderDetailService orderDetailService;
     @ModelAttribute("loggedInUser")
     public User loggedInUser(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -77,6 +82,10 @@ public class MainController {
 
         List<Product> productByCategory = productService.getProductsByCategoryId(categoryID);
         model.addAttribute("productByCategory",productByCategory);
+
+        List<CartItem> cartItems = cartService.getCartItems();
+        int totalQuantity = cartService.sumQuantity(cartItems);
+        model.addAttribute("totalQuantity", totalQuantity);
         return "category_user";
     }
 
@@ -102,6 +111,15 @@ public class MainController {
         List<Category> categoryList = categoryService.listCategory();
         model.addAttribute(("categoryList"),categoryList);
 
+        float starAvg = reviewService.getAvgStarProduct(productID);
+        model.addAttribute("starAvg", starAvg);
+
+        int countReview = reviewService.getQuantityReview(productID);
+        model.addAttribute("quantityReview", countReview);
+
+        Long sumQuantity = orderDetailService.sumProductOrder(productID);
+        model.addAttribute("sumQuantity", sumQuantity);
+
         List<CartItem> cartItems = cartService.getCartItems();
         model.addAttribute("cartItems", cartItems);
         model.addAttribute("totalQuantity", cartService.sumQuantity(cartItems));
@@ -117,6 +135,10 @@ public class MainController {
             }
         }
         model.addAttribute("quantityInCart", quantityInCart);
+
+        List<Reviews> reviewAll = reviewService.getReviewProduct(productID);
+        model.addAttribute("reviewAll", reviewAll);
+        model.addAttribute("addNew", new Reviews());
         return "productInfo_user";
     }
 
@@ -137,6 +159,9 @@ public class MainController {
 
         int totalQuantity = cartService.sumQuantity(cartItems);
         model.addAttribute("totalQuantity", totalQuantity);
+
+        List<Long> checkOrderReview = reviewService.getOrderIDReviewed();
+        model.addAttribute("checkReview", checkOrderReview);
         return "order_user";
     }
 
@@ -175,6 +200,25 @@ public class MainController {
         model.addAttribute("totalPrice", totalPrice);
 
         return "purchase";
+    }
+
+    @GetMapping("/order_user/{orderID}/review")
+    public String showReviewOrder(@PathVariable("orderID")Long orderID, Model model){
+        List<CartItem> cartItems = cartService.getCartItems();
+        int totalQuantity = cartService.sumQuantity(cartItems);
+        model.addAttribute("totalQuantity", totalQuantity);
+        List<Integer> productIdList = orderDetailService.getProductOfOrder(orderID);
+        List<Product> products = new ArrayList<>();
+        for (int i : productIdList){
+            products.add(productService.get(i));
+        }
+        model.addAttribute("productList", products);
+        model.addAttribute("productIdList", productIdList);
+        List<Category> categoryList = categoryService.listCategory();
+        model.addAttribute(("categoryList"),categoryList);
+
+
+        return "reviewOrder";
     }
 
 

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order_User</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+  <script src="https://kit.fontawesome.com/5a213e1813.js" crossorigin="anonymous"></script>
+</head>
+<style>
+  #search {
+    width: 40%;
+  }
+
+  @media only screen and (max-width: 915px) {
+    #search {
+      width: 66%;
+    }
+
+    #imgBr {
+      width: 70px;
+      margin-left: 10px;
+    }
+  }
+
+  div, label {
+    margin: 0;
+    padding: 0;
+  }
+
+  h1 {
+    font-size: 1.5em;
+    margin: 10px;
+  }
+
+  /****** Style Star Rating Widget *****/
+  .rating {
+    border: none;
+    float: left;
+  }
+
+  .rating > input {
+    display: none;
+  }
+
+  /*ẩn input radio - vì chúng ta đã có label là GUI*/
+  .rating > label:before {
+    margin: 5px;
+    font-size: 1.2em;
+    font-family: FontAwesome;
+    display: inline-block;
+    content: "\f005";
+  }
+
+  /*1 ngôi sao*/
+  .rating > label {
+    color: #ddd;
+    float: right;
+  }
+
+  /*float:right để lật ngược các ngôi sao lại đúng theo thứ tự trong thực tế*/
+  /*thêm màu cho sao đã chọn và các ngôi sao phía trước*/
+  .rating > input:checked ~ label,
+  .rating:not(:checked) > label:hover,
+  .rating:not(:checked) > label:hover ~ label {
+    color: #FFD700;
+  }
+
+  /* Hover vào các sao phía trước ngôi sao đã chọn*/
+  .rating > input:checked + label:hover,
+  .rating > input:checked ~ label:hover,
+  .rating > label:hover ~ input:checked ~ label,
+  .rating > input:checked ~ label:hover ~ label {
+    color: #FFD700;
+  }
+
+  #star {
+    color: #ddd;
+  }
+</style>
+
+<body>
+<nav class="navbar navbar-expand-lg bg-body-tertiary sticky-top shadow-sm">
+  <div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02"
+            aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <a class="navbar-brand" th:href="@{/}"><img id="imgBr"
+                                                src="https://img.freepik.com/premium-vector/organic-icon-100-percent-organic-product-label_349999-1003.jpg?w=2000"
+                                                alt="brand_icon" width="100px"></a>
+    <form class="d-flex" id="search" role="search" th:action="@{/}" method="get">
+      <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
+             name="searchProductName">
+      <button style="background-color: #5CB85C; color:white;" class="btn btn-outline-success border-0"
+              type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+    </form>
+
+    <div class="collapse navbar-collapse ms-3" id="navbarTogglerDemo02">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" th:href="@{/#productAll}">SẢN PHẨM</a>
+        </li>
+        <div class="dropdown nav-item">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+             aria-expanded="false">
+            DANH MỤC
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" th:href="@{/#productAll}">Tất Cả Sản Phẩm</a></li>
+            <th:block th:each="category:${categoryList}">
+              <li><a class="dropdown-item" th:href="@{'/' + ${category.categoryID}}">[[${category.categoryName}]]</a>
+              </li>
+            </th:block>
+          </ul>
+        </div>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/order_user}">ĐƠN HÀNG</a>
+        </li>
+      </ul>
+
+    </div>
+    <a class="nav-link" style="margin: 0 2%;" th:href="@{/cart}"><i class="fa-solid fa-basket-shopping"><span
+            class="translate-middle badge border border-light rounded-circle bg-danger"
+            style="--bs-badge-font-size: 0.5em;" th:text="${totalQuantity}" id="cartBadge">10</span></i>GIỎ
+      HÀNG</a>
+    <div th:switch="${#authentication} ? ${#authorization.expression('isAuthenticated()')} : ${false}">
+                <span th:case="${false}">
+                        <a class="navbar-brand me-1 fs-6" th:href="@{/login}">Đăng nhập</a>|<a
+                        class="navbar-brand ms-1 fs-6" th:href="@{/register}">Đăng ký</a>
+                    </span>
+      <span th:case="${true}">
+                    <div class="dropdown">
+                        <button class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                            <span th:text="${loggedInUser.lastName}"></span>
+                            <span> </span>
+                            <span th:text="${loggedInUser.firstName}"></span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" th:href="@{/manage-user-account}">Thông tin cá nhân</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a></li>
+                        </ul>
+                    </div>
+                </span>
+    </div>
+  </div>
+</nav>
+<form th:action="@{'/order_user/'+${orderID}+'/review'}" method="post">
+  <div style="padding: 2% 6%;">
+    <div class="w-100">
+      <table class="table table-sm align-middle table-striped border mt-3">
+        <thead>
+        <tr>
+          <th class="col">
+            <div class="row" style="align-items: center;">
+              <div class="col"><h6 class="m-0 ms-2">Mã đơn hàng: <span th:text="${orderID}"></span></h6>
+              </div>
+              <div class="col text-end">
+                <button class="btn btn-danger" type="submit" id="submit">Đánh giá</button>
+              </div>
+            </div>
+          </th>
+
+        </tr>
+        </thead>
+
+        <tbody>
+        <th:block th:each="product : ${productList}">
+          <tr>
+
+            <td class="p-2">
+
+              <div class="d-flex mx-1">
+                <div class="p-0"><img style="margin: auto 0;" th:src="${product.getImg()}" width="60"
+                                      height="60"></div>
+                <div class="ms-3">
+                  <p class="my-1" th:text="${product.getProductName()}"></p>
+                  <div class="d-flex">
+                    <p class="mb-1">Chất lượng sản phẩm</p>
+
+                    <div class="rating" style="margin-top: -7px;">
+
+                      <input type="radio" th:id="'star5-'+${product.getProductID()}" th:name="'star' + ${product.getProductID()}"
+                             value="5" checked="checked"/>
+                      <label class="full" th:for="'star5-'+${product.getProductID()}"
+                             title="Awesome - 5 stars"></label>
+
+                      <input type="radio" th:id="'star4-'+${product.getProductID()}" th:name="'star' + ${product.getProductID()}"
+                             value="4"/>
+                      <label class="full" th:for="'star4-'+${product.getProductID()}"></label>
+
+                      <input type="radio" th:id="'star3-'+${product.getProductID()}" th:name="'star' + ${product.getProductID()}"
+                             value="3"/>
+                      <label class="full" th:for="'star3-'+${product.getProductID()}"
+                             title="Meh - 3 stars"></label>
+
+                      <input type="radio" th:id="'star2-'+${product.getProductID()}" th:name="'star' + ${product.getProductID()}"
+                             value="2"/>
+                      <label class="full" th:for="'star2-'+${product.getProductID()}"
+                             title="Kinda bad - 2 stars"></label>
+
+                      <input type="radio" th:id="'star1-'+${product.getProductID()}" th:name="'star' + ${product.getProductID()}"
+                             value="1"/>
+                      <label class="full" th:for="'star1-'+${product.getProductID()}"
+                             title="Sucks big time - 1 star"></label>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+              <div class="row mx-1 mt-2">
+                <input class="form-control content" type="text" th:id="'content' + ${product.getProductID()}" th:name="'content' + ${product.getProductID()}" th:onchange="'content('+${product.getProductID()}+')'" required>
+              </div>
+              <input type="text" th:name="'product' + ${product.getProductID()}" th:value="${product.productID}" style="display: none">
+            </td>
+
+          </tr>
+        </th:block>
+        </tbody>
+
+      </table>
+    </div>
+  </div>
+</form>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
+<script th:inline="javascript">
+  function content(a){
+    let content = document.getElementById('content' + a).value;
+    content = content.trim();
+    if ((/^\s*$/.test(content))){
+      alert("Đánh giá không hợp lệ")
+    }
+  }
+
+
+</script>
+</html>

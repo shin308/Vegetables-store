@@ -13,7 +13,7 @@ public class Orders {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JoinColumn(name = "order_id")
+    @JoinColumn(name = "id")
     private Long id;
 
     @OneToMany(mappedBy = "order")

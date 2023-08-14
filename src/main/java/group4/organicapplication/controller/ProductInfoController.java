@@ -3,6 +3,7 @@ package group4.organicapplication.controller;
 import group4.organicapplication.model.Product;
 import group4.organicapplication.model.Reviews;
 import group4.organicapplication.model.User;
+import group4.organicapplication.service.OrderDetailService;
 import group4.organicapplication.service.ProductService;
 import group4.organicapplication.service.ReviewService;
 import group4.organicapplication.service.UserService;
@@ -26,6 +27,7 @@ public class ProductInfoController {
     ReviewService reviewService;
     @Autowired
     private UserService userService;
+    @Autowired private OrderDetailService orderDetailService;
 
     @GetMapping("/productInfo/{productID}")
     public String showProductInfo(@PathVariable("productID") Integer productID, Model model){
@@ -34,7 +36,17 @@ public class ProductInfoController {
         model.addAttribute("reviewAll", reviewAll);
         model.addAttribute("productInfo",productInfo);
         model.addAttribute("addNew", new Reviews());
+        getData(productID, model);
         return "productInfo";
+    }
+
+    public void getData(int productID, Model model){
+        float starAvg = reviewService.getAvgStarProduct(productID);
+        int countReview = reviewService.getQuantityReview(productID);
+        Long sumQuantity = orderDetailService.sumProductOrder(productID);
+        model.addAttribute("starAvg", starAvg);
+        model.addAttribute("quantityReview", countReview);
+        model.addAttribute("sumQuantity", sumQuantity);
     }
 
     @ModelAttribute("loggedInUser")
@@ -68,7 +80,7 @@ public class ProductInfoController {
 
     @PostMapping("/productInfo/{productID}/newReply")
     public String newReply(@ModelAttribute Reviews reviews, @PathVariable("productID") Integer productID, Reviews replyID){
-        Reviews reply = reviewService.addNewReply(reviews.getProduct(), reviews.getUser(), reviews.getContent(), reviews.getReplyID());
+        reviewService.addNewReply(reviews.getProduct(), reviews.getUser(), reviews.getContent(), reviews.getReplyID());
         return "redirect:/admin/productInfo/{productID}";
     }
 }

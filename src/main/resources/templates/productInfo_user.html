@@ -61,12 +61,6 @@
     border: 0.5px solid;
     border-radius: 10px;
   }
-
-  .active {
-    border: 0;
-    border-bottom: #5CB85C 2px solid;
-    color: black;
-  }
   #search {
     width: 40%;
   }
@@ -103,6 +97,12 @@
     #review {
       width: 100%;
     }
+  }
+  .nav-link {
+    color: black;
+  }
+  .star{
+    color: #FFD700;
   }
 </style>
 
@@ -187,19 +187,8 @@
     <div class="col">
       <div class="row">
         <div class="col-6" id="info">
-          <img th:src="@{${productInfo.photosImagePath}}" width="200" height="200">
-          <div class="mt-2">
-            <div style="display: flex;"><span>5 </span>
-              <p style="color: yellow; width:108px;margin-bottom: 0;">
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i></p>
-            </div>
-            <div><span>20</span> Đánh giá</div>
-            <div><span>30</span> Đã bán</div>
-          </div>
+          <img th:src="@{${productInfo.photosImagePath}}" width="300" height="300">
+
         </div>
         <div class="col">
           <h3 class="mt-3 mb-5">[[*{productName}]]</h3>
@@ -228,6 +217,21 @@
 
         </div>
       </div>
+
+      <div class="mt-2 d-flex">
+        <div class="d-flex"><span class="me-1" th:text="${starAvg}"></span>
+          <div id="star-rating">
+            <span class="star" data-rating="5"></span>
+            <span class="star" data-rating="4"></span>
+            <span class="star" data-rating="3"></span>
+            <span class="star" data-rating="2"></span>
+            <span class="star" data-rating="1"></span>
+          </div>
+        </div>
+        <div class="mx-3"><span th:text="${quantityReview}"></span> Đánh giá</div>
+        <div><span th:text="${sumQuantity}"></span> Đã bán</div>
+      </div>
+
       <div class="mt-3">
         <h6>Mô tả sản phẩm</h6>
         <div class="description">
@@ -238,46 +242,229 @@
       </div>
     </div>
     <div class="col-6 mt-3" id="review">
-      <div>
-        <h6>Đánh giá của khách hàng</h6>
-      </div>
-      <div class="list border" style="padding:10px 10px 0 10px;">
-        <div class="item border mb-3 p-3">
-          <div class="row">
-            <div class="col-1"><img src="/images/4/image10.png" alt="imgUser" width="50" height="50"
-                                    class="border">
-            </div>
-            <div class="col-7">
-              <div class="ms-3">
-                <h6>LinhNT</h6>
-                <p>2023/06/04</p>
+      <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+          <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home"
+                  type="button" role="tab" aria-controls="nav-home" aria-selected="true"><h6>Đánh giá về
+            sản phẩm</h6></button>
+          <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile"
+                  type="button" role="tab" aria-controls="nav-profile" aria-selected="false"><h6>Thắc mắc
+            về sản phẩm</h6></button>
+        </div>
+      </nav>
+      <div class="tab-content" id="nav-tabContent">
+        <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab"
+             tabindex="0">
+          <div class="list border p-2 pb-0" id="list">
+
+            <div class="item border mb-2 p-3" th:each="review : ${reviewAll}"
+                 th:if="${review.replyID == null} and ${review.star > 0}">
+              <div class="row">
+                <div class="col-1">
+                  <div style="width:50px; height:50px;" class="rounded-circle border text-center">
+                    <h5 style="color: #5cb85c; line-height:50px; display: inline-flex;">
+                      <span th:text="${review.user.firstName.charAt(0)}"></span>
+                      <span th:text="${review.user.lastName.charAt(0)}"></span></h5></div>
+                </div>
+                <div class="col-7">
+                  <div class="ms-3">
+                    <h6 th:text="${review.user.fullName}"></h6>
+                    <p th:text="${#dates.format(review.postDate, 'dd-MM-yyyy HH:mm:ss')}"></p>
+                  </div>
+                </div>
+                <div class="col-4 text-end" style="color:#ddd;">
+                  <div style="width:108px; float:right;" id="star">
+                    <p style="display: none" th:text="${review.star}"></p>
+                    <i class="fa-solid fa-star" id="1"></i>
+                    <i class="fa-solid fa-star" id="2"></i>
+                    <i class="fa-solid fa-star" id="3"></i>
+                    <i class="fa-solid fa-star" id="4"></i>
+                    <i class="fa-solid fa-star" id="5"></i>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <p class="m-0" th:text="${review.content}"></p>
+              </div>
+              <div class="text-end">
+
+                <div id="pills-tab" role="tablist">
+                  <button class="border-0 me-2" type="button"
+                          th:id="'pills-home-tab' + ${review.reviewID}"
+                          data-bs-toggle="pill" th:data-bs-target="'#pills-home' + ${review.reviewID}"
+                          role="tab"
+                          th:aria-controls="'pills-home' + ${review.reviewID}">
+                    Phản hồi
+                  </button>
+                  <a th:href="'/productInfoUser/' + ${review.product.productID} + '/delete/' + ${review.reviewID}">
+                    <button class="border-0" th:if="${review.user.id} == ${loggedInUser.id}">Xoá
+                    </button>
+                  </a>
+                </div>
+
+                <div class="tab-content mt-2" id="pills-tabContent">
+                  <div class="tab-pane fade show " th:id="'pills-home' + ${review.reviewID}"
+                       role="tabpanel"
+                       th:aria-labelledby="'pills-home-tab' + ${review.reviewID}" tabindex="0">
+                    <div class="ps-4 border-start">
+                      <th:block th:each="reply : ${review.reviewsList}"
+                                th:if="${reply.replyID.reviewID == review.reviewID}">
+                        <div class="border p-3">
+                          <div class="row text-start">
+                            <div class="col-1">
+                              <div style="width:50px; height:50px;" class="rounded-circle border text-center">
+                              <h5 style="color: #5cb85c; line-height:50px; display: inline-flex;">
+                                <span th:text="${reply.user.firstName.charAt(0)}"></span>
+                                <span th:text="${reply.user.lastName.charAt(0)}"></span></h5></div>
+                            </div>
+                            <div class="col-7">
+                              <div class="ms-3">
+                                <h6 th:text="${reply.user.fullName}"></h6>
+                                <p th:text="${#dates.format(reply.postDate, 'dd-MM-yyyy HH:mm:ss')}"></p>
+                              </div>
+                            </div>
+                            <div class="col-4 text-end">
+                              <a th:href="'/productInfoUser/' + ${review.product.productID} + '/delete/' + ${reply.reviewID}">
+                                <button class="border-0"
+                                        th:if="${review.user.id} == ${loggedInUser.id}">
+                                  Xoá
+                                </button>
+                              </a>
+                            </div>
+                          </div>
+                          <div class="row mb-1 text-start">
+                            <p th:text="${reply.content}"></p>
+                          </div>
+                        </div>
+
+                      </th:block>
+                    </div>
+
+                  </div>
+                </div>
+
               </div>
             </div>
-            <div class="col-4 text-end" style="color: yellow;">
-              <p style="width:108px; float:right;"><i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i></p>
+          </div>
+        </div>
+
+        <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab"
+             tabindex="0">
+          <div class="list border p-2 pb-0">
+
+            <div class="item border mb-2 p-3" th:each="review : ${reviewAll}"
+                 th:if="${review.replyID == null} and ${review.star == null}">
+              <div class="row">
+                <div class="col-1">
+                  <div style="width:50px; height:50px;" class="rounded-circle border text-center">
+                    <h5 style="color: #5cb85c; line-height:50px; display: inline-flex;">
+                      <span th:text="${review.user.firstName.charAt(0)}"></span>
+                      <span th:text="${review.user.lastName.charAt(0)}"></span></h5></div>
+                </div>
+                <div class="col-7">
+                  <div class="ms-3">
+                    <h6 th:text="${review.user.fullName}"></h6>
+                    <p th:text="${#dates.format(review.postDate, 'dd-MM-yyyy HH:mm:ss')}"></p>
+                  </div>
+                </div>
+
+              </div>
+              <div class="row">
+                <p class="m-0" th:text="${review.content}"></p>
+              </div>
+              <div class="text-end">
+
+                <div role="tablist">
+                  <button class="border-0 me-2" type="button"
+                          th:id="'pills-home-tab' + ${review.reviewID}"
+                          data-bs-toggle="pill" th:data-bs-target="'#pills-home' + ${review.reviewID}"
+                          role="tab"
+                          th:aria-controls="'pills-home' + ${review.reviewID}">
+                    Phản hồi
+                  </button>
+                  <a th:href="'/productInfoUser/' + ${review.product.productID} + '/delete/' + ${review.reviewID}">
+                    <button class="border-0" th:if="${review.user.id} == ${loggedInUser.id}">Xoá
+                    </button>
+                  </a>
+                </div>
+
+                <div class="tab-content mt-2">
+                  <div class="tab-pane fade show " th:id="'pills-home' + ${review.reviewID}"
+                       role="tabpanel"
+                       th:aria-labelledby="'pills-home-tab' + ${review.reviewID}" tabindex="0">
+                    <div class="ps-4 border-start">
+                      <th:block th:each="reply : ${review.reviewsList}"
+                                th:if="${reply.replyID.reviewID == review.reviewID}">
+                        <div class="border p-3">
+                          <div class="row text-start">
+                            <div class="col-1">
+                              <div style="width:50px; height:50px;" class="rounded-circle border text-center">
+                                <h5 style="color: #5cb85c; line-height:50px; display: inline-flex;">
+                                  <span th:text="${reply.user.firstName.charAt(0)}"></span>
+                                  <span th:text="${reply.user.lastName.charAt(0)}"></span></h5></div>
+                            </div>
+                            <div class="col-7">
+                              <div class="ms-3">
+                                <h6 th:text="${reply.user.fullName}"></h6>
+                                <p th:text="${#dates.format(review.postDate, 'dd-MM-yyyy HH:mm:ss')}"></p>
+                              </div>
+                            </div>
+                            <div class="col-4 text-end">
+                              <a th:href="'/productInfoUser/' + ${review.product.productID} + '/delete/' + ${reply.reviewID}">
+                                <button class="border-0"
+                                        th:if="${review.user.id} == ${loggedInUser.id}">
+                                  Xoá
+                                </button>
+                              </a>
+                            </div>
+                          </div>
+                          <div class="row mb-1 text-start">
+                            <p th:text="${reply.content}"></p>
+                          </div>
+                        </div>
+
+                      </th:block>
+                    </div>
+
+
+                    <div class="input-group mt-2">
+                      <form class="w-100 d-flex" method="post"
+                            th:action="'/productInfoUser/'+ ${productInfo.productID} +'/newReply'"
+                            th:object="${addNew}">
+                        <input type="text" th:value="${loggedInUser.id}" name="user"
+                               style="display: none">
+                        <input type="text" th:value="${review.reviewID}" name="replyID"
+                               style="display: none">
+                        <input type="text" th:value="${productInfo.productID}" name="product"
+                               style="display: none">
+                        <input type="text" class="form-control" th:field="*{content}"
+                               th:id="'reply' + ${review.reviewID}"
+                               th:onchange="'enterReply('+${review.reviewID}+')'" required>
+                        <button class="btn btn-primary" type="submit"
+                                th:id="'submitReply' + ${review.reviewID}" disabled><i
+                                class="fa-solid fa-paper-plane"></i></button>
+                      </form>
+
+                    </div>
+
+                  </div>
+                </div>
+
+              </div>
 
             </div>
-          </div>
-          <div class="row mb-1">
-            <p>Chất lượng ok</p>
-          </div>
-          <div class="text-end">
-            <button class="border-0">Phản hồi</button>
-            <button class="border-0">Xoá</button>
+            <div class="input-group mb-2">
+              <form class="w-100 d-flex" method="post" th:action="'/productInfoUser/'+ ${productInfo.productID} +'/newComment'" th:object="${addNew}">
+                <input type="text" th:value="${loggedInUser.id}" name="user" style="display: none">
+                <input type="text" th:value="${productInfo.productID}" name="product" style="display: none">
+                <input type="text" class="form-control" th:field="*{content}" id="comment" onchange="enterComment()" required>
+                <button class="btn btn-primary" type="submit" id="submitComment" disabled><i
+                        class="fa-solid fa-paper-plane"></i></button>
+              </form>
+            </div>
           </div>
 
         </div>
-
-        <div class="input-group mb-3">
-          <input type="text" class="form-control" aria-describedby="button-addon2">
-          <button class="btn btn-primary" type="submit" id="button-addon2"><i
-                  class="fa-solid fa-paper-plane"></i></button>
-        </div>
-
 
       </div>
 
@@ -526,5 +713,69 @@
     }
   }
 </script>
+<script th:inline="javascript">
+  /*Hiển thị sao đánh giá*/
+  let item = document.getElementById("list").children
+  let count = item.length;
 
+  for (let i = 0; i < count; i++) {
+    let perItem = item[i].children;
+    let row1 = perItem[0].children;
+    let col3 = row1[2].children;
+    let review = col3[0].children;
+
+    let star = review[0].innerText;
+    if (star > 0) {
+      for (let j = 1; j <= star; j++) {
+        review[j].style.color = "#FFD700";
+      }
+    } else {
+      for (let j = 0; j < 6; j++) {
+        review[j].style.display = "none";
+      }
+    }
+  }
+
+  function enterComment() {
+    let comment = document.getElementById('comment').value;
+    if ((/^\s*$/.test(comment))) {
+      document.getElementById('submitComment').disabled = true;
+    } else {
+      document.getElementById('submitComment').disabled = false;
+    }
+  }
+
+  function enterReply(a) {
+    let reply = document.getElementById('reply' + a).value;
+    if ((/^\s*$/.test(reply))) {
+      document.getElementById('submitReply' + a).disabled = true;
+    } else {
+      document.getElementById('submitReply' + a).disabled = false;
+    }
+  }
+
+  // Set the rating value dynamically based on your data
+  const ratingValue = [[${starAvg}]]; // Replace with your actual rating value
+
+  // Get the star rating container element
+  const starRatingContainer = document.getElementById("star-rating");
+
+  // Calculate the number of filled stars
+  const filledStars = Math.floor(ratingValue);
+  // Calculate the number of half-filled star
+  const halfFilledStar = Math.round(ratingValue - filledStars);
+
+  // Loop through each star element and set the appropriate data-rating attribute
+  const stars = starRatingContainer.querySelectorAll(".star");
+  stars.forEach((star, index) => {
+    if (index < filledStars) {
+      star.innerHTML = '<i class="fa-solid fa-star"></i>';
+    } else if (index === filledStars && halfFilledStar === 1) {
+      star.innerHTML = '<i class="fa-solid fa-star-half-stroke"></i>';
+    } else {
+      star.innerHTML = '<i class="fa-regular fa-star"></i>';
+    }
+  });
+
+</script>
 </html>

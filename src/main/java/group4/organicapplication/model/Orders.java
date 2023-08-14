@@ -49,6 +49,18 @@ public class Orders {
     private String orderStatus;
     private String note;
     private String imgDelivery;
+
+    @Column(name = "isPaid", nullable = false)
+    private boolean isPaid = false;
+
+    public boolean isPaid() {
+        return isPaid;
+    }
+
+    public void setPaid(boolean paid) {
+        isPaid = paid;
+    }
+
     public Long getId() {
         return id;
     }

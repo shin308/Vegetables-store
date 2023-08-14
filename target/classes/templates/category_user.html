@@ -77,7 +77,8 @@
                                                 src="https://img.freepik.com/premium-vector/organic-icon-100-percent-organic-product-label_349999-1003.jpg?w=2000"
                                                 alt="brand_icon" width="100px"></a>
     <form class="d-flex" id="search" role="search" th:action="@{/}" method="get">
-      <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="searchProductName">
+      <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
+             name="searchProductName">
       <button style="background-color: #5CB85C; color:white;" class="btn btn-outline-success border-0"
               type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
     </form>
@@ -89,13 +90,15 @@
           <a class="nav-link" aria-current="page" th:href="@{/#productAll}">SẢN PHẨM</a>
         </li>
         <div class="dropdown nav-item">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+             aria-expanded="false">
             DANH MỤC
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" th:href="@{/#productAll}">Tất cả sản phẩm</a></li>
+            <li><a class="dropdown-item" th:href="@{/#productAll}">Tất Cả Sản Phẩm</a></li>
             <th:block th:each="category:${categoryList}">
-              <li><a class="dropdown-item" th:href="@{'/' + ${category.categoryID}}">[[${category.categoryName}]]</a></li>
+              <li><a class="dropdown-item" th:href="@{'/' + ${category.categoryID}}">[[${category.categoryName}]]</a>
+              </li>
             </th:block>
           </ul>
         </div>
@@ -107,28 +110,28 @@
     </div>
     <a class="nav-link" style="margin: 0 2%;" th:href="@{/cart}"><i class="fa-solid fa-basket-shopping"><span
             class="translate-middle badge border border-light rounded-circle bg-danger"
-            style="--bs-badge-font-size: 0.5em;">10</span></i>GIỎ HÀNG</a>
+            style="--bs-badge-font-size: 0.5em;" th:text="${totalQuantity}" id="cartBadge">10</span></i>GIỎ
+      HÀNG</a>
     <div th:switch="${#authentication} ? ${#authorization.expression('isAuthenticated()')} : ${false}">
-			<span th:case="${false}">
-					<a class="navbar-brand me-1 fs-6" th:href="@{/login}">Đăng nhập</a>|<a class="navbar-brand ms-1 fs-6" th:href="@{/register}">Đăng ký</a>
-				</span>
+                <span th:case="${false}">
+                        <a class="navbar-brand me-1 fs-6" th:href="@{/login}">Đăng nhập</a>|<a
+                        class="navbar-brand ms-1 fs-6" th:href="@{/register}">Đăng ký</a>
+                    </span>
       <span th:case="${true}">
                     <div class="dropdown">
-                        <button class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    		<span th:text="${loggedInUser.lastName}"></span>
-							<span> </span>
-							<span th:text="${loggedInUser.firstName}"></span>
+                        <button class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                            <span th:text="${loggedInUser.lastName}"></span>
+                            <span> </span>
+                            <span th:text="${loggedInUser.firstName}"></span>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" th:href="@{/manage-user-account}">Thông tin cá nhân</a></li>
-                          <!--                            <li><a class="dropdown-item" href="#">Sửa thông tin cá nhân</a></li>-->
-                          <!--                            <li><a class="dropdown-item" href="#">Đổi mật khẩu</a></li>-->
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a></li>
                         </ul>
-
-					</div>
-				</span>
+                    </div>
+                </span>
     </div>
   </div>
 </nav>

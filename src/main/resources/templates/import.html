@@ -181,7 +181,7 @@
             <td>[[${#numbers.formatDecimal(import.totalAmount, 1 , 'POINT', 0 , 'DEFAULT')}]] ₫</td>
             <td>
                 <button type="button" class="btn btn-outline-primary" th:onclick="'openView(' + ${import.importProduct.importID} +')'"><i class="fa-solid fa-pen-to-square"></i></button>
-                <button type="button" class="btn btn-outline-danger" th:onclick="'deleteImport(' + ${import.importProduct.importID} + ')'"><i class="fa-solid fa-trash-can"></i></button>
+
             </td>
         </tr>
         </tbody>
@@ -481,30 +481,7 @@
     }
 
 
-    async function deleteImport(importID) {
-        const apiUrl = '/admin/import/' + importID;
 
-        const confirmed = confirm('Bạn có chắc chắn muốn xóa đơn nhập hàng này?');
-
-        if (confirmed) {
-            try {
-                const response = await fetch(apiUrl, {
-                    method: 'DELETE'
-                });
-
-                if (!response.ok) {
-                    throw new Error('Đã xảy ra lỗi khi xóa nhà cung cấp từ API!');
-                }
-                location.reload();
-
-            } catch (error) {
-                console.error('Lỗi:', error.message);
-                alert('Đã xảy ra lỗi khi xóa nhà cung cấp từ API!');
-            }
-        } else {
-
-        }
-    }
 
     document.addEventListener("DOMContentLoaded", function() {
         const supplierID = localStorage.getItem("selectedSupplierID");

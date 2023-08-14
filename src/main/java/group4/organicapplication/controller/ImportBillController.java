@@ -108,11 +108,6 @@ public class ImportBillController {
         }
     }
 
-    @DeleteMapping("/import/{importID}")
-    public ResponseEntity<String> deleteImport(@PathVariable int importID) throws IOException {
-        String message = imBillService.deleteImportBill(importID);
-        return new ResponseEntity<>(message, HttpStatus.OK);
-    }
 
 
 }

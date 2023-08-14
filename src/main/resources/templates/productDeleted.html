@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Products</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+  <script src="https://kit.fontawesome.com/5a213e1813.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<style>
+  li {
+    margin: 0 5px;
+  }
+  .listPage {
+    padding: 10px;
+    text-align: center;
+    list-style: none;
+  }
+
+  .listPage li {
+    background-color: white;
+    padding: 10px 20px;
+    display: inline-block;
+    margin: 0 10px;
+    cursor: pointer;
+  }
+
+  .listPage .active {
+    background-color: #5CB85C;
+    color: white;
+  }
+
+  #edit,
+  #addNew {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    display: none;
+    left: 50%;
+    top:50%;
+    transform: translate(-50%, -50%);
+  }
+  .active {
+    border: 0;
+    border-bottom: #5CB85C 2px solid;
+    color: black;
+  }
+
+  @media only screen and (max-width: 1015px) {
+    #search, #manage, #btnDelete {
+      width: 100%;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+    #dropdownSupplier {
+      width:60%;
+    }
+  }
+  a{
+    text-decoration: none;
+  }
+</style>
+
+<body>
+<nav class="navbar navbar-expand-lg bg-body-tertiary sticky-top shadow-sm">
+  <div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02"
+            aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <a class="navbar-brand" th:href="@{/admin}"><img
+            src="https://img.freepik.com/premium-vector/organic-icon-100-percent-organic-product-label_349999-1003.jpg?w=2000"
+            alt="brand_icon" width="100"></a>
+    <div class="collapse navbar-collapse ms-3" id="navbarTogglerDemo02">
+      <ul class="navbar-nav me-auto">
+
+        <li class="nav-item">
+          <a class="nav-link  active" th:href="@{/admin/product}">SẢN PHẨM</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/admin/sale}">BÁN HÀNG</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/admin/orders}">ĐƠN HÀNG</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/admin/category}">DANH MỤC</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/admin/suppliers}">NHÀ CUNG CẤP</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/admin/import}">NHẬP HÀNG</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/admin/list-account}">QUẢN LÝ TÀI KHOẢN</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/admin/statistic}">THỐNG KÊ</a>
+        </li>
+      </ul>
+    </div>
+    <div class="dropdown me-4">
+      <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        Hi, <span th:text="${loggedInUser.lastName}"></span>
+        <span th:text="${loggedInUser.firstName}"></span>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-end">
+        <li><a class="dropdown-item" th:href="@{/admin/profile}">Thông tin cá nhân</a></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+<div class="px-5">
+  <div class="row align-middle mt-4 mb-4">
+    <div class="col-2" id="manage">
+      <h4 style="color: #5CB85C;">Quản lý sản phẩm đã xóa</h4>
+    </div>
+    <div id="search" class="col-5" >
+      <form class="d-flex" role="search" onsubmit="searchProduct()">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
+               name="searchName" id="searchName">
+        <button style="background-color: #5CB85C; color:white;" class="btn btn-outline-success border-0"
+                type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+      </form>
+    </div>
+    <div class="col-2" id="dropdownSupplier">
+      <select class="form-select" id="supplierDropdown" onchange="getProductBySupplierId()" >
+
+        <option th:value="0">Tất cả</option>
+        <th:block th:each="supplier : ${suppliers}">
+
+          <option th:value="${supplier.supplierID}" th:text="${supplier.supplierName}"></option>
+        </th:block>
+      </select>
+    </div>
+    <div class="col-3 mr-5 text-end " id="btnDelete">
+      <a th:href="@{/admin/product}">
+        <button class="h4 btn btn-outline-primary"  type="submit">Quay Lại <i class="fa-solid fa-arrow-left-long"></i></button>
+      </a>
+    </div>
+  </div>
+
+
+  <table class="table text-center align-middle border">
+    <thead class="table-secondary">
+    <tr>
+      <th class="col-1">Mã sản phẩm</th>
+      <th class="col-1">Hình ảnh</th>
+      <th class="col-5">Tên sản phẩm</th>
+      <th class="col-1">Loại</th>
+      <th class="col-1">Số lượng</th>
+      <th class="col-1">Giá bán</th>
+      <th class="col-2">Chức năng</th>
+    </tr>
+    </thead>
+    <tbody class="list">
+    <th:block th:each="product:${products}">
+      <tr class="item">
+        <td>[[${product.productID}]]</td>
+        <td><img th:src="@{${product.getPhotosImagePath}}" height="70" width="70" title="ảnh"></td>
+        <td>[[${product.productName}]]</td>
+        <td>[[${product.unit}]]</td>
+        <td>[[${product.quantity}]]</td>
+        <td>[[${#numbers.formatDecimal(product.price, 1 , 'POINT', 0 , 'DEFAULT')}]] ₫</td>
+        <td>
+          <a th:href="@{'/admin/productInfo/' + ${product.productID}}">
+            <button type="button" class="btn btn-outline-secondary"><i class="fa-solid fa-file-invoice"></i></button>
+          </a>
+            <button type="button" th:onclick="'restoreProduct(' + ${product.productID} + ')'" class="btn btn-outline-primary"><i class="fa-solid fa-arrow-rotate-left"></i></button>
+
+        </td>
+      </tr>
+    </th:block>
+    </tbody>
+  </table>
+  <div style="position: sticky; top:100%; margin:0 auto;">
+    <ul class="listPage">
+      <li class="active">1</li>
+      <li>2</li>
+      <li>3</li>
+    </ul>
+  </div>
+
+</div>
+
+
+</body>
+<script>
+  let thisPage = 1;
+  let limit = 5;
+  let list = document.querySelectorAll('.list .item');
+
+  function loadItem() {
+    let beginGet = limit * (thisPage - 1);
+    let endGet = limit * thisPage - 1;
+    list.forEach((item, key) => {
+      if (key >= beginGet && key <= endGet) {
+        item.style.display = 'table-row';
+
+      } else {
+        item.style.display = 'none';
+      }
+    })
+    listPage();
+
+  }
+
+  loadItem();
+
+  function listPage() {
+    let count = Math.ceil(list.length / limit);
+    document.querySelector('.listPage').innerHTML = '';
+
+    if (thisPage != 1) {
+      let prev = document.createElement('li');
+      prev.innerHTML = '<i class="fa-solid fa-angles-left"></i>';
+      prev.setAttribute('onclick', "changePage(" + (thisPage - 1) + ")");
+      document.querySelector('.listPage').appendChild(prev);
+    }
+
+    for (i = 1; i <= count; i++) {
+      let newPage = document.createElement('li');
+      newPage.innerText = i;
+      if (i == thisPage) {
+        newPage.classList.add('active');
+      }
+      newPage.setAttribute('onclick', "changePage(" + i + ")");
+      document.querySelector('.listPage').appendChild(newPage);
+    }
+    if (thisPage != count) {
+      let next = document.createElement('li');
+      next.innerHTML = '<i class="fa-solid fa-angles-right"></i>';
+      next.setAttribute('onclick', "changePage(" + (thisPage + 1) + ")");
+      document.querySelector('.listPage').appendChild(next);
+    }
+  }
+
+  function changePage(i) {
+    thisPage = i;
+    loadItem();
+  }
+
+  <!--Open form Add New-->
+  /*function openAddNew() {
+    let x = document.getElementById("addNew");
+    x.style.display = "flex";
+  }
+
+  function closeAddNew() {
+    let x = document.getElementById("addNew");
+    x.style.display = "none";
+  }
+
+  async function openEdit(productID) {
+    const imageContainer = document.getElementById("imageEditCon");
+    try {
+      const response = await fetch(`/admin/product/${productID}`,{
+        method:"GET"
+      });
+      const data = await response.json();
+      console.log(data);
+
+      document.getElementById("productIdEdit").textContent = data.productID;
+      document.getElementById("productNameEdit").value = data.productName;
+      imageContainer.querySelector("img").src  = data.photosImagePath;
+      document.getElementById("unitEdit").value = data.unit;
+      document.getElementById("quantityEdit").value = data.quantity;
+      document.getElementById("priceEdit").value = data.price;
+      document.getElementById("descriptionEdit").value = data.description;
+      document.getElementById("imgName").value = data.img;
+      document.getElementById("categoryEdit").value = data.category.categoryID
+
+      document.getElementById("edit").style.display = "flex";
+    }
+    catch(error) {
+      console.error('Lỗi', error.message);
+    }
+  }
+
+  async function submitEditForm(){
+    const inputFileEdit = document.querySelector("input[name='imageEdit']");
+    const productID = document.getElementById("productIdEdit").textContent;
+    const productName = document.getElementById("productNameEdit").value;
+    const imgName = document.getElementById("imgName").value;
+    const img = inputFileEdit.files[0];
+    const unit = document.getElementById("unitEdit").value;
+    const quantity = document.getElementById("quantityEdit").value;
+    const price = document.getElementById("priceEdit").value;
+    const description = document.getElementById("descriptionEdit").value;
+    const categoryID = document.getElementById("categoryEdit").value;
+    let categoryName = document.getElementById("categoryEdit").textContent;
+    let category = document.getElementById("categoryEdit");
+    for (let i = 0; i < category.length; i++) {
+      let option = category.options[i];
+      if (option.value == categoryID) {
+        categoryName = option.text;
+      }
+    }
+    var formData = new FormData();
+    if(img == null){
+      formData.append('product', new Blob([ JSON.stringify({
+        "productName" : productName,
+        "unit" : unit,
+        "img" : imgName,
+        "quantity" : quantity,
+        "price" : price,
+        "description" : description,
+        "category" : {categoryID : categoryID, categoryName : categoryName}
+      })], {
+        type: "application/json"
+      }));
+
+    }
+    else
+    {
+      formData.append("image", img);
+      formData.append('product', new Blob([ JSON.stringify({
+        "productName" : productName,
+        "unit" : unit,
+        "quantity" : quantity,
+        "price" : price,
+        "description" : description,
+        "category" : {categoryID : categoryID, categoryName : categoryName}
+      })], {
+        type: "application/json"
+      }));
+    }
+    try {
+      const response = await fetch(`/admin/product/${productID}`, {
+        method: "POST",
+        body:formData
+      });
+
+      document.getElementById("edit").style.display = "none";
+
+
+    } catch (error) {
+      console.error('Lỗi:', error.message);
+    }
+    location.reload(true);
+
+  }
+
+  function closeEdit() {
+    let x = document.getElementById("edit");
+    x.style.display = "none";
+  }
+
+  async function deleteProduct(productID) {
+    const apiUrl = "/admin/product/" + productID;
+    const confirmed = confirm("Bạn có chắc chắn muốn xóa sản phẩm này?");
+    if(confirmed) {
+      try {
+        const responese = await fetch(apiUrl, {
+          method: 'DELETE'
+        });
+        if(!responese.ok) {
+          throw new Error('Đã xảy ra lỗi');
+        }
+        location.reload();
+      }
+      catch (error) {
+        console.error('Lỗi:', error.message);
+        alert("Đã xảy ra lỗi")
+      }
+    }
+    else{
+
+    }
+  }*/
+  document.addEventListener("DOMContentLoaded", function() {
+    const supplierID = localStorage.getItem("selectedSupplierID");
+    if (supplierID) {
+      const supplierDropdown = document.getElementById("supplierDropdown");
+      supplierDropdown.value = supplierID;
+    }
+  });
+  function getProductBySupplierId() {
+    let supplierID = document.getElementById("supplierDropdown").value;
+    localStorage.setItem("selectedSupplierID", supplierID);
+
+    if (supplierID) {
+      const url = new URL(window.location.href);
+      const searchParams = url.searchParams;
+      if (searchParams.has('searchName')) {
+        searchParams.delete('searchName'); // Xóa tham số searchName nếu có
+      }
+      url.searchParams.set('supplierID', supplierID);
+      window.location.href = url;
+    }
+
+  }
+  function searchProduct() {
+    let supplierID = document.getElementById("supplierDropdown").value;
+    let searchName = document.getElementById("searchName").value;
+    supplierID = 0 ;
+    localStorage.setItem("selectedSupplierID", supplierID);
+    const url = new URL(window.location.href);
+    const searchParams = url.searchParams;
+    if(searchParams.has('supplierID')){
+      searchParams.delete('supplierID');
+
+    }
+    url.searchParams.set('searchName', searchName);
+    window.location.href = url;
+  }
+  const imageContainer = document.getElementById("imageNewCon");
+  const inputFile = document.querySelector("input[name='imageNew']");
+
+  inputFile.addEventListener("change", function() {
+    showImageThumnail(this);
+  });
+
+  const imageContEdit = document.getElementById("imageEditCon");
+  const inputFileEdit = document.querySelector("input[name='imageEdit']");
+
+  inputFileEdit.addEventListener("change", function() {
+    showImageThumnailEdit(this);
+  });
+
+  function showImageThumnail(fileInput){
+    const file = inputFile.files[0];
+    reader = new FileReader();
+    reader.onload = function(e){
+      const image = new Image();
+      image.src = URL.createObjectURL(file);
+      imageContainer.querySelector("img").src = image.src;
+    }
+    reader.readAsDataURL(file);
+  }
+  function showImageThumnailEdit(fileInputEdit){
+    const fileEdit = inputFileEdit.files[0];
+    document.getElementById("imgName").value = fileEdit.name;
+    readerEdit = new FileReader();
+    readerEdit.onload = function(e){
+      const imageEdit = new Image();
+      imageEdit.src = URL.createObjectURL(fileEdit);
+      imageContEdit.querySelector("img").src = imageEdit.src;
+    }
+    readerEdit.readAsDataURL(fileEdit);
+  }
+  async function restoreProduct(productID) {
+    const apiUrl = "/admin/product/restore/" + productID;
+    const confirmed = confirm("Bạn có chắc chắn muốn khôi phục sản phẩm này?");
+    if(confirmed) {
+      try {
+        const responese = await fetch(apiUrl, {
+          method: 'GET'
+        });
+        if(!responese.ok) {
+          throw new Error('Đã xảy ra lỗi');
+        }
+        location.reload(true);
+      }
+      catch (error) {
+        console.error('Lỗi:', error.message);
+        alert("Đã xảy ra lỗi")
+      }
+    }
+    else{
+
+    }
+  }
+</script>
+
+</html>

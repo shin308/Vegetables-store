@@ -460,7 +460,16 @@
             //update total quantity, total price
             updateTotal()
 
-
+        }
+        else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Không đủ sản phẩm!',
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000
+            });
         }
     }
 

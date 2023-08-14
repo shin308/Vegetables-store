@@ -1,9 +1,6 @@
 package group4.organicapplication.service;
 
-import group4.organicapplication.model.ImportBill;
-import group4.organicapplication.model.ImportProduct;
-import group4.organicapplication.model.Product;
-import group4.organicapplication.model.Supplier;
+import group4.organicapplication.model.*;
 import group4.organicapplication.repository.ImportBillRepository;
 import group4.organicapplication.repository.ImportProductRepository;
 import group4.organicapplication.repository.ProductRepository;
@@ -30,14 +27,22 @@ public class ProductService {
     public List<Product> getProductsBySupplierId(int supplierId) {
         return productRepository.findProductsBySupplierId(supplierId);
     }
+    public List<Product> getProductsDeletedBySupplierId(int supplierId) {
+        return productRepository.findProductsDeleteBySupplierId(supplierId);
+    }
     public List<Product> getAllProduct() {
         return productRepository.findProduct();
     }
 
-    public List<Product> findProductByProductName(String searchName) {
-        return productRepository.findByProductNameContaining(searchName);
+    public List<Product> getAllProductDeleted() {
+        return productRepository.findProductDeleted();
     }
-
+    public List<Product> findProductByProductName(String searchName) {
+        return productRepository.findByProductName(searchName);
+    }
+    public List<Product> findProductDeletedByProductName(String searchName) {
+        return productRepository.findByProductNameDeleted(searchName);
+    }
 
     public Product get(Integer productID) {
         Optional<Product> productOptional = productRepository.findById(productID);
@@ -51,32 +56,33 @@ public class ProductService {
     public Product createProduct(Product product) {
         return productRepository.save(product);
     }
-    public String deleteProduct(Integer id) {
-        Optional<Product> productOptional = productRepository.findById(id);
-        if(productOptional.isPresent()) {
-            ImportBill importBills = imBillRepository.findByProductID(id);
-            int importID = importBills.getImportProduct().getImportID();
-            if(importBills != null) {
-                imBillRepository.delete(importBills);
-            }
-            if(importBills != null) {
-                ImportProduct importProduct = imProductRepository.findByImportID(importID);
-                System.out.println(importProduct + "ok");
 
-                imProductRepository.delete(importProduct);
-            }
-
-            productRepository.deleteById(id);
-
+    public String softDeleteProduct(Integer productID)  {
+        Optional<Product> optionalProduct = productRepository.findById(productID);
+        if(optionalProduct.isPresent()) {
+            Product product = optionalProduct.get();
+            product.setDeleted(true);
+            productRepository.save(product);
             return "Xóa sản phẩm thành công";
-
         }
         else {
-            return "Không tìm thấy sản phẩm nào với id = " + id;
+            return "Không tìm thấy sản phẩm với ID:" + productID;
         }
-
-
     }
+
+    public String restoreProduct(Integer productID)  {
+        Optional<Product> optionalProduct = productRepository.findById(productID);
+        if(optionalProduct.isPresent()) {
+            Product product = optionalProduct.get();
+            product.setDeleted(false);
+            productRepository.save(product);
+            return "Khôi phục sản phẩm thành công";
+        }
+        else {
+            return "Không tìm thấy sản phẩm với ID:" + productID;
+        }
+    }
+
     public Product updateProduct(int productID, Product product) {
         Product productExist = productRepository.findById(productID).orElse(null);
         if(productExist != null) {

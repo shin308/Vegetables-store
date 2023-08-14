@@ -20,6 +20,8 @@ public interface UserService {
 
 	User findById(long id);
 
+	User findByDeleted(int deleted);
+
 	Page<User> getUserByRole(Set<Role> role, int page);
 
 	List<User> getUserByRole(Set<Role> role);
@@ -27,6 +29,14 @@ public interface UserService {
 	User findByEmail(String email);
 
 	void deleteById(long id);
+
+	void softDeleteById(long id);
+
+	void restoreAccountById(long id);
+
+	void deleteBlacklistAccountById(long id);
+
+	List<User> listBlacklistAccount();
 
 	void changePass(User nd, String newPass);
 

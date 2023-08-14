@@ -35,6 +35,16 @@ $(document).ready(function() {
                         receiveUser = orders.email;
                     }
 
+                    var imgUpdate = orders.imgDelivery;
+
+                    if(orders.imgDelivery == null){
+                        if(orders.orderStatus == "Đang chờ giao" || orders.orderStatus == "Đang giao"){
+                            imgUpdate = "delivery.png";
+                        }else if(orders.orderStatus == "Đã bị hủy"){
+                            imgUpdate = "cancelOrder.jpg";
+                        }
+                    }
+
 					var donHangRow = '<tr class="item">' +
 					                  '<td>' + orders.id+ '</td>' +
 					                  '<td>' + receiveUser + '</td>' +
@@ -43,7 +53,7 @@ $(document).ready(function() {
 					                  '<td>' + orders.orderDay + '</td>' +
 					                  '<td>' + orders.deliveryDay + '</td>' +
 					                  '<td>' + orders.receiveDay + '</td>' +
-					                  '<td> <img id="imageDeliveryOrder" class="border" src="/images/ImageShipperDelivery/' + orders.imgDelivery + '" alt="" width="80" height="80"></td>' +
+					                  '<td> <img id="imageDeliveryOrder" class="border" src="/images/ImageShipperDelivery/' + imgUpdate + '" alt="" width="80" height="80"></td>' +
 					                  '<td width="0%">'+'<input type="hidden" class="donHangId" value=' + orders.id + '>'+ '</td>'+
 					                  '<td><button class="btn btn-warning btnChiTiet" data-bs-toggle="modal" data-bs-target="#chiTietModal">Chi Tiết</button>';
 					                if(orders.orderStatus == "Đang chờ giao"){
@@ -201,7 +211,8 @@ $(document).ready(function() {
 					sum += chiTiet.totalAmount;
 					//* chiTiet.soLuongNhanHang;
 				} else {
-	                sum += chiTiet.totalAmount * chiTiet.quantity;
+	                sum += chiTiet.totalAmount;
+	                 //* chiTiet.quantity;
 				}
 
 				$('.chiTietTable tbody').append(chiTietRow);

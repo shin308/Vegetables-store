@@ -4,7 +4,8 @@ $(document).ready(function() {
 	ajaxGet(1);	
 	
 	function ajaxGet(page){		
-		var data = { roleName:$("#vaiTro").val()};
+		var data = { roleName:$("#vaiTro").val(),
+		};
 		$.ajax({
 			type: "GET",	
 			data: data,
@@ -117,8 +118,8 @@ $(document).ready(function() {
 		var confirmation = confirm("Bạn chắc chắn xóa tài khoản này ?");
 		if(confirmation){
 		  $.ajax({
-			  type : "DELETE",
-			  url : "http://localhost:8080/api/account/delete/" + taiKhoanId,
+			  type : "GET",
+			  url : "http://localhost:8080/api/account/soft-delete/" + taiKhoanId,
 			  success: function(resultMsg){
 				  resetData();
 			  },

@@ -29,9 +29,12 @@ public class AccountApi {
 
     @GetMapping("/all")
     public Page<User> getUserByRole(@RequestParam("roleName") String roleName,
-                                           @RequestParam(defaultValue = "1") int page) {
+                                        @RequestParam(defaultValue = "1") int page) {
         Set<Role> role = new HashSet<>();
         role.add(roleService.findByRoleName(roleName));
+
+//        List<User> user = new ArrayList<>();
+//        user.add(userService.findByDeleted(deleted));
 
         return userService.getUserByRole(role, page);
     }
@@ -89,6 +92,11 @@ public class AccountApi {
     @DeleteMapping("/delete/{id}")
     public void deleteAccount(@PathVariable long id) {
         userService.deleteById(id);
+    }
+
+    @GetMapping("/soft-delete/{id}")
+    public void softDeleteAccount(@PathVariable long id){
+        userService.softDeleteById(id);
     }
 
     public void setErrorsForResponseObject(BindingResult result, ResponseObject object) {

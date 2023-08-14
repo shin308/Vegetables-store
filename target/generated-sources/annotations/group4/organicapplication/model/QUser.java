@@ -22,6 +22,8 @@ public class QUser extends EntityPathBase<User> {
 
     public final StringPath address = createString("address");
 
+    public final NumberPath<Integer> deleted = createNumber("deleted", Integer.class);
+
     public final StringPath email = createString("email");
 
     public final StringPath firstName = createString("firstName");

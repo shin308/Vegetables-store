@@ -45,8 +45,17 @@ public class User {
 	@Transient
 	@JsonIgnore
 	private List<Orders> listOrders;
-	
 
+	@Column(name = "deleted")
+	private int deleted = 0;
+
+	public int getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(int deleted) {
+		this.deleted = deleted;
+	}
 
 	public Long getId() {
 		return id;

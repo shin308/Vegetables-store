@@ -54,6 +54,24 @@ public class AdminController {
         model.addAttribute("listRole", roleService.findAllRole());
         return "account";
     }
+    @GetMapping("/list-blacklist-account")
+    public String getBlacklistAccount(Model model){
+        List<User> users = userService.listBlacklistAccount();
+
+        model.addAttribute("users", users);
+        return "admin/blacklistAccount";
+    }
+    @GetMapping("/restore-blacklist-account/{id}")
+    public String restoreBlacklistAccount(@PathVariable long id){
+        userService.restoreAccountById(id);
+        return "redirect:/admin/list-blacklist-account";
+    }
+
+    @GetMapping("delete-blacklist-account/{id}")
+    public String deleteBlacklistAccount(@PathVariable long id){
+        userService.deleteBlacklistAccountById(id);
+        return "redirect:/admin/list-blacklist-account";
+    }
 
     @GetMapping("/orders")
     public String manageOrder(Model model) {

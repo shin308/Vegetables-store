@@ -87,6 +87,12 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
+	public User findByDeleted(int deleted) {
+		User user = userRepository.findByDeleted(deleted);
+		return user;
+	}
+
+	@Override
 	public Page<User> getUserByRole(Set<Role> role, int page){
 		return userRepository.findByRoleIn(role, PageRequest.of(page - 1, 3));
 	}
@@ -103,6 +109,32 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public void deleteById(long id){
+		userRepository.deleteById(id);
+	}
+
+	@Override
+	public void softDeleteById(long id) {
+		User user = userRepository.findById(id).get();
+		user.setDeleted(1);
+
+		userRepository.save(user);
+	}
+
+	@Override
+	public List<User> listBlacklistAccount(){
+		return userRepository.findBlacklistAccount();
+	}
+
+	@Override
+	public void restoreAccountById(long id){
+		User user = userRepository.findById(id).get();
+		user.setDeleted(0);
+
+		userRepository.save(user);
+	}
+
+	@Override
+	public void deleteBlacklistAccountById(long id){
 		userRepository.deleteById(id);
 	}
 

@@ -111,15 +111,6 @@ public class MainController {
         List<Category> categoryList = categoryService.listCategory();
         model.addAttribute(("categoryList"),categoryList);
 
-        float starAvg = reviewService.getAvgStarProduct(productID);
-        model.addAttribute("starAvg", starAvg);
-
-        int countReview = reviewService.getQuantityReview(productID);
-        model.addAttribute("quantityReview", countReview);
-
-        Long sumQuantity = orderDetailService.sumProductOrder(productID);
-        model.addAttribute("sumQuantity", sumQuantity);
-
         List<CartItem> cartItems = cartService.getCartItems();
         model.addAttribute("cartItems", cartItems);
         model.addAttribute("totalQuantity", cartService.sumQuantity(cartItems));
@@ -139,7 +130,26 @@ public class MainController {
         List<Reviews> reviewAll = reviewService.getReviewProduct(productID);
         model.addAttribute("reviewAll", reviewAll);
         model.addAttribute("addNew", new Reviews());
+        getData(productID, model);
         return "productInfo_user";
+    }
+
+    public void getData(int productID, Model model){
+        String starAvg = reviewService.getAvgStarProduct(productID);
+        String countReview = reviewService.getQuantityReview(productID);
+        String sumQuantity = orderDetailService.sumProductOrder(productID);
+        if (starAvg == null ){
+            model.addAttribute("starAvg", 0);
+        }
+        if (countReview == null ){
+            model.addAttribute("quantityReview", 0);
+        }
+        if (sumQuantity == null ){
+            model.addAttribute("sumQuantity", 0);
+        }
+        model.addAttribute("starAvg", starAvg);
+        model.addAttribute("quantityReview", countReview);
+        model.addAttribute("sumQuantity", sumQuantity);
     }
 
 //    @GetMapping("/order")

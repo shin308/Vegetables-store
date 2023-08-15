@@ -14,5 +14,5 @@ public interface OrderDetailRepository extends JpaRepository<PurchaseOrder,Long>
     List<Integer> getProductID(Long orderID);
 
     @Query("select sum(p.quantity) from PurchaseOrder p where p.product.productID = ?1")
-    Long getQuantityProductSale (int productID);
+    String getQuantityProductSale (int productID);
 }

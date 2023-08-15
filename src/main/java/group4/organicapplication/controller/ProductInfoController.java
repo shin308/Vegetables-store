@@ -41,9 +41,18 @@ public class ProductInfoController {
     }
 
     public void getData(int productID, Model model){
-        float starAvg = reviewService.getAvgStarProduct(productID);
-        int countReview = reviewService.getQuantityReview(productID);
-        Long sumQuantity = orderDetailService.sumProductOrder(productID);
+        String starAvg = reviewService.getAvgStarProduct(productID);
+        String countReview = reviewService.getQuantityReview(productID);
+        String sumQuantity = orderDetailService.sumProductOrder(productID);
+        if (starAvg == null ){
+            model.addAttribute("starAvg", 0);
+        }
+        if (countReview == null ){
+            model.addAttribute("quantityReview", 0);
+        }
+        if (sumQuantity == null ){
+            model.addAttribute("sumQuantity", 0);
+        }
         model.addAttribute("starAvg", starAvg);
         model.addAttribute("quantityReview", countReview);
         model.addAttribute("sumQuantity", sumQuantity);

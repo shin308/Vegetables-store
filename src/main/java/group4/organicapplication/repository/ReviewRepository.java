@@ -35,8 +35,8 @@ public interface ReviewRepository extends JpaRepository<Reviews, Long> {
     List<Long> checkOrderReview();
 
     @Query("select round(avg(r.star), 1)  from Reviews r where r.product.productID = ?1")
-    Float avgStarProduct(Integer productID);
+    String avgStarProduct(Integer productID);
 
     @Query("select count(r.reviewID) from Reviews r where r.product.productID = ?1 and r.star is not null")
-    int countReviewProduct(Integer productID);
+    String countReviewProduct(Integer productID);
 }

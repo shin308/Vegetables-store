@@ -24,7 +24,7 @@ public class OrderDetailServiceImpl implements OrderDetailService {
     }
 
     @Override
-    public Long sumProductOrder(int productID) {
+    public String sumProductOrder(int productID) {
         return orderDetailRepository.getQuantityProductSale(productID);
     }
 }

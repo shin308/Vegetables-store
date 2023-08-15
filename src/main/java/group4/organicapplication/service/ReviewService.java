@@ -41,11 +41,11 @@ public class ReviewService {
         return reviewRepository.checkOrderReview();
     }
 
-    public Float getAvgStarProduct(int productID){
+    public String getAvgStarProduct(int productID){
         return reviewRepository.avgStarProduct(productID);
     }
 
-    public int getQuantityReview(int productID){
+    public String getQuantityReview(int productID){
         return reviewRepository.countReviewProduct(productID);
     }
 }

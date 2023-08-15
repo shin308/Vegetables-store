@@ -11,5 +11,5 @@ public interface OrderDetailService {
 
     List<Integer> getProductOfOrder(Long orderID);
 
-    Long sumProductOrder(int productID);
+    String sumProductOrder(int productID);
 }

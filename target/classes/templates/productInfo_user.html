@@ -204,7 +204,7 @@
               <div class="mb-4">
                 <div class="counter">
                   <span class="down" onClick='decreaseCount(event, this)'>-</span>
-                  <input type="text" value="1" id="inputQuantity">
+                  <input type="text" value="1" id="inputQuantity" th:onchange="inputValue()">
                   <span class="up" onClick='increaseCount(event, this)'>+</span>
                 </div>
               </div>
@@ -542,13 +542,27 @@
 
   <!--Quantity button-->
   function increaseCount(a, b) {
+
+    let limitQuantity = [[${productInfo.quantity}]];
+    let quantityInCart = [[${quantityInCart}]];
+
     var input = b.previousElementSibling;
     var value = parseInt(input.value, 10);
     value = isNaN(value) ? 0 : value;
-    value++;
-    input.value = value;
+    if(value < limitQuantity) {
+      value++;
+      input.value = value;
+    }
+
   }
 
+  function inputValue() {
+    let inputQuantityDOM = document.getElementById("inputQuantity");
+    let limitQuantity = [[${productInfo.quantity}]];
+    if(inputQuantityDOM.value > limitQuantity) {
+      inputQuantityDOM.value = limitQuantity;
+    }
+  }
   function decreaseCount(a, b) {
     var input = b.nextElementSibling;
     var value = parseInt(input.value, 10);

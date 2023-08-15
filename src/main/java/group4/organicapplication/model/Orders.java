@@ -53,7 +53,7 @@ public class Orders {
     @Column(name = "isPaid", nullable = false)
     private boolean isPaid = false;
 
-    public boolean isPaid() {
+    public boolean getIsPaid() {
         return isPaid;
     }
 

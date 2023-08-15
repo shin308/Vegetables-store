@@ -189,6 +189,9 @@ public class MainController {
         User currentUser = getSessionUser(re);
         model.addAttribute("user", currentUser);
 
+        List<Category> categoryList = categoryService.listCategory();
+        model.addAttribute(("categoryList"),categoryList);
+
         int totalQuantity = cartService.sumQuantity(cartItems);
         double totalPrice = cartService.sumTotalPrice(cartItems);
 

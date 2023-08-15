@@ -120,7 +120,7 @@
         </div>
         <a class="nav-link" style="margin: 0 2%;" th:href="@{/cart}"><i class="fa-solid fa-basket-shopping"><span
                 class="translate-middle badge border border-light rounded-circle bg-danger"
-                style="--bs-badge-font-size: 0.5em;">10</span></i>GIỎ HÀNG</a>
+                style="--bs-badge-font-size: 0.5em;" th:text="${totalQuantity}" >10</span></i>GIỎ HÀNG</a>
         <div th:switch="${#authentication} ? ${#authorization.expression('isAuthenticated()')} : ${false}">
 			<span th:case="${false}">
 					<a class="navbar-brand me-1 fs-6" th:href="@{/login}">Đăng nhập</a>|<a class="navbar-brand ms-1 fs-6" th:href="@{/register}">Đăng ký</a>

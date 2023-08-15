@@ -114,6 +114,12 @@ public class MainController {
         model.addAttribute(("categoryList"),categoryList);
         ImportBill importBills = importBillService.getImportBillByProductId(productID);
 
+        if (loggedInUser() != null){
+            model.addAttribute("userLogged", loggedInUser().getId());
+        } else{
+            model.addAttribute("userLogged", 0);
+        }
+
         List<CartItem> cartItems = cartService.getCartItems();
         model.addAttribute("cartItems", cartItems);
         model.addAttribute("totalQuantity", cartService.sumQuantity(cartItems));

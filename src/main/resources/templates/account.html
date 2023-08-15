@@ -181,18 +181,20 @@
             </div>
         </div>
 
-        <div class="col-3 text-end" id="btnAdd">
-            <button style="background-color: #5CB85C; color:white;vertical-align: middle;" type="button"
-                    class="btn btn-success shadow-sm border-0 btnThemTaiKhoan" data-bs-toggle="modal"
-                    data-bs-target="#taiKhoanModal">
-                Thêm mới<i style="font-size: 23px; vertical-align: middle;"
-                            class="fa-solid fa-square-plus ms-3"></i></button>
-        </div>
+        <div class="col-8 text-end" id="btnAdd">
+            <div class="d-flex float-end">
+                <button style="background-color: #5CB85C; color:white;vertical-align: middle;" type="button"
+                        class="btn btn-success shadow-sm border-0 btnThemTaiKhoan" data-bs-toggle="modal"
+                        data-bs-target="#taiKhoanModal">
+                    Thêm mới<i style="font-size: 23px; vertical-align: middle;"
+                                class="fa-solid fa-square-plus ms-3"></i></button>
+                <div id="btnBlackList" class="ms-3">
+                    <a th:href="@{/admin/list-blacklist-account}">
+                        <button type="button" class="btn btn-outline-secondary">Thùng rác<i class="fa-solid fa-trash-can ms-3"></i></button>
+                    </a>
+                </div>
+            </div>
 
-        <div class="col text-end" id="btnBlackList">
-            <a th:href="@{/admin/list-blacklist-account}">
-                <button type="button" class="btn btn-outline-secondary me-3">Thùng rác<i class="fa-solid fa-trash-can ms-3"></i></button>
-            </a>
         </div>
 
     </div>

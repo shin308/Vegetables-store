@@ -82,6 +82,31 @@ public class ProductController {
         model.addAttribute("categories",listCate);
         return "product";
     }
+
+    @GetMapping("/delete")
+    public String getProductListDeleted(@RequestParam(value = "supplierID", required = false) Integer supplierID,
+                                 @RequestParam(value = "searchName", required = false) String searchName,
+                                 Model model) {
+        List<Product> products;
+
+
+        if (searchName != null && !searchName.isEmpty()) {
+            products = productService.findProductDeletedByProductName(searchName);
+        } else if(supplierID !=null && supplierID !=0) { // lọc theo nhà cung cấp
+            products = productService.getProductsDeletedBySupplierId(supplierID);
+        }else {
+
+            products = productService.getAllProductDeleted();
+        }
+        model.addAttribute("products", products);
+        List<Category> listCate = categoryService.listCategory();
+        // Truyền danh sách nhà cung cấp vào model
+        List<Supplier> suppliers = supplierService.getAllSuppliers();
+        model.addAttribute("suppliers", suppliers);
+        model.addAttribute("categories",listCate);
+        return "productDeleted";
+    }
+
     @PostMapping("/create")
     public String createProduct(@ModelAttribute Product product, RedirectAttributes ra,
                                 @RequestParam("imageNew") MultipartFile multipartFile) {
@@ -143,17 +168,16 @@ public class ProductController {
         }
     }
 
+    @GetMapping("/restore/{productID}")
+    public ResponseEntity<String> restoreProduct(@PathVariable int productID) {
+        String message = productService.restoreProduct(productID);
+        return new ResponseEntity<>(message, HttpStatus.OK) ;
+    }
     @DeleteMapping("/{productID}")
     public ResponseEntity<String> deleteProduct(@PathVariable int productID) throws IOException {
-        String message = productService.deleteProduct(productID);
-
-        String uploadDir = "./src/main/resources/static/images/" + productID;
-        File file = new File(uploadDir);
-        if(file != null) {
-            fileUploadUtil.deleteFile(file);
-
-        }
-        file.delete();
+        String message = productService.softDeleteProduct(productID);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
+
+
 }

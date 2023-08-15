@@ -75,6 +75,8 @@ public class PurchaseController {
         order.setOrderStatus(orders.getOrderStatus());
         order.setUser(loggedInUser());
         order.setPhone(orders.getPhone());
+        order.setReceiveDay(orders.getReceiveDay());
+        order.setPaid(orders.getIsPaid());
 
 
 

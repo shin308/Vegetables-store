@@ -32,4 +32,20 @@ public class ReviewService {
         Reviews reply = new Reviews(product, userID, content, replyID);
         return reviewRepository.save(reply);
     }
+
+    public void addNewReview(String product, Long userID, String content, String star, Long orderID){
+        reviewRepository.addNewReview(product, userID,content,star, orderID);
+    };
+
+    public List<Long> getOrderIDReviewed(){
+        return reviewRepository.checkOrderReview();
+    }
+
+    public String getAvgStarProduct(int productID){
+        return reviewRepository.avgStarProduct(productID);
+    }
+
+    public String getQuantityReview(int productID){
+        return reviewRepository.countReviewProduct(productID);
+    }
 }

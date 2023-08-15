@@ -24,6 +24,8 @@ public class QReviews extends EntityPathBase<Reviews> {
 
     public final StringPath content = createString("content");
 
+    public final NumberPath<Long> orderID = createNumber("orderID", Long.class);
+
     public final DateTimePath<java.util.Date> postDate = createDateTime("postDate", java.util.Date.class);
 
     public final QProduct product;

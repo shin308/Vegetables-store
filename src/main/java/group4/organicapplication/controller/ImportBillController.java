@@ -83,6 +83,7 @@ public class ImportBillController {
             importBill.setImportProduct(importProduct);
             importBill.setProduct(product);
             importBill.setId(id);
+            importBill.setTotalAmount(importBill.getImportPrice() * importBill.getQuantity());
             ImportBill billcreate =  imBillService.createImportBill(importBill);
 
             return "redirect:/admin/import";
@@ -107,11 +108,6 @@ public class ImportBillController {
         }
     }
 
-    @DeleteMapping("/import/{importID}")
-    public ResponseEntity<String> deleteImport(@PathVariable int importID) throws IOException {
-        String message = imBillService.deleteImportBill(importID);
-        return new ResponseEntity<>(message, HttpStatus.OK);
-    }
 
 
 }

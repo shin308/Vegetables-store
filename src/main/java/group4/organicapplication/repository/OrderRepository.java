@@ -15,6 +15,7 @@ public interface OrderRepository extends JpaRepository<Orders, Long>, QuerydslPr
 
     public int countByOrderStatus(String orderStatus);
 
+    @Query("select o from Orders o where o.user.id =:userId order by o.id desc")
     List<Orders> findByUserId(Long userId);
 
     @Query(value = "SELECT DATE_FORMAT(order.receiveDay, '%d') as day, "

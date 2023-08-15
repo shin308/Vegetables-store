@@ -32,6 +32,8 @@ public class QOrders extends EntityPathBase<Orders> {
 
     public final StringPath imgDelivery = createString("imgDelivery");
 
+    public final BooleanPath isPaid = createBoolean("isPaid");
+
     public final StringPath note = createString("note");
 
     public final DateTimePath<java.util.Date> orderDay = createDateTime("orderDay", java.util.Date.class);

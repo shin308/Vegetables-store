@@ -151,12 +151,8 @@
                 <td>[[${category.categoryID}]]</td>
                 <td>[[${category.categoryName}]]</td>
                 <td>
-                    <a class="h4 m-3" th:href="@{'/admin/category/restore/' + ${category.categoryID}}">
-                        <button type="button" class="btn btn-primary">Khôi phục</button>
-                    </a>
-                    <a class="h4" th:href="@{'/admin/category/delete/' + ${category.categoryID}}">
-                        <button type="button" class="btn btn-danger">Xoá</button>
-                    </a>
+                    <button type="button" class="btn btn-primary" th:onclick="'restoreCategory(' + ${category.categoryID} + ')'">Khôi phục</button>
+                    <button type="button" class="btn btn-danger" th:onclick="'deleteCategory(' + ${category.categoryID} + ')'">Xoá</button>
                 </td>
             </tr>
         </th:block>
@@ -226,6 +222,56 @@
     function changePage(i) {
         thisPage = i;
         loadItem();
+    }
+
+    async function restoreCategory(categoryID) {
+        const apiUrl = '/admin/category/restore/' + categoryID;
+
+        const confirmed = confirm('Bạn có chắc chắn muốn khôi phục danh mục này?');
+
+        if (confirmed) {
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'GET'
+                });
+
+                if (!response.ok) {
+                    throw new Error('Đã xảy ra lỗi khi khôi phục danh mục từ API!');
+                }
+                location.reload();
+
+            } catch (error) {
+                console.error('Lỗi:', error.message);
+                alert('Đã xảy ra lỗi khi xóa danh mục từ API!');
+            }
+        } else {
+
+        }
+    }
+
+    async function deleteCategory(categoryID) {
+        const apiUrl = '/admin/category/delete/' + categoryID;
+
+        const confirmed = confirm('Bạn có chắc chắn muốn xóa vĩnh viễn danh mục này?');
+
+        if (confirmed) {
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'DELETE'
+                });
+
+                if (!response.ok) {
+                    throw new Error('Đã xảy ra lỗi khi xóa danh mục từ API!');
+                }
+                location.reload();
+
+            } catch (error) {
+                console.error('Lỗi:', error.message);
+                alert('Đã xảy ra lỗi khi xóa danh mục từ API!');
+            }
+        } else {
+
+        }
     }
 </script>
 

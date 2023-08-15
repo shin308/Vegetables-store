@@ -54,7 +54,7 @@
           <ul class="dropdown-menu">
             <li><a class="dropdown-item" th:href="@{/#productAll}">Tất cả sản phẩm</a></li>
             <th:block th:each="category:${categoryList}">
-              <li><a class="dropdown-item" th:href="@{'/' + ${category.categoryID}}">[[${category.categoryName}]]</a></li>
+              <li><a class="dropdown-item" th:href="@{'/categoryByID/' + ${category.categoryID}}">[[${category.categoryName}]]</a></li>
             </th:block>
           </ul>
         </div>
@@ -94,7 +94,7 @@
 
 <div style="padding: 2% 6%;">
   <div class="btn-group">
-    <select id ="selectDropdown" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
+    <select id ="selectDropdown" class="btn btn-light dropdown-toggle border text-start" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
       <option class="dropdown-item" value="all">Tất cả</option>
       <option class="dropdown-item" value="Đang chờ giao">Đang chờ giao</option>
       <option class="dropdown-item" value="Chờ duyệt">Chờ duyệt</option>
@@ -113,7 +113,7 @@
           <th class="col-2"><h6>Mã đơn hàng: <span th:text="${order.id}">1</span></h6></th>
           <th class="col-6"></th>
           <th class="col-1"></th>
-          <th class="col-3 text-end" style=""><button class="btn btn-danger" id="review" th:if="${order.orderStatus=='Hoàn thành'}">Đánh giá</button>
+          <th class="col-3 text-end" style=""><a th:href="'/order_user/' + ${order.id}+ '/review'"><button class="btn btn-danger" id="review" th:if="${order.orderStatus == 'Hoàn thành' && !#lists.contains(checkReview, order.id)}">Đánh giá</button></a>
             <button class="btn btn-danger" th:if="${order.orderStatus=='Đang chờ giao' or order.orderStatus=='Chờ duyệt'}" th:attr="onclick=|cancelOrder('${order.id}')|" >Hủy đơn hàng</button></th>
         </tr>
         </thead>
@@ -122,7 +122,7 @@
           <th><img th:src="@{${orderItem.product.getPhotosImagePath}}" width="50px" height="50px"></th>
           <td th:text="${orderItem.product.productName}"></td>
           <td th:text="'x ' + ${orderItem.quantity}"></td>
-          <td class="text-center" th:text="${orderItem.totalAmount} + ' đ'"></td>
+          <td class="text-center" th:text="${#numbers.formatDecimal(orderItem.totalAmount, 1 , 'POINT', 0 , 'DEFAULT')} + ' đ'"></td>
         </tr>
         </tbody>
         <tfoot>
@@ -130,7 +130,7 @@
           <td th:text="${#strings.toUpperCase(order.orderStatus)}">HOÀN THÀNH</td>
           <td></td>
           <td></td>
-          <td class="text-end">Thành tiền: <span class="text-danger" th:text="${order.totalPrice} + ' đ'">101.000</span></td>
+          <td class="text-end">Thành tiền: <span class="text-danger" th:text="${#numbers.formatDecimal(order.totalPrice, 1 , 'POINT', 0 , 'DEFAULT')} + ' đ'">101.000</span></td>
         </tr>
         </tfoot>
       </table>

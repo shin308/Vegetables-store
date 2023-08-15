@@ -39,6 +39,9 @@ public class Reviews {
     @Column(name = "star")
     private Integer star;
 
+    @Column(name="order_id")
+    private Long orderID;
+
     @ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "replyID")
     private Reviews replyID;

@@ -49,27 +49,6 @@ public class ImportBillService {
         }
     }
 
-    public String deleteImportBill(int importID) throws IOException {
-
-        ImportBill importBill = imBillRepository.findImportBillsByImportID(importID);
-
-        ImportProduct importProduct = imProductRepository.findByImportID(importID);
-
-        Product product = productRepository.findByProductID(importBill.getProduct().getProductID());
-        if(importBill != null) {
-            imBillRepository.delete(importBill);
-            imProductRepository.delete(importProduct);
-            productRepository.delete(product);
-
-        }
-        String uploadDir = "./src/main/resources/static/images/" + importBill.getProduct().getProductID();
-        File file = new File(uploadDir);
-        fileUploadUtil.deleteFile(file);
-        file.delete();
-
-        return "Xóa đơn nhập thành công";
-    }
-
     public ImportBill get(int importID) {
         ImportBill ib = imBillRepository.findImportBillsByImportID(importID);
         return ib;

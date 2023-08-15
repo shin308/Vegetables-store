@@ -176,12 +176,12 @@
             <td>[[${import.product.productName}]]</td>
             <td>[[${import.quantity}]]</td>
             <td>[[${import.expiry}]]</td>
-            <td>[[${import.importPrice}]]</td>
+            <td>[[${#numbers.formatDecimal(import.importPrice, 1 , 'POINT', 0 , 'DEFAULT')}]] ₫</td>
             <td>[[${import.unit}]]</td>
-            <td>[[${import.totalAmount}]]</td>
+            <td>[[${#numbers.formatDecimal(import.totalAmount, 1 , 'POINT', 0 , 'DEFAULT')}]] ₫</td>
             <td>
-                <button type="button" class="btn btn-primary" th:onclick="'openView(' + ${import.importProduct.importID} +')'">Xem</button>
-                <button type="button" class="btn btn-danger" th:onclick="'deleteImport(' + ${import.importProduct.importID} + ')'">Xoá</button>
+                <button type="button" class="btn btn-outline-primary" th:onclick="'openView(' + ${import.importProduct.importID} +')'"><i class="fa-solid fa-pen-to-square"></i></button>
+
             </td>
         </tr>
         </tbody>
@@ -358,12 +358,6 @@
                         <input type="number" min="0" name="quantity" id="quantity"  class="form-control" required/>
                     </div>
                 </div>
-                <div class="form-group row mb-2">
-                    <label class="col-sm-3 col-form-label font-weight-bold">Tổng tiền:</label>
-                    <div class="col-sm-9">
-                        <input type="number" min="0" name="totalAmount" id="totalAmount"  class="form-control" required/>
-                    </div>
-                </div>
                 <div class="form-group row">
                     <label class="col-sm-3 col-form-label font-weight-bold">Mô tả:</label>
                     <div class="col-sm-9">
@@ -460,6 +454,7 @@
             console.log(data)
 
             // Đổ thông tin nhà cung cấp vào form sửa
+            const config = {style : 'currency', currency: 'VND'}
             document.getElementById("nameView").textContent = data.product.productName;
             document.getElementById("productNameView").value = data.product.productName;
             document.getElementById("importDateView").value = data.importProduct.importDate;
@@ -468,9 +463,9 @@
             document.getElementById("categoryView").value = data.product.category.categoryName;
             document.getElementById("quantityView").value = data.quantity;
             document.getElementById("unitView").value = data.unit;
-            document.getElementById("importPriceView").value = data.importPrice;
-            document.getElementById("priceView").value = data.product.price;
-            document.getElementById("totalAmountView").value = data.totalAmount;
+            document.getElementById("importPriceView").value = new Intl.NumberFormat('vi-VN', config).format(data.importPrice) ;
+            document.getElementById("priceView").value = new Intl.NumberFormat('vi-VN', config).format(data.product.price) ;
+            document.getElementById("totalAmountView").value = new Intl.NumberFormat('vi-VN', config).format(data.totalAmount);
             document.getElementById("descriptionView").value = data.product.description;
             // Hiển thị form sửa
             document.getElementById("view").style.display = "flex";
@@ -486,30 +481,7 @@
     }
 
 
-    async function deleteImport(importID) {
-        const apiUrl = '/admin/import/' + importID;
 
-        const confirmed = confirm('Bạn có chắc chắn muốn xóa đơn nhập hàng này?');
-
-        if (confirmed) {
-            try {
-                const response = await fetch(apiUrl, {
-                    method: 'DELETE'
-                });
-
-                if (!response.ok) {
-                    throw new Error('Đã xảy ra lỗi khi xóa nhà cung cấp từ API!');
-                }
-                location.reload();
-
-            } catch (error) {
-                console.error('Lỗi:', error.message);
-                alert('Đã xảy ra lỗi khi xóa nhà cung cấp từ API!');
-            }
-        } else {
-
-        }
-    }
 
     document.addEventListener("DOMContentLoaded", function() {
         const supplierID = localStorage.getItem("selectedSupplierID");

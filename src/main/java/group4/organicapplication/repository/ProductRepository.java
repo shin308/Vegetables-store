@@ -12,12 +12,16 @@ import java.util.List;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Integer> {
-    @Query("SELECT p FROM Product p JOIN ImportBill ib ON p.productID = ib.product.productID JOIN ImportProduct ip ON ib.importProduct.importID = ip.importID WHERE ip.supplier.supplierID = :supplierId")
+    @Query("SELECT p FROM Product p JOIN ImportBill ib ON p.productID = ib.product.productID JOIN ImportProduct ip ON ib.importProduct.importID = ip.importID WHERE ip.supplier.supplierID = :supplierId and ib.product.deleted = false")
     List<Product> findProductsBySupplierId(int supplierId);
 
+    @Query("SELECT p FROM Product p JOIN ImportBill ib ON p.productID = ib.product.productID JOIN ImportProduct ip ON ib.importProduct.importID = ip.importID WHERE ip.supplier.supplierID = :supplierId and ib.product.deleted = true")
+    List<Product> findProductsDeleteBySupplierId(int supplierId);
+    @Query("SELECT p FROM Product p WHERE p.productName like %:searchName% and p.deleted = false ")
+    List<Product> findByProductName(String searchName);
 
-    List<Product> findByProductNameContaining(String searchName);
-
+    @Query("SELECT p FROM Product p WHERE p.productName like %:searchName% and p.deleted = true ")
+    List<Product> findByProductNameDeleted(String searchName);
     @Query("SELECT p FROM Product p WHERE p.category.categoryID = :categoryID")
     List<Product> findByCategoryId(Integer categoryID);
 
@@ -28,4 +32,8 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     @Query("SELECT p FROM Product p WHERE p.deleted = false")
     List<Product> findProduct();
+
+    @Query("SELECT p FROM Product p WHERE p.deleted = true")
+    List<Product> findProductDeleted();
+
 }

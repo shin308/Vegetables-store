@@ -3,6 +3,7 @@ package group4.organicapplication.service;
 import group4.organicapplication.exception.CategoryNotFoundException;
 import group4.organicapplication.model.Category;
 import group4.organicapplication.model.Product;
+import group4.organicapplication.model.Supplier;
 import group4.organicapplication.repository.CategoryRepository;
 import group4.organicapplication.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,7 @@ public class CategoryService {
         throw  new CategoryNotFoundException("Could not find any category with ID: " + categoryID);
     }
 
-    public void softdelete(Integer categoryID) throws CategoryNotFoundException {
+    public String softdelete(Integer categoryID){
         List<Product>products = productRepository.findByCategoryId(categoryID);
 //        productRepository.deleteAll(products);
         for (Product product : products) {
@@ -48,18 +49,20 @@ public class CategoryService {
         Category category = optionalCategory.get();
         category.setDeleted(true);
         repo.save(category);
+
+        return "Xóa Danh mục thành công!";
     }
 
-    public void delete(Integer categoryID) throws CategoryNotFoundException {
+    public String delete(Integer categoryID) {
         List<Product>products = productRepository.findByCategoryId(categoryID);
         productRepository.deleteAll(products);
 
         repo.deleteById(categoryID);
+        return "Xóa Danh mục thành công!";
     }
 
-    public void restore(Integer categoryID) throws CategoryNotFoundException {
+    public String restore(Integer categoryID){
         List<Product>products = productRepository.findByCategoryId(categoryID);
-//        productRepository.deleteAll(products);
         for (Product product : products) {
             product.setDeleted(false);
             productRepository.save(product);
@@ -69,6 +72,8 @@ public class CategoryService {
         Category category = optionalCategory.get();
         category.setDeleted(false);
         repo.save(category);
+
+        return "khôi phục Danh mục thành công!";
     }
 
     public List<Category> findCategoryByName(String searchCategory) {

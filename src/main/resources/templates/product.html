@@ -62,7 +62,7 @@
         #dropdownSupplier {
             width:60%;
         }
-        #btnAdd{
+        #btnDelete{
             width:40%;
         }
     }
@@ -149,12 +149,11 @@
             </select>
 
         </div>
-<!--        <div class="col-3 text-end" id="btnAdd">-->
-<!--            <button style="background-color: #5CB85C; color:white;vertical-align: middle;" type="button"-->
-<!--                    class="btn btn-success shadow-sm border-0"-->
-<!--                    onclick="openAddNew()">Thêm mới<i style="font-size: 23px; vertical-align: middle;"-->
-<!--                                                       class="fa-solid fa-square-plus ms-3"></i></button>-->
-<!--        </div>-->
+        <div class="col-3 text-end" id="btnDelete">
+            <a th:href="@{/admin/product/delete}" class="text-decoration-none">
+                <button type="button" class="btn btn-outline-secondary me-3">Thùng rác<i class="fa-solid fa-trash-can ms-3"></i></button>
+            </a>
+        </div>
     </div>
 
 
@@ -178,7 +177,7 @@
                 <td>[[${product.productName}]]</td>
                 <td>[[${product.unit}]]</td>
                 <td>[[${product.quantity}]]</td>
-                <td>[[${product.price}]] ₫</td>
+                <td>[[${#numbers.formatDecimal(product.price, 1 , 'POINT', 0 , 'DEFAULT')}]] ₫</td>
                 <td>
                     <a th:href="@{'/admin/productInfo/' + ${product.productID}}">
                         <button type="button" class="btn btn-outline-secondary"><i class="fa-solid fa-file-invoice"></i></button>

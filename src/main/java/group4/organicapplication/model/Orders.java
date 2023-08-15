@@ -13,7 +13,7 @@ public class Orders {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JoinColumn(name = "order_id")
+    @JoinColumn(name = "id")
     private Long id;
 
     @OneToMany(mappedBy = "order")
@@ -49,6 +49,18 @@ public class Orders {
     private String orderStatus;
     private String note;
     private String imgDelivery;
+
+    @Column(name = "isPaid", nullable = false)
+    private boolean isPaid = false;
+
+    public boolean getIsPaid() {
+        return isPaid;
+    }
+
+    public void setPaid(boolean paid) {
+        isPaid = paid;
+    }
+
     public Long getId() {
         return id;
     }

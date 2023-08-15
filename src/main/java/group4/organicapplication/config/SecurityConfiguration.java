@@ -54,6 +54,7 @@ public class SecurityConfiguration {
 				.authorizeHttpRequests((auth) -> auth
 								.requestMatchers("/register").permitAll()
 								.requestMatchers("/").permitAll()
+								.requestMatchers("/categoryByID/**").permitAll()
 								.requestMatchers("cart","/cart/**").permitAll()
 								.requestMatchers("/images/**").permitAll()
 								.requestMatchers("/productInfoUser/**").permitAll()

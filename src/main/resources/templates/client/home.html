@@ -117,7 +117,7 @@
 					<ul class="dropdown-menu">
 						<li><a class="dropdown-item" th:href="@{/#productAll}">Tất cả sản phẩm</a></li>
 						<th:block th:each="category:${categoryList}">
-							<li><a class="dropdown-item" th:href="@{'/' + ${category.categoryID}}">[[${category.categoryName}]]</a></li>
+							<li><a class="dropdown-item" th:href="@{'/categoryByID/' + ${category.categoryID}}">[[${category.categoryName}]]</a></li>
 						</th:block>
 					</ul>
 				</div>
@@ -194,7 +194,7 @@
 					</a>
 					<h6>[[${product.productName}]]</h6>
 					<div style="position: sticky; top:100%;">
-						<p><span>[[${product.price}]] ₫</span> / <span>[[${product.unit}]]</span></p>
+						<p><span>[[${#numbers.formatDecimal(product.price, 1 , 'POINT', 0 , 'DEFAULT')}]] ₫</span> / <span>[[${product.unit}]]</span></p>
 						<button class="addCart" th:attr="onclick=|addToCart('${product.productID}', '${product.productName}', 1, ${product.price},'${product.img}', ${product.quantity})|">Thêm vào giỏ</button>
 					</div>
 				</div>

@@ -45,9 +45,9 @@
     .add {
         width: 160px;
         height: 50px;
-        border: 1px solid #8FC742;
+        border: 1px solid #5CB85C;
         border-radius: 5px;
-        color: #8FC742;
+        color: #5CB85C;
         margin: 15px auto 0 500px;
         font-size: 20px;
         background-color: white;
@@ -73,7 +73,7 @@
     }
 
     .listPage .active {
-        background-color: #8FC742;
+        background-color: #5CB85C;
         color: white;
     }
     select{
@@ -97,7 +97,7 @@
     }
     .active {
         border: 0;
-        border-bottom: #8FC742 2px solid;
+        border-bottom: #5CB85C 2px solid;
     }
 </style>
 
@@ -170,27 +170,28 @@
 
     <!-- Management account -->
 <div class="container">
-    <div class="col-md-9 animated bounce">
+    <div class="row animated bounce">
         <div class="col-md-1"></div>
         <div class="col-md-10">
             <br>
             <p style="font-size: 20px">
-            <h1><strong>Thông tin tài khoản:</strong></h1>
+            <h3 style="color: #5CB85C;"><strong>Thông tin tài khoản</strong></h3>
             </p>
+            <hr>
             <br>
-            <h3 style="line-height: 2;">
+            <h5 style="line-height: 2;">
                 <span style="font-weight: bold">Họ tên: </span> <span th:text="${user.firstName}"></span>
                 <span th:text="${user.lastName}"></span>
-            </h3>
-            <h3 style="line-height: 2;">
+            </h5>
+            <h5 style="line-height: 2;">
                 <span style="font-weight: bold">Số điện thoại: </span><span th:text="${user.phone}"></span>
-            </h3>
-            <h3 style="line-height: 2;">
+            </h5>
+            <h5 style="line-height: 2;">
                 <span style="font-weight: bold">Email: </span><span th:text="${user.email}"></span>
-            </h3>
-            <h3 style="line-height: 2;">
+            </h5>
+            <h5 style="line-height: 2;">
                 <span style="font-weight: bold"> Địa chỉ: </span><span th:text="${user.address}"></span>
-            </h3>
+            </h5>
             <br> <a class="btn btn-primary" data-bs-toggle="modal"
                     data-bs-target="#modalInformation">Cập nhật thông tin cá nhân</a>
             &nbsp; &nbsp; &nbsp; <a class="btn btn-danger" data-bs-toggle="modal"

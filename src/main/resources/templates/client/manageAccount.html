@@ -106,7 +106,8 @@
                                                     alt="brand_icon" width="100px"></a>
         <form class="d-flex" id="search" role="search" th:action="@{/}" method="get">
             <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="searchProductName">
-            <button class="btn btn-outline-success" type="submit">Search</button>
+            <button style="background-color: #5CB85C; color:white;" class="btn btn-outline-success border-0"
+                    type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
         </form>
 
         <div class="collapse navbar-collapse ms-3" id="navbarTogglerDemo02">
@@ -161,7 +162,6 @@
 </nav>
 
 <br>
-<br>
 
 <div class="container">
     <div class="row">
@@ -169,22 +169,23 @@
         <div class="col-md-10">
             <br>
             <p style="font-size: 20px">
-                <h1><strong>Thông tin tài khoản:</strong></h1>
+                <h3 style="color: #5CB85C;"><strong>Thông tin tài khoản</strong></h3>
             </p>
+            <hr>
             <br>
-            <h3 style="line-height: 2;">
+            <h5 style="line-height: 2;">
                 <span style="font-weight: bold">Họ tên: </span> <span th:text="${user.firstName}"></span>
                 <span th:text="${user.lastName}"></span>
-            </h3>
-            <h3 style="line-height: 2;">
+            </h5>
+            <h5 style="line-height: 2;">
                 <span style="font-weight: bold">Số điện thoại: </span><span th:text="${user.phone}"></span>
-            </h3>
-            <h3 style="line-height: 2;">
+            </h5>
+            <h5 style="line-height: 2;">
                 <span style="font-weight: bold">Email: </span><span th:text="${user.email}"></span>
-            </h3>
-            <h3 style="line-height: 2;">
+            </h5>
+            <h5 style="line-height: 2;">
                 <span style="font-weight: bold"> Địa chỉ: </span><span th:text="${user.address}"></span>
-            </h3>
+            </h5>
             <br> <a class="btn btn-primary" data-bs-toggle="modal"
                     data-bs-target="#modalInformation">Cập nhật thông tin cá nhân</a>
             &nbsp; &nbsp; &nbsp; <a class="btn btn-danger" data-bs-toggle="modal"

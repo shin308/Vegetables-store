@@ -59,7 +59,7 @@ function changePass()
 //					window.location.reload();
 					return;
 				}else{
-					alert("Mật khẩu đã thay đổi");
+					alert("Đổi mật khẩu thành công. Bạn phải đăng nhập lại để xác nhận");
 					window.location.href = "/logout";
 				}
 				

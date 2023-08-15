@@ -67,7 +67,7 @@ public class MainController {
         return "client/home";
     }
 
-    @GetMapping("/{categoryID}")
+    @GetMapping("/categoryByID/{categoryID}")
     public  String selectProductByCategory(@PathVariable("categoryID") Integer categoryID, Model model){
         List<Category> categoryList = categoryService.listCategory();
         model.addAttribute(("categoryList"),categoryList);

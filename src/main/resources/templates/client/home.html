@@ -117,7 +117,7 @@
 					<ul class="dropdown-menu">
 						<li><a class="dropdown-item" th:href="@{/#productAll}">Tất cả sản phẩm</a></li>
 						<th:block th:each="category:${categoryList}">
-							<li><a class="dropdown-item" th:href="@{'/' + ${category.categoryID}}">[[${category.categoryName}]]</a></li>
+							<li><a class="dropdown-item" th:href="@{'/categoryByID/' + ${category.categoryID}}">[[${category.categoryName}]]</a></li>
 						</th:block>
 					</ul>
 				</div>

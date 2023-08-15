@@ -24,7 +24,7 @@ public interface ReviewRepository extends JpaRepository<Reviews, Long> {
     @Modifying
     @Transactional
     @Query(value = "insert into Reviews(productID, userID, content, postDate, replyID, star, order_id) " +
-            "values (:productID, :userID ,:content, GETDATE(), null, :star, :orderID)", nativeQuery = true)
+            "values (:productID, :userID ,:content, CURRENT_TIMESTAMP(), null, :star, :orderID)", nativeQuery = true)
     void addNewReview(@Param("productID") String productID,
                       @Param("userID") Long userID,
                       @Param("content") String content,

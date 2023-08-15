@@ -176,7 +176,7 @@
             <td class="p-2">
 
               <div class="d-flex mx-1">
-                <div class="p-0"><img style="margin: auto 0;" th:src="${product.getImg()}" width="60"
+                <div class="p-0"><img class="border" style="margin: auto 0;" th:src="@{${product.getPhotosImagePath}}" width="60"
                                       height="60"></div>
                 <div class="ms-3">
                   <p class="my-1" th:text="${product.getProductName()}"></p>

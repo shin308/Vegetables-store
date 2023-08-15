@@ -166,8 +166,7 @@
             <td th:text="${supplier.phone}"></td>
             <td th:text="${supplier.address}"></td>
             <td>
-                <button type="button" class="btn btn-primary" th:onclick="'restoreSupplier(' + ${supplier.supplierID} + ')'">Khôi phục</button>
-                <button type="button" class="btn btn-danger" th:onclick="'deleteSupplier(' + ${supplier.supplierID} + ')'">Xóa</button>
+                <button type="button" class="btn btn-primary" th:onclick="'restoreSupplier(' + ${supplier.supplierID} + ')'"><i class="fa-solid fa-arrow-rotate-left"></i></button>
             </td>
         </tr>
         </tbody>
@@ -295,31 +294,6 @@
 
                 if (!response.ok) {
                     throw new Error('Đã xảy ra lỗi khi khôi phục nhà cung cấp từ API!');
-                }
-                location.reload();
-
-            } catch (error) {
-                console.error('Lỗi:', error.message);
-                alert('Đã xảy ra lỗi khi xóa nhà cung cấp từ API!');
-            }
-        } else {
-
-        }
-    }
-
-    async function deleteSupplier(supplierID) {
-        const apiUrl = '/admin/suppliers/' + supplierID;
-
-        const confirmed = confirm('Bạn có chắc chắn muốn xóa nhà cung cấp này?');
-
-        if (confirmed) {
-            try {
-                const response = await fetch(apiUrl, {
-                    method: 'DELETE'
-                });
-
-                if (!response.ok) {
-                    throw new Error('Đã xảy ra lỗi khi xóa nhà cung cấp từ API!');
                 }
                 location.reload();
 

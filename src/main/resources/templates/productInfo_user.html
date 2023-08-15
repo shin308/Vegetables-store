@@ -210,11 +210,13 @@
             <div class="col">
               <h6 class="mb-4">Giá bán</h6>
               <h6 class="mb-4">Tình trạng</h6>
+              <h6 class="mb-4">Hạn sử dụng</h6>
               <h6 class="mb-4">Số lượng</h6>
             </div>
             <div class="col" style="text-align: right;">
               <p class="mb-4">[[*{#numbers.formatDecimal(price, 1 , 'POINT', 0 , 'DEFAULT')}]] ₫</p>
               <p class="mb-4" id="checkQuantity">Còn hàng</p>
+              <p class="mb-4">[[${importbill.expiry}]]</p>
               <div class="mb-4">
                 <div class="counter">
                   <span class="down" onClick='decreaseCount(event, this)'>-</span>

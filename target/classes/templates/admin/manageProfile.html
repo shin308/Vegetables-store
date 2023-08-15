@@ -16,6 +16,20 @@
     <link rel="stylesheet" th:href="@{/css/index.css}">
 
     <style>
+        .title-footer{
+            font-size: 18px;
+        }
+        footer{
+            font-size: 13px;
+            margin-top: 20px;
+        }
+        ul {
+            list-style: none;
+        }
+        a{
+            text-decoration: none;
+            color: #5CB85C;
+        }
         span.error{
             color: red;
             margin-left: 5px;
@@ -31,9 +45,9 @@
     .add {
         width: 160px;
         height: 50px;
-        border: 1px solid #8FC742;
+        border: 1px solid #5CB85C;
         border-radius: 5px;
-        color: #8FC742;
+        color: #5CB85C;
         margin: 15px auto 0 500px;
         font-size: 20px;
         background-color: white;
@@ -59,7 +73,7 @@
     }
 
     .listPage .active {
-        background-color: #8FC742;
+        background-color: #5CB85C;
         color: white;
     }
     select{
@@ -83,7 +97,7 @@
     }
     .active {
         border: 0;
-        border-bottom: #8FC742 2px solid;
+        border-bottom: #5CB85C 2px solid;
     }
 </style>
 
@@ -156,27 +170,28 @@
 
     <!-- Management account -->
 <div class="container">
-    <div class="col-md-9 animated bounce">
+    <div class="row animated bounce">
         <div class="col-md-1"></div>
         <div class="col-md-10">
             <br>
             <p style="font-size: 20px">
-            <h1><strong>Thông tin tài khoản:</strong></h1>
+            <h3 style="color: #5CB85C;"><strong>Thông tin tài khoản</strong></h3>
             </p>
+            <hr>
             <br>
-            <h3 style="line-height: 2;">
+            <h5 style="line-height: 2;">
                 <span style="font-weight: bold">Họ tên: </span> <span th:text="${user.firstName}"></span>
                 <span th:text="${user.lastName}"></span>
-            </h3>
-            <h3 style="line-height: 2;">
+            </h5>
+            <h5 style="line-height: 2;">
                 <span style="font-weight: bold">Số điện thoại: </span><span th:text="${user.phone}"></span>
-            </h3>
-            <h3 style="line-height: 2;">
+            </h5>
+            <h5 style="line-height: 2;">
                 <span style="font-weight: bold">Email: </span><span th:text="${user.email}"></span>
-            </h3>
-            <h3 style="line-height: 2;">
+            </h5>
+            <h5 style="line-height: 2;">
                 <span style="font-weight: bold"> Địa chỉ: </span><span th:text="${user.address}"></span>
-            </h3>
+            </h5>
             <br> <a class="btn btn-primary" data-bs-toggle="modal"
                     data-bs-target="#modalInformation">Cập nhật thông tin cá nhân</a>
             &nbsp; &nbsp; &nbsp; <a class="btn btn-danger" data-bs-toggle="modal"
@@ -371,7 +386,54 @@
     <!-- End -->
 
 </div>
+    <footer>
+        <div class="row" style="background-color: #333; color:white; padding: 15px 200px;">
+            <div class="col-6">
+                <div class="title-footer"><span>Giới thiệu</span></div>
+                <hr>
+                <p>
+                    ORGANIC - Chuyên cung cấp tất cả các mặt hàng rau củ quả sạch, không chất bảo quản, an toàn cho sức khoẻ, đáp ứng nhu cầu của tất cả khách hàng.
+                </p>
+                <p>
+                    <i class="fa fa-phone"></i> <span class="margin-left-md me-3">0935708386</span>
+                    <i class="fa fa-envelope margin-left-xl"></i> <span class="margin-left-md">vegetablestore@gmail.com
+          </span>
+                </p>
+                <ul class="list-inline d-flex">
+                    <li><a href="#">Quyền riêng tư</a></li>
+                    <li class="mx-3"><a href="#">Điều khoản</a></li>
+                    <li><a href="#">Liên hệ</a></li>
+                </ul>
 
+            </div>
+            <div class="col-3">
+                <div class="title-footer"><span>Phương thức thanh toán</span></div>
+                <hr>
+                <p>Hỗ trợ thanh toán qua VNQR-Pay, Paypal, Online Banking và các loại thẻ tín dụng</p>
+                <img class="img-responsive" src="https://misolhouse.com/themes/default/shop/assets//images/payment-methods.png" alt="Payment Methods" width="250">
+
+
+
+            </div>
+            <div class="col-3">
+                <div class="title-footer"><span>Theo dõi</span></div>
+                <hr>
+                <p>Theo dõi trực tiếp các trang của chúng tôi trên mạng xã hội</p>
+                <ul class="follow-us d-flex p-0">
+                    <li class="me-3"><a target="_blank" href="#"><i class="fa fa-facebook"></i></a></li>
+                    <li><a target="_blank" href="#"><i class="fa fa-instagram"></i></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="row bg-dark text-white" style="height: 50px; padding:15px 200px">
+            <div class="copyright line-height-lg col">
+                &copy; 2023 ORGANIC
+            </div>
+            <div class="col">Shop thực phẩm sạch số 1 Đà Nẵng - Luôn tươi ngon mỗi ngày!  </div>
+        </div>
+
+    </footer>
 <script
         src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script

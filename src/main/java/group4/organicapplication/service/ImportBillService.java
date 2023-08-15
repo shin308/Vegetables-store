@@ -53,5 +53,8 @@ public class ImportBillService {
         ImportBill ib = imBillRepository.findImportBillsByImportID(importID);
         return ib;
     }
-
+    public ImportBill getImportBillByProductId(Integer productID) {
+        ImportBill ib = imBillRepository.findByProductID(productID);
+        return ib;
+    }
 }

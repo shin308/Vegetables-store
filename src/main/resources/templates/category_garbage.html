@@ -145,7 +145,7 @@
         </div>
         <div class="col-5 text-end" id="btnGarbage">
             <a th:href="@{/admin/category}">
-                <button class="h4" style="background-color: #5CB85C; color:white;vertical-align: middle;" type="submit">Quay Lại</button>
+                <button class="btn btn-secondary border-0" style="background-color: #5CB85C;" type="submit"><i class="fa-solid fa-circle-left me-1"></i> Quay Lại</button>
             </a>
         </div>
     </div>
@@ -165,8 +165,7 @@
                 <td>[[${category.categoryID}]]</td>
                 <td>[[${category.categoryName}]]</td>
                 <td>
-                    <button type="button" class="btn btn-primary" th:onclick="'restoreCategory(' + ${category.categoryID} + ')'">Khôi phục</button>
-                    <button type="button" class="btn btn-danger" th:onclick="'deleteCategory(' + ${category.categoryID} + ')'">Xoá</button>
+                    <button type="button" class="btn btn-primary" th:onclick="'restoreCategory(' + ${category.categoryID} + ')'"><i class="fa-solid fa-arrow-rotate-left"></i></button>
                 </td>
             </tr>
         </th:block>
@@ -298,31 +297,6 @@
 
                 if (!response.ok) {
                     throw new Error('Đã xảy ra lỗi khi khôi phục danh mục từ API!');
-                }
-                location.reload();
-
-            } catch (error) {
-                console.error('Lỗi:', error.message);
-                alert('Đã xảy ra lỗi khi xóa danh mục từ API!');
-            }
-        } else {
-
-        }
-    }
-
-    async function deleteCategory(categoryID) {
-        const apiUrl = '/admin/category/delete/' + categoryID;
-
-        const confirmed = confirm('Bạn có chắc chắn muốn xóa vĩnh viễn danh mục này?');
-
-        if (confirmed) {
-            try {
-                const response = await fetch(apiUrl, {
-                    method: 'DELETE'
-                });
-
-                if (!response.ok) {
-                    throw new Error('Đã xảy ra lỗi khi xóa danh mục từ API!');
                 }
                 location.reload();
 

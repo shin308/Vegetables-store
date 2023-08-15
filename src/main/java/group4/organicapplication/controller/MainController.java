@@ -38,6 +38,8 @@ public class MainController {
     @Autowired private ReviewService reviewService;
 
     @Autowired private OrderDetailService orderDetailService;
+
+    @Autowired private ImportBillService importBillService;
     @ModelAttribute("loggedInUser")
     public User loggedInUser(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -110,11 +112,13 @@ public class MainController {
         model.addAttribute("productInfo",productInfo);
         List<Category> categoryList = categoryService.listCategory();
         model.addAttribute(("categoryList"),categoryList);
+        ImportBill importBills = importBillService.getImportBillByProductId(productID);
 
         List<CartItem> cartItems = cartService.getCartItems();
         model.addAttribute("cartItems", cartItems);
         model.addAttribute("totalQuantity", cartService.sumQuantity(cartItems));
         model.addAttribute("totalPrice", cartService.sumTotalPrice(cartItems));
+        model.addAttribute("importbill", importBills);
 
         int quantityInCart = 0;
         String productIDStr = String.valueOf(productID);

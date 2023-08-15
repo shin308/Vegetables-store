@@ -169,9 +169,8 @@
           <a class="h4" th:href="@{'/admin/category/edit/' + ${category.categoryID}}">
             <button type="button" class="btn btn-outline-primary"><i class="fa-solid fa-pen-to-square"></i></button>
           </a>
-          <a class="h4" th:href="@{'/admin/category/softdelete/' + ${category.categoryID}}">
-            <button type="button" class="btn btn-outline-danger"><i class="fa-solid fa-trash-can"></i></button>
-          </a>
+          <button type="button" class="btn btn-outline-danger"
+                  th:onclick="'deleteCategory(' + ${category.categoryID} + ')'"><i class="fa-solid fa-trash-can"></i></button>
         </td>
       </tr>
     </th:block>
@@ -187,25 +186,6 @@
   </ul>
 </div>
 
-<div id="edit">
-  <div style="background-color: white; border-radius:10px;" class="shadow-lg w-50">
-    <h6 style="background-color:black; color:white; padding:15px; border-radius:10px 10px 0 0;">
-      Cập nhật thông tin danh mục ID: <span>1</span>
-    </h6>
-    <form th:action="@{/admin/category/save}" method="post" th:object="${category}"
-          style="padding: 20px;">
-      <div class="form-floating mb-3">
-        <input type="text" class="form-control" id="floatingInput">
-        <label for="floatingInput">Tên Danh Mục</label>
-      </div>
-      <div style="float: right; margin-bottom:20px;">
-        <button type="submit" class="btn btn-primary">Lưu</button>
-        <button type="submit" class="btn btn-secondary" onclick="closeEdit()">Huỷ</button>
-      </div>
-    </form>
-  </div>
-</div>
-
 <div id="addNew">
   <div style="background-color: white; border-radius:10px;" class="shadow-lg w-50">
     <h6 style="background-color:black; color:white; padding:15px; border-radius:10px 10px 0 0;">
@@ -214,7 +194,7 @@
     <form th:action="@{/admin/category/save}" method="post" th:object="${category}"
           style="padding:20px;">
       <div class="form-floating mb-3">
-        <input type="text" th:field="*{categoryName}" class="form-control" required minlength="2" maxlength="50"
+        <input type="text" class="form-control" required minlength="2" maxlength="50"
                id="floatingInput1"/>
         <label for="floatingInput1">Tên Danh Mục</label>
       </div>
@@ -295,14 +275,29 @@
     x.style.display = "none";
   }
 
-  function openEdit() {
-    let x = document.getElementById("edit");
-    x.style.display = "flex";
-  }
+  async function deleteCategory(categoryID) {
+    const apiUrl = '/admin/category/softdelete/' + categoryID;
 
-  function closeEdit() {
-    let x = document.getElementById("edit");
-    x.style.display = "none";
+    const confirmed = confirm('Bạn có chắc chắn muốn xóa danh mục này?');
+
+    if (confirmed) {
+      try {
+        const response = await fetch(apiUrl, {
+          method: 'DELETE'
+        });
+
+        if (!response.ok) {
+          throw new Error('Đã xảy ra lỗi khi xóa danh mục từ API!');
+        }
+        location.reload();
+
+      } catch (error) {
+        console.error('Lỗi:', error.message);
+        alert('Đã xảy ra lỗi khi xóa danh mục từ API!');
+      }
+    } else {
+
+    }
   }
 </script>
 

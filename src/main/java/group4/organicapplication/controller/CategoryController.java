@@ -7,6 +7,8 @@ import group4.organicapplication.service.CategoryService;
 import group4.organicapplication.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -34,7 +36,6 @@ public class CategoryController {
             // Nếu không có tên để tìm kiếm, hiển thị tất cả Danh Mục
             categoryList = service.listCategory();
         }
-
 //        model.addAttribute("category", categoryList);
         model.addAttribute("category",new Category());
         model.addAttribute("categoryList", categoryList);
@@ -44,7 +45,7 @@ public class CategoryController {
     @GetMapping("/category/garbage")
     public String showGarbageCategoryList(Model model){
         List<Category> categoryList;
-            categoryList = service.listCategoryGarbage();
+        categoryList = service.listCategoryGarbage();
 
         model.addAttribute("categoryList", categoryList);
         return "category_garbage";
@@ -75,34 +76,23 @@ public class CategoryController {
         }
     }
 
-    @GetMapping("/category/softdelete/{categoryID}")
-    public String SoftDeleteCategory(@PathVariable("categoryID") Integer categoryID){
-        try {
-            service.softdelete(categoryID);
-        } catch (CategoryNotFoundException e) {
-            return "redirect:/admin/category";
-        }
-        return "redirect:/admin/category";
+    @DeleteMapping("/category/softdelete/{categoryID}")
+    public ResponseEntity<String> SoftDeleteCategory(@PathVariable("categoryID") Integer categoryID){
+        String message = service.softdelete(categoryID);
+        return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    @GetMapping("/category/delete/{categoryID}")
-    public String DeleteCategory(@PathVariable("categoryID") Integer categoryID){
-        try {
-            service.delete(categoryID);
-        } catch (CategoryNotFoundException e) {
-            return "redirect:/admin/category";
-        }
-        return "redirect:/admin/category";
+    @DeleteMapping("/category/delete/{categoryID}")
+    public ResponseEntity<String> DeleteCategory(@PathVariable("categoryID") Integer categoryID){
+
+        String message = service.delete(categoryID);
+        return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
     @GetMapping("/category/restore/{categoryID}")
-    public String RestoreCategory(@PathVariable("categoryID") Integer categoryID){
-        try {
-            service.restore(categoryID);
-        } catch (CategoryNotFoundException e) {
-            return "redirect:/admin/category";
-        }
-        return "redirect:/admin/category";
+    public ResponseEntity<String> RestoreCategory(@PathVariable("categoryID") Integer categoryID){
+        String message = service.restore(categoryID);
+        return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
 

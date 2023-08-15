@@ -92,58 +92,58 @@
                 aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-            <a class="navbar-brand" th:href="@{/admin}"><img
-                    src="https://img.freepik.com/premium-vector/organic-icon-100-percent-organic-product-label_349999-1003.jpg?w=2000"
-                    alt="brand_icon" width="100"></a>
-            <div class="collapse navbar-collapse ms-3" id="navbarTogglerDemo02">
-                <ul class="navbar-nav me-auto">
+        <a class="navbar-brand" th:href="@{/admin}"><img
+                src="https://img.freepik.com/premium-vector/organic-icon-100-percent-organic-product-label_349999-1003.jpg?w=2000"
+                alt="brand_icon" width="100"></a>
+        <div class="collapse navbar-collapse ms-3" id="navbarTogglerDemo02">
+            <ul class="navbar-nav me-auto">
 
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/admin/product}">SẢN PHẨM</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/admin/sale}">BÁN HÀNG</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/admin/orders}">ĐƠN HÀNG</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/admin/category}">DANH MỤC</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" th:href="@{/admin/suppliers}">NHÀ CUNG CẤP</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/admin/import}">NHẬP HÀNG</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/admin/list-account}">QUẢN LÝ TÀI KHOẢN</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/admin/statistic}">THỐNG KÊ</a>
-                    </li>
-                </ul>
-            </div>
-            <div class="dropdown me-4">
-                <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Hi, <span th:text="${loggedInUser.lastName}"></span>
-                    <span th:text="${loggedInUser.firstName}"></span>
-                </button>
-                <ul class="dropdown-menu dropdown-menu-end">
-                    <li><a class="dropdown-item" th:href="@{/admin/profile}">Thông tin cá nhân</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a></li>
-                </ul>
-            </div>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/product}">SẢN PHẨM</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/sale}">BÁN HÀNG</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/orders}">ĐƠN HÀNG</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/category}">DANH MỤC</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" th:href="@{/admin/suppliers}">NHÀ CUNG CẤP</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/import}">NHẬP HÀNG</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/list-account}">QUẢN LÝ TÀI KHOẢN</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/statistic}">THỐNG KÊ</a>
+                </li>
+            </ul>
         </div>
-    </nav>
+        <div class="dropdown me-4">
+            <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Hi, <span th:text="${loggedInUser.lastName}"></span>
+                <span th:text="${loggedInUser.firstName}"></span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end">
+                <li><a class="dropdown-item" th:href="@{/admin/profile}">Thông tin cá nhân</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
 
-    <div class="px-5">
-        <div class="row align-middle mt-4 mb-4">
-            <div class="col-3" id="manage">
-                <h4 style="color: #5CB85C;">Quản lý nhà cung cấp</h4>
-            </div>
-            <div class="col-5" id="search">
+<div class="px-5">
+    <div class="row align-middle mt-4 mb-4">
+        <div class="col-3" id="manage">
+            <h4 style="color: #5CB85C;">Quản lý nhà cung cấp</h4>
+        </div>
+        <div class="col-5" id="search">
             <form class="d-flex" role="search" th:action="@{/admin/suppliers}" method="get">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
                        name="searchName">
@@ -151,15 +151,15 @@
                         type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
             </form>
         </div>
-            <div class="col text-end" id="btnAdd">
-                <a th:href="@{/admin/suppliers/garbage}">
-                    <button type="button" class="btn btn-outline-secondary me-3">Thùng rác<i class="fa-solid fa-trash-can ms-3"></i></button>
-                </a>
-                <button style="background-color: #5CB85C; color:white;vertical-align: middle;" type="button"
-                        class="btn btn-success shadow-sm border-0"
-                        onclick="openAddNew()">Thêm mới<i style="font-size: 23px; vertical-align: middle;"
-                                                           class="fa-solid fa-square-plus ms-3"></i></button>
-            </div>
+        <div class="col text-end" id="btnAdd">
+            <a th:href="@{/admin/suppliers/garbage}">
+                <button type="button" class="btn btn-outline-secondary me-3">Thùng rác<i class="fa-solid fa-trash-can ms-3"></i></button>
+            </a>
+            <button style="background-color: #5CB85C; color:white;vertical-align: middle;" type="button"
+                    class="btn btn-success shadow-sm border-0"
+                    onclick="openAddNew()">Thêm mới<i style="font-size: 23px; vertical-align: middle;"
+                                                       class="fa-solid fa-square-plus ms-3"></i></button>
+        </div>
     </div>
 
 
@@ -195,61 +195,65 @@
     </div>
 </div>
 
-    <div id="edit">
-        <div style="background-color: white; border-radius:10px;" class="shadow-lg w-50">
-            <h6 style="background-color:black; color:white; padding:15px; border-radius:10px 10px 0 0;">
-                Cập nhật thông tin nhà cung cấp ID: <span id="supplierIDSpan">1</span>
-            </h6>
-            <form action="/suppliers" method="put" style="padding: 20px">
-                <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="supplierNameEdit" name="supplierNameEdit">
-                    <label for="supplierNameEdit">Tên nhà cung cấp</label>
-                </div>
-                <div class="form-floating mb-3">
-                    <input type="tel" class="form-control" id="supplierPhoneEdit" name="supplierPhoneEdit">
-                    <label for="supplierPhoneEdit">Số điện thoại</label>
-                </div>
-                <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="supplierAddressEdit" name="supplierAddressEdit">
-                    <label for="supplierAddressEdit">Địa chỉ</label>
-                </div>
-                <div style="float: right; margin-bottom:20px;">
-                    <button type="button" class="btn btn-primary" onclick="submitEditForm()">Lưu</button>
-                    <button type="button" class="btn btn-secondary" onclick="closeEdit()">Huỷ</button>
-                </div>
+<div id="edit">
+    <div style="background-color: white; border-radius:10px;" class="shadow-lg w-50">
+        <h6 style="background-color:black; color:white; padding:15px; border-radius:10px 10px 0 0;">
+            Cập nhật thông tin nhà cung cấp ID: <span id="supplierIDSpan">1</span>
+        </h6>
+        <form action="/suppliers" method="put" style="padding: 20px">
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="supplierNameEdit" name="supplierNameEdit" required >
+                <label for="supplierNameEdit">Tên nhà cung cấp<span style="color:red">*</span></label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="tel" class="form-control" id="supplierPhoneEdit" name="supplierPhoneEdit" required pattern="[0-9]{10}" title="Vui lòng nhập số gồm 10 chữ số và không chứa chữ cái!">
+                <label for="supplierPhoneEdit">Số điện thoại<span style="color:red">*</span></label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="supplierAddressEdit" name="supplierAddressEdit" required>
+                <label for="supplierAddressEdit">Địa chỉ<span style="color:red">*</span></label>
+            </div>
+            <div style="float: right; margin-bottom:20px;">
+                <button type="button" class="btn btn-primary" onclick="submitEditForm()">Lưu</button>
+                <button type="button" class="btn btn-secondary" onclick="closeEdit()">Huỷ</button>
+            </div>
 
-            </form>
-        </div>
+        </form>
+    </div>
+</div>
+
+
+<div id="addNew">
+    <div style="background-color: white; border-radius:10px;" class="shadow-lg w-50">
+        <h6 style="background-color:black; color:white; padding:15px; border-radius:10px 10px 0 0;">
+            Thêm nhà cung cấp mới
+        </h6>
+        <form th:action="@{/admin/suppliers}" method="post" onsubmit="return validateForm()" style="padding:20px">
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="supplierName" name="supplierName">
+                <label for="supplierName">Tên nhà cung cấp <span style="color: red">*</span></label>
+                <div class="invalid-feedback">Tên nhà cung cấp không hợp lệ.</div>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="tel" class="form-control" id="phone" name="phone">
+                <label for="phone">Số điện thoại<span style="color: red">*</span></label>
+                <div class="invalid-feedback">Số điện thoại không hợp lệ.</div>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="address" name="address">
+                <label for="address">Địa chỉ<span style="color: red">*</span></label>
+                <div class="invalid-feedback">Địa chỉ không hợp lệ.</div>
+            </div>
+            <div style="float: right; margin-bottom:20px;">
+                <button type="submit" class="btn btn-primary">Lưu</button>
+                <button type="button" class="btn btn-secondary" onclick="closeAddNew()">Hủy</button>
+            </div>
+            <div class="invalid-feedback" id="formErrorMessage" style="color: red;"></div>
+        </form>
+
     </div>
 
-
-    <div id="addNew">
-        <div style="background-color: white; border-radius:10px;" class="shadow-lg w-50">
-            <h6 style="background-color:black; color:white; padding:15px; border-radius:10px 10px 0 0;">
-                Thêm nhà cung cấp mới
-            </h6>
-            <form th:action="@{/admin/suppliers}" method="post" style="padding: 20px;">
-                <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="supplierName" name="supplierName" required >
-                    <label for="supplierName">Tên nhà cung cấp</label>
-                </div>
-                <div class="form-floating mb-3">
-                    <input type="tel" class="form-control" id="phone" name="phone" required pattern="[0-9]{10}" title="Vui lòng nhập số gồm 10 chữ số và không chứa chữ cái!">
-                    <label for="phone">Số điện thoại</label>
-                </div>
-                <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="address" name="address">
-                    <label for="address">Địa chỉ</label>
-                </div>
-                <div style="float: right; margin-bottom:20px;">
-                    <button type="submit" class="btn btn-primary">Lưu</button>
-                    <button type="button" class="btn btn-secondary" onclick="closeAddNew()">Hủy</button>
-                </div>
-            </form>
-
-        </div>
-
-    </div>
+</div>
 <footer>
     <div class="row" style="background-color: #333; color:white; padding: 15px 200px;">
         <div class="col-6">
@@ -363,60 +367,109 @@
         x.style.display = "none";
     }
 
-  async function openEdit(supplierID) {
-
-    try {
-
-        const response = await fetch(`/admin/suppliers/${supplierID}`, {
-            method: "GET"
-        });
-
-
-        const data = await response.json();
-        console.log(data)
-
-        // Đổ thông tin nhà cung cấp vào form sửa
-      document.getElementById("supplierIDSpan").textContent = data.supplierID;
-      document.getElementById("supplierNameEdit").value = data.supplierName;
-      document.getElementById("supplierPhoneEdit").value = data.phone;
-      document.getElementById("supplierAddressEdit").value = data.address;
-
-        // Hiển thị form sửa
-        document.getElementById("edit").style.display = "flex";
-    } catch (error) {
-        console.error('Lỗi:', error.message);
+    function isValidPhoneNumber(phoneNumber) {
+        var phonePattern = /^\d{10}$/;
+        return phonePattern.test(phoneNumber);
     }
-}
 
-async function submitEditForm() {
-    // Lấy thông tin từ form sửa
-    const supplierID =  document.getElementById("supplierIDSpan").textContent;
-    const supplierName = document.getElementById("supplierNameEdit").value;
-    const phone = document.getElementById("supplierPhoneEdit").value;
-    const address = document.getElementById("supplierAddressEdit").value;
-
-
-    try {
-        const response = await fetch(`/admin/suppliers/${supplierID}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                supplierName: supplierName,
-                phone: phone,
-                address: address
-            })
-        });
-
-        // Tắt form sửa
-        document.getElementById("edit").style.display = "none";
-
-    } catch (error) {
-        console.error('Lỗi:', error.message);
+    function isValidName(name) {
+        var namePattern = /^[\p{L}]+(?: [\p{L}]+)*$/u;
+        return namePattern.test(name);
     }
-     location.reload();
-}
+    function isValidAddress(address) {
+        var addressPattern = /^[a-zA-Z0-9\s,-àáâãèéêìíòóôõùúưứừửứựÁÀÂÃÈÉÊÌÍÒÓÔÕÙÚƯỨỪỬỰỦÝỲỴỶỸđĐạẠảẢắẮằẰẳẲặẶẵẴếẾềỀệỆểỂịỊọỌốỐồỒổỔộỘớỚờỜợỢụỤủỦứỨừỪựỰửỬựỶỴỹỸ\s]+$/;
+        return addressPattern.test(address);
+    }
+
+    function validateForm() {
+        var valid = true;
+        var formErrorMessage = document.getElementById("formErrorMessage");
+        formErrorMessage.innerHTML = ""; // Xóa thông báo lỗi trước mỗi lần kiểm tra mới
+
+        var supplierName = document.getElementById("supplierName");
+        if (!isValidName(supplierName.value)) {
+            supplierName.classList.add("is-invalid");
+            valid = false;
+            formErrorMessage.innerHTML += "Tên nhà cung cấp không hợp lệ.<br>";
+        } else {
+            supplierName.classList.remove("is-invalid");
+        }
+
+        var phone = document.getElementById("phone");
+        if (!isValidPhoneNumber(phone.value)) {
+            phone.classList.add("is-invalid");
+            valid = false;
+            formErrorMessage.innerHTML += "Số điện thoại không hợp lệ.<br>";
+        } else {
+            phone.classList.remove("is-invalid");
+        }
+
+        var address = document.getElementById("address");
+        if (!isValidAddress(address.value)) {
+            address.classList.add("is-invalid");
+            valid = false;
+            formErrorMessage.innerHTML += "Địa chỉ không hợp lệ.<br>";
+        } else {
+            address.classList.remove("is-invalid");
+        }
+
+        return valid;
+    }
+
+    async function openEdit(supplierID) {
+
+        try {
+
+            const response = await fetch(`/admin/suppliers/${supplierID}`, {
+                method: "GET"
+            });
+
+
+            const data = await response.json();
+            console.log(data)
+
+            // Đổ thông tin nhà cung cấp vào form sửa
+            document.getElementById("supplierIDSpan").textContent = data.supplierID;
+            document.getElementById("supplierNameEdit").value = data.supplierName;
+            document.getElementById("supplierPhoneEdit").value = data.phone;
+            document.getElementById("supplierAddressEdit").value = data.address;
+
+            // Hiển thị form sửa
+            document.getElementById("edit").style.display = "flex";
+        } catch (error) {
+            console.error('Lỗi:', error.message);
+        }
+    }
+
+    async function submitEditForm() {
+        // Lấy thông tin từ form sửa
+        const supplierID =  document.getElementById("supplierIDSpan").textContent;
+        const supplierName = document.getElementById("supplierNameEdit").value;
+        const phone = document.getElementById("supplierPhoneEdit").value;
+        const address = document.getElementById("supplierAddressEdit").value;
+
+
+        try {
+            const response = await fetch(`/admin/suppliers/${supplierID}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    supplierName: supplierName,
+                    phone: phone,
+                    address: address
+                })
+            });
+
+            // Tắt form sửa
+            document.getElementById("edit").style.display = "none";
+
+        } catch (error) {
+            console.error('Lỗi:', error.message);
+        }
+        location.reload();
+    }
 
 
     function closeEdit() {
@@ -426,30 +479,30 @@ async function submitEditForm() {
     }
 
 
-  async function deleteSupplier(supplierID) {
-      const apiUrl = '/admin/suppliers/softdelete/' + supplierID;
+    async function deleteSupplier(supplierID) {
+        const apiUrl = '/admin/suppliers/softdelete/' + supplierID;
 
-      const confirmed = confirm('Bạn có chắc chắn muốn xóa nhà cung cấp này?');
+        const confirmed = confirm('Bạn có chắc chắn muốn xóa nhà cung cấp này?');
 
-      if (confirmed) {
-        try {
-          const response = await fetch(apiUrl, {
-            method: 'DELETE'
-          });
+        if (confirmed) {
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'DELETE'
+                });
 
-          if (!response.ok) {
-            throw new Error('Đã xảy ra lỗi khi xóa nhà cung cấp từ API!');
-          }
-          location.reload();
+                if (!response.ok) {
+                    throw new Error('Đã xảy ra lỗi khi xóa nhà cung cấp từ API!');
+                }
+                location.reload();
 
-        } catch (error) {
-          console.error('Lỗi:', error.message);
-          alert('Đã xảy ra lỗi khi xóa nhà cung cấp từ API!');
+            } catch (error) {
+                console.error('Lỗi:', error.message);
+                alert('Đã xảy ra lỗi khi xóa nhà cung cấp từ API!');
+            }
+        } else {
+
         }
-      } else {
-
-      }
-}
+    }
 </script>
 
 </html>

@@ -1,5 +1,8 @@
 package group4.organicapplication.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import group4.organicapplication.exception.CategoryNotFoundException;
 import group4.organicapplication.model.*;
 import group4.organicapplication.service.*;
@@ -8,15 +11,18 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @SessionAttributes({"loggedInUser","cartItems"})
@@ -205,9 +211,19 @@ public class MainController {
     }
 
     @GetMapping("/purchase")
-    public String purchase(@ModelAttribute("cartItems") List<CartItem> cartItems,HttpServletRequest re, Model model) {
+    public String purchase(@ModelAttribute("cartItems") List<CartItem> cartItems,HttpServletRequest re, Model model) throws JsonProcessingException {
         User currentUser = getSessionUser(re);
         model.addAttribute("user", currentUser);
+
+        RestTemplate restTemplate = new RestTemplate();
+        String apiUrl = "https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json";
+        ResponseEntity<String> response = restTemplate.getForEntity(apiUrl, String.class);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<Map<String, Object>> mapData = objectMapper.readValue(response.getBody(), new TypeReference<List<Map<String, Object>>>(){});
+
+
+        model.addAttribute("mapData", mapData);
 
         List<Category> categoryList = categoryService.listCategory();
         model.addAttribute(("categoryList"),categoryList);

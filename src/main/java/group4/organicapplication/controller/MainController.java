@@ -239,9 +239,15 @@ public class MainController {
         model.addAttribute("productIdList", productIdList);
         List<Category> categoryList = categoryService.listCategory();
         model.addAttribute(("categoryList"),categoryList);
-
-
         return "reviewOrder";
+    }
+
+    @GetMapping("/order_user/{orderID}/reviewInfo")
+    public String showReviewInfo(@PathVariable("orderID")Long orderID, Model model){
+        showReviewOrder(orderID,model);
+        List<Reviews> reviewsInfo = reviewService.getReviewInfo(orderID);
+        model.addAttribute("reviewInfo", reviewsInfo);
+        return "reviewInfo";
     }
 
 

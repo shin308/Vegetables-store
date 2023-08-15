@@ -146,7 +146,9 @@
           <th class="col-2"><h6>Mã đơn hàng: <span th:text="${order.id}">1</span></h6></th>
           <th class="col-6"></th>
           <th class="col-1"></th>
-          <th class="col-3 text-end" style=""><a th:href="'/order_user/' + ${order.id}+ '/review'"><button class="btn btn-danger" id="review" th:if="${order.orderStatus == 'Hoàn thành' && !#lists.contains(checkReview, order.id)}">Đánh giá</button></a>
+          <th class="col-3 text-end" style="">
+            <a th:href="'/order_user/' + ${order.id}+ '/reviewInfo'"><button class="btn btn-outline-secondary" th:if="${order.orderStatus == 'Hoàn thành' && #lists.contains(checkReview, order.id)}">Xem đánh giá</button></a>
+            <a th:href="'/order_user/' + ${order.id}+ '/review'"><button class="btn btn-danger" id="review" th:if="${order.orderStatus == 'Hoàn thành' && !#lists.contains(checkReview, order.id)}">Đánh giá</button></a>
             <button class="btn btn-danger" th:if="${order.orderStatus=='Đang chờ giao' or order.orderStatus=='Chờ duyệt'}" th:attr="onclick=|cancelOrder('${order.id}')|" >Hủy đơn hàng</button></th>
         </tr>
         </thead>
@@ -328,6 +330,8 @@
     }
   }
 
+</script>
+<script>
   let thisPage = 1;
   let limit = 5;
   let list = document.querySelectorAll('.list .item');
@@ -379,6 +383,5 @@
     thisPage = i;
     loadItem();
   }
-
 </script>
 </html>

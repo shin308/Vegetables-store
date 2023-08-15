@@ -48,4 +48,6 @@ public class ReviewService {
     public String getQuantityReview(int productID){
         return reviewRepository.countReviewProduct(productID);
     }
+
+    public List<Reviews> getReviewInfo(long orderID){return reviewRepository.getInfoReview(orderID);}
 }

@@ -19,21 +19,19 @@ public interface OrderRepository extends JpaRepository<Orders, Long>, QuerydslPr
     List<Orders> findByUserId(Long userId);
 
     @Query(value = "SELECT DATE_FORMAT(order.receiveDay, '%d') as day, "
-            + " DATE_FORMAT(order.receiveDay, '%U') as week, SUM(purOrder.totalAmount) as total "
+            + " DATE_FORMAT(order.receiveDay, '%m') as week, SUM(purOrder.totalAmount) as total "
             + " FROM Orders order, PurchaseOrder as purOrder"
             + " WHERE order.id = purOrder.order.id and order.orderStatus = 'Hoàn thành'"
-            + " GROUP BY DATE_FORMAT(order.receiveDay, '%d%U')"
-            + " ORDER BY day asc"
-
-    )
+            + " GROUP BY DATE_FORMAT(order.receiveDay, '%d'), DATE_FORMAT(order.receiveDay, '%m')"
+            + " ORDER BY DATE_FORMAT(order.receiveDay, '%m') asc")
     public List<Object> getOrderByDayAndWeek();
 
     @Query(value = "SELECT DATE_FORMAT(order.receiveDay, '%U') as week, "
-            + " DATE_FORMAT(order.receiveDay, '%M') as month, SUM(purOrder.totalAmount) as total "
+            + " DATE_FORMAT(order.receiveDay, '%Y') as month, SUM(purOrder.totalAmount) as total "
             + " FROM Orders order, PurchaseOrder as purOrder"
             + " WHERE order.id = purOrder.order.id and order.orderStatus = 'Hoàn thành'"
-            + " GROUP BY DATE_FORMAT(order.receiveDay, '%U%M')"
-            + " ORDER BY month asc"
+            + " GROUP BY DATE_FORMAT(order.receiveDay, '%U'),DATE_FORMAT(order.receiveDay, '%Y')"
+            + " ORDER BY DATE_FORMAT(order.receiveDay, '%U') asc"
 
     )
     public List<Object> getOrderByWeekAndMonth();
@@ -42,8 +40,8 @@ public interface OrderRepository extends JpaRepository<Orders, Long>, QuerydslPr
             + " DATE_FORMAT(order.receiveDay, '%Y') as year, SUM(purOrder.totalAmount) as total "
             + " FROM Orders order, PurchaseOrder as purOrder"
             + " WHERE order.id = purOrder.order.id and order.orderStatus = 'Hoàn thành'"
-            + " GROUP BY DATE_FORMAT(order.receiveDay, '%m%Y')"
-            + " ORDER BY year asc"
+            + " GROUP BY DATE_FORMAT(order.receiveDay, '%m'),DATE_FORMAT(order.receiveDay, '%Y')"
+            + " ORDER BY DATE_FORMAT(order.receiveDay, '%m') asc"
 
     )
     public List<Object> getOrderByMonthAndYear();

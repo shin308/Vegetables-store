@@ -48,7 +48,25 @@
         background-color: #5CB85C;
         color: white;
     }
+    .listPage2 {
+        padding: 10px;
+        text-align: center;
+        list-style: none;
+        margin: 0 auto;
+    }
 
+    .listPage2 li {
+        background-color: white;
+        padding: 10px 20px;
+        display: inline-block;
+        margin: 0 10px;
+        cursor: pointer;
+    }
+
+    .listPage2 .active {
+        background-color: #5CB85C;
+        color: white;
+    }
     div.description {
         padding: 20px 30px;
         height: 250px;
@@ -306,15 +324,21 @@
 
                         </div>
 
-
+                    </div>
+                    <div style="position: sticky; top:100%; margin:0 auto;">
+                        <ul class="listPage">
+                            <li class="active">1</li>
+                            <li>2</li>
+                            <li>3</li>
+                        </ul>
 
                     </div>
                 </div>
                   <!--Thắc mắc về sản phẩm-->
                 <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" tabindex="0">
-                    <div class="list border p-2 pb-0">
+                    <div class="list2 border p-2 pb-0">
 
-                        <div class="item border mb-2 p-3" th:each="review : ${reviewAll}"
+                        <div class="item2 border mb-2 p-3" th:each="review : ${reviewAll}"
                              th:if="${review.replyID == null} and ${review.star == null}">
                             <div class="row">
                                 <div class="col-1">
@@ -411,6 +435,13 @@
                     </div>
                 </div>
 
+            </div>
+            <div style="position: sticky; top:100%; margin:0 auto;">
+                <ul class="listPage2">
+                    <li class="active">1</li>
+                    <li>2</li>
+                    <li>3</li>
+                </ul>
             </div>
 
             <div style="position: sticky; top:100%; margin:0 auto;">
@@ -583,5 +614,59 @@
         }
     });
 </script>
+<script>
+    let thisPage2 = 1;
+    let limit2 = 5;
+    let list2 = document.querySelectorAll('.list2 .item2');
 
+    function loadItem2() {
+        let beginGet = limit2 * (thisPage2 - 1);
+        let endGet = limit2 * thisPage2 - 1;
+        list2.forEach((item, key) => {
+            if (key >= beginGet && key <= endGet) {
+                item.style.display = 'block';
+
+            } else {
+                item.style.display = 'none';
+            }
+        })
+        listPage2();
+
+    }
+
+    loadItem2();
+
+    function listPage2() {
+        let count = Math.ceil(list2.length / limit2);
+        document.querySelector('.listPage2').innerHTML = '';
+
+        if (thisPage2 != 1) {
+            let prev = document.createElement('li');
+            prev.innerHTML = '<i class="fa-solid fa-angles-left"></i>';
+            prev.setAttribute('onclick', "changePage2(" + (thisPage2 - 1) + ")");
+            document.querySelector('.listPage2').appendChild(prev);
+        }
+
+        for (let i = 1; i <= count; i++) {
+            let newPage = document.createElement('li');
+            newPage.innerText = i;
+            if (i == thisPage2) {
+                newPage.classList.add('active');
+            }
+            newPage.setAttribute('onclick', "changePage2(" + i + ")");
+            document.querySelector('.listPage2').appendChild(newPage);
+        }
+        if (thisPage2 != count) {
+            let next = document.createElement('li');
+            next.innerHTML = '<i class="fa-solid fa-angles-right"></i>';
+            next.setAttribute('onclick', "changePage2(" + (thisPage2 + 1) + ")");
+            document.querySelector('.listPage2').appendChild(next);
+        }
+    }
+
+    function changePage2(i) {
+        thisPage2 = i;
+        loadItem2();
+    }
+</script>
 </html>

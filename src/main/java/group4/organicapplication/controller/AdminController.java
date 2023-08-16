@@ -46,7 +46,7 @@ public class AdminController {
 
     @GetMapping
     public String adminPage(Model model){
-        return "admin/index";
+        return "redirect:admin/statistic";
     }
 
     @GetMapping("/list-account")

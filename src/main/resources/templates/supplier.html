@@ -200,18 +200,21 @@
         <h6 style="background-color:black; color:white; padding:15px; border-radius:10px 10px 0 0;">
             Cập nhật thông tin nhà cung cấp ID: <span id="supplierIDSpan">1</span>
         </h6>
-        <form action="/suppliers" method="put" style="padding: 20px">
+        <form name="form" action="/suppliers" method="put" style="padding: 20px" >
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="supplierNameEdit" name="supplierNameEdit" required >
-                <label for="supplierNameEdit">Tên nhà cung cấp<span style="color:red">*</span></label>
+                <input type="text" class="form-control" id="supplierNameEdit" name="supplierNameEdit">
+                <label for="supplierNameEdit">Tên nhà cung cấp<span style="color: red">*</span></label>
+                <div class="invalid-feedback">Tên nhà cung cấp không hợp lệ.</div>
             </div>
             <div class="form-floating mb-3">
-                <input type="tel" class="form-control" id="supplierPhoneEdit" name="supplierPhoneEdit" required pattern="[0-9]{10}" title="Vui lòng nhập số gồm 10 chữ số và không chứa chữ cái!">
-                <label for="supplierPhoneEdit">Số điện thoại<span style="color:red">*</span></label>
+                <input type="tel" class="form-control" id="supplierPhoneEdit" name="supplierPhoneEdit">
+                <label for="supplierPhoneEdit">Số điện thoại<span style="color: red">*</span></label>
+                <div class="invalid-feedback">Số điện thoại không hợp lệ.</div>
             </div>
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="supplierAddressEdit" name="supplierAddressEdit" required>
-                <label for="supplierAddressEdit">Địa chỉ<span style="color:red">*</span></label>
+                <input type="text" class="form-control" id="supplierAddressEdit" name="supplierAddressEdit">
+                <label for="supplierAddressEdit">Địa chỉ<span style="color: red">*</span></label>
+                <div class="invalid-feedback">Địa chỉ không hợp lệ.</div>
             </div>
             <div style="float: right; margin-bottom:20px;">
                 <button type="button" class="btn btn-primary" onclick="submitEditForm()">Lưu</button>
@@ -416,6 +419,41 @@
         return valid;
     }
 
+    function validateForm1() {
+        var valid = true;
+        var formErrorMessage = document.getElementById("formErrorMessage");
+        formErrorMessage.innerHTML = ""; // Xóa thông báo lỗi trước mỗi lần kiểm tra mới
+
+        var supplierName1 = document.getElementById("supplierNameEdit");
+        if (!isValidName(supplierName1.value)) {
+            supplierName1.classList.add("is-invalid");
+            valid = false;
+            formErrorMessage.innerHTML += "Tên nhà cung cấp không hợp lệ.<br>";
+        } else {
+            supplierName1.classList.remove("is-invalid");
+        }
+
+        var phone1 = document.getElementById("supplierPhoneEdit");
+        if (!isValidPhoneNumber(phone1.value)) {
+            phone1.classList.add("is-invalid");
+            valid = false;
+            formErrorMessage.innerHTML += "Số điện thoại không hợp lệ.<br>";
+        } else {
+            phone1.classList.remove("is-invalid");
+        }
+
+        var address1 = document.getElementById("supplierAddressEdit");
+        if (!isValidAddress(address1.value)) {
+            address1.classList.add("is-invalid");
+            valid = false;
+            formErrorMessage.innerHTML += "Địa chỉ không hợp lệ.<br>";
+        } else {
+            address1.classList.remove("is-invalid");
+        }
+
+        return valid;
+    }
+
     async function openEdit(supplierID) {
 
         try {
@@ -447,7 +485,25 @@
         const supplierName = document.getElementById("supplierNameEdit").value;
         const phone = document.getElementById("supplierPhoneEdit").value;
         const address = document.getElementById("supplierAddressEdit").value;
-
+        const vnf_regex = /((03|09|08|07)+([0-9]{8})\b)/g;
+        if (supplierName==null || supplierName==""|| !supplierName.trim()){
+            alert("Tên không được để trống!");
+            return false;
+        }else if(phone==null || phone=="" || !phone.trim()) {
+            alert("SĐT không được để trống!");
+            return false;
+        }else if(phone.length<10 || phone.length>10) {
+            alert("SĐT phải 10 số!");
+            return false;
+        }
+        else if(vnf_regex.test(phone)==false) {
+            alert("SĐT của bạn không đúng định dạng!");
+            return false;
+        }
+        else if(address==null || address==""|| !address.trim()) {
+            alert("Địa chỉ không được để trống");
+            return false;
+        }
 
         try {
             const response = await fetch(`/admin/suppliers/${supplierID}`, {

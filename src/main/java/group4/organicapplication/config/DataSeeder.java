@@ -37,7 +37,7 @@ public class DataSeeder implements ApplicationListener<ContextRefreshedEvent> {
         }
 
         // Admin account
-        if (userRepository.findByEmail("admin@gmail.com") == null) {
+        if (userRepository.findByEmail("admin@gmail.com", 0) == null) {
             User admin = new User();
             admin.setEmail("admin@gmail.com");
             admin.setPassword(passwordEncoder.encode("123456"));
@@ -52,7 +52,7 @@ public class DataSeeder implements ApplicationListener<ContextRefreshedEvent> {
         }
 
         // Member account
-        if (userRepository.findByEmail("member@gmail.com") == null) {
+        if (userRepository.findByEmail("member@gmail.com", 0) == null) {
             User member = new User();
             member.setEmail("member@gmail.com");
             member.setPassword(passwordEncoder.encode("123456"));
@@ -63,7 +63,7 @@ public class DataSeeder implements ApplicationListener<ContextRefreshedEvent> {
         }
 
         // Shipper account
-        if (userRepository.findByEmail("shipper@gmail.com") == null) {
+        if (userRepository.findByEmail("shipper@gmail.com", 0) == null) {
             User member = new User();
             member.setEmail("shipper@gmail.com");
             member.setPassword(passwordEncoder.encode("123456"));

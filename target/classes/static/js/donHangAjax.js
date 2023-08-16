@@ -166,7 +166,7 @@ $(document).ready(function() {
 		var href = "http://localhost:8080/api/orders/"+donHangId;
 		$.get(href, function(order) {
 			$('#maDonHang').text("Mã đơn hàng: "+ order.id);
-			$('#hoTenNguoiNhan').text("Người nhận: "+ order.email);
+			$('#hoTenNguoiNhan').text("Người nhận: "+ order.user.firstName);
 			$('#sdtNhanHang').text("SĐT: "+ order.phone);
 			$('#diaChiNhan').text("Địa chỉ: "+ order.address);
 			$('#trangThaiDonHang').text("Trạng thái đơn: "+ order.orderStatus);

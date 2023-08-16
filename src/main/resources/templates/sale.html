@@ -433,7 +433,7 @@
         else {
             Swal.fire({
                 icon: 'error',
-                title: 'Không đủ sản phẩm!',
+                title: 'Sản phẩm này chỉ còn ' + limitQuantity + ' sản phẩm!',
                 toast: true,
                 position: 'top-end',
                 showConfirmButton: false,
@@ -443,7 +443,7 @@
     }
 
     async function updateCartItem(productId, quantity, limitQuantity) {
-
+        const config = {style : 'currency', currency: 'VND'};
 
         let unitPriceDOM = document.getElementById(`unitPrice${productId}`);
         let itemTotalPriceDOM = document.getElementById(`itemTotalPrice${productId}`);
@@ -461,9 +461,8 @@
                 if (response.ok) {
 
                     //update ui
-                    let unitPrice = parseInt(unitPriceDOM.innerText);
-                    let itemTotalPrice = parseInt(quantity) * unitPrice
-
+                    let unitPrice = parseInt(unitPriceDOM.innerText.replace(".", ""));
+                    let itemTotalPrice = new Intl.NumberFormat('vi-VN', config).format(quantity * unitPrice)
                     itemTotalPriceDOM.innerText = itemTotalPrice.toString();
 
                     updateTotal()
@@ -492,7 +491,7 @@
         else {
             Swal.fire({
                 icon: 'error',
-                title: 'Không đủ sản phẩm!',
+                title: 'Sản phẩm này chỉ còn ' + limitQuantity + ' sản phẩm!',
                 toast: true,
                 position: 'top-end',
                 showConfirmButton: false,

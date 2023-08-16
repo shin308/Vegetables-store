@@ -13,7 +13,8 @@ import java.util.List;
 import java.util.Set;
 
 public interface UserRepository extends JpaRepository<User, Long>{
-	User findByEmail(String email);
+	@Query("SELECT u FROM User u WHERE u.email = ?1 AND u.deleted = 0")
+	User findByEmail(String email, int deleted);
 
 	User findByDeleted(int deleted);
 

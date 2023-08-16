@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order_User</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/5a213e1813.js" crossorigin="anonymous"></script>
+</head>
+<style>
+    .title-footer {
+        font-size: 18px;
+    }
+
+    footer {
+        font-size: 13px;
+        margin-top: 20px;
+    }
+
+    ul {
+        list-style: none;
+    }
+
+    a {
+        text-decoration: none;
+        color: #5CB85C;
+    }
+
+    #search {
+        width: 40%;
+    }
+
+    @media only screen and (max-width: 915px) {
+        #search {
+            width: 66%;
+        }
+
+        #imgBr {
+            width: 70px;
+            margin-left: 10px;
+        }
+    }
+
+    div, label {
+        margin: 0;
+        padding: 0;
+    }
+
+    h1 {
+        font-size: 1.5em;
+        margin: 10px;
+    }
+
+    /****** Style Star Rating Widget *****/
+    .rating {
+        border: none;
+        float: left;
+    }
+
+    .rating > input {
+        display: none;
+    }
+
+    /*ẩn input radio - vì chúng ta đã có label là GUI*/
+    .rating > label:before {
+        margin: 5px;
+        font-size: 1.2em;
+        font-family: FontAwesome;
+        display: inline-block;
+        content: "\f005";
+    }
+
+    /*1 ngôi sao*/
+    .rating > label {
+        color: #ddd;
+        float: right;
+    }
+
+    /*float:right để lật ngược các ngôi sao lại đúng theo thứ tự trong thực tế*/
+    /*thêm màu cho sao đã chọn và các ngôi sao phía trước*/
+    .rating > input:checked ~ label,
+    .rating:not(:checked) > label:hover,
+    .rating:not(:checked) > label:hover ~ label {
+        color: #FFD700;
+    }
+
+    /* Hover vào các sao phía trước ngôi sao đã chọn*/
+    .rating > input:checked + label:hover,
+    .rating > input:checked ~ label:hover,
+    .rating > label:hover ~ input:checked ~ label,
+    .rating > input:checked ~ label:hover ~ label {
+        color: #FFD700;
+    }
+
+    #star {
+        color: #ddd;
+    }
+</style>
+
+<body>
+<nav class="navbar navbar-expand-lg bg-body-tertiary sticky-top shadow-sm">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02"
+                aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" th:href="@{/}"><img id="imgBr"
+                                                    src="https://img.freepik.com/premium-vector/organic-icon-100-percent-organic-product-label_349999-1003.jpg?w=2000"
+                                                    alt="brand_icon" width="100px"></a>
+        <form class="d-flex" id="search" role="search" th:action="@{/}" method="get">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
+                   name="searchProductName">
+            <button style="background-color: #5CB85C; color:white;" class="btn btn-outline-success border-0"
+                    type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </form>
+
+        <div class="collapse navbar-collapse ms-3" id="navbarTogglerDemo02">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" th:href="@{/#productAll}">SẢN PHẨM</a>
+                </li>
+                <div class="dropdown nav-item">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                       aria-expanded="false">
+                        DANH MỤC
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" th:href="@{/#productAll}">Tất Cả Sản Phẩm</a></li>
+                        <th:block th:each="category:${categoryList}">
+                            <li><a class="dropdown-item" th:href="@{'/' + ${category.categoryID}}">[[${category.categoryName}]]</a>
+                            </li>
+                        </th:block>
+                    </ul>
+                </div>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/order_user}">ĐƠN HÀNG</a>
+                </li>
+            </ul>
+
+        </div>
+        <a class="nav-link" style="margin: 0 2%;" th:href="@{/cart}"><i class="fa-solid fa-basket-shopping"><span
+                class="translate-middle badge border border-light rounded-circle bg-danger"
+                style="--bs-badge-font-size: 0.5em;" th:text="${totalQuantity}" id="cartBadge">10</span></i>GIỎ
+            HÀNG</a>
+        <div th:switch="${#authentication} ? ${#authorization.expression('isAuthenticated()')} : ${false}">
+                <span th:case="${false}">
+                        <a class="navbar-brand me-1 fs-6" th:href="@{/login}">Đăng nhập</a>|<a
+                        class="navbar-brand ms-1 fs-6" th:href="@{/register}">Đăng ký</a>
+                    </span>
+            <span th:case="${true}">
+                    <div class="dropdown">
+                        <button class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                            <span th:text="${loggedInUser.lastName}"></span>
+                            <span> </span>
+                            <span th:text="${loggedInUser.firstName}"></span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" th:href="@{/manage-user-account}">Thông tin cá nhân</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a></li>
+                        </ul>
+                    </div>
+                </span>
+        </div>
+    </div>
+</nav>
+<form th:action="@{'/order_user/'+${orderID}+'/review'}" method="post">
+    <div style="padding: 2% 6%;">
+        <div class="w-100">
+            <table class="table table-sm align-middle table-striped border mt-3">
+                <thead>
+                <tr>
+                    <th class="col">
+                        <div class="row" style="align-items: center;">
+                            <div class="col"><h6 class="m-0 ms-2">Mã đơn hàng: <span th:text="${orderID}"></span></h6>
+                            </div>
+                        </div>
+                    </th>
+
+                </tr>
+                </thead>
+
+                <tbody>
+                <div th:each="reviewInfo : ${reviewInfo}">
+                    <tr>
+
+                        <td class="p-2">
+                            <th:block th:each="product : ${productList}"
+                                 th:if="${reviewInfo.product.productID == product.productID}">
+                                <div class="d-flex">
+
+                                    <img class="border" style="margin: auto 0;"
+                                         th:src="@{${product.getPhotosImagePath}}" width="60"
+                                         height="60">
+                                    <div class="ms-3">
+                                        <div class="d-flex" style="padding-top: 10px;height: 42px;">
+                                            <p class="mt-1 me-2" th:text="${product.getProductName()}"></p>
+                                            <div style="color:#ddd;">
+                                                <div style="width:108px;" th:id="'review'+${product.productID}">
+                                                    <p style="display: none" th:text="${reviewInfo.star}"></p>
+                                                    <i class="fa-solid fa-star" id="1"></i>
+                                                    <i class="fa-solid fa-star" id="2"></i>
+                                                    <i class="fa-solid fa-star" id="3"></i>
+                                                    <i class="fa-solid fa-star" id="4"></i>
+                                                    <i class="fa-solid fa-star" id="5"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <p th:text="${#dates.format(reviewInfo.postDate, 'dd-MM-yyyy HH:mm:ss')}"></p>
+                                    </div>
+                                </div>
+
+                                <div class="row mx-1 mt-2" >
+                                    <p th:text="${reviewInfo.content}"></p>
+                                </div>
+                            </th:block>
+
+                        </td>
+
+                    </tr>
+                </div>
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</form>
+<footer>
+    <div class="row" style="background-color: #333; color:white; padding: 15px 200px;">
+        <div class="col-6">
+            <div class="title-footer"><span>Giới thiệu</span></div>
+            <hr>
+            <p>
+                ORGANIC - Chuyên cung cấp tất cả các mặt hàng rau củ quả sạch, không chất bảo quản, an toàn
+                cho sức khoẻ, đáp ứng nhu cầu của tất cả khách hàng.
+            </p>
+            <p>
+                <i class="fa fa-phone"></i> <span class="margin-left-md me-3">0935708386</span>
+                <i class="fa fa-envelope margin-left-xl"></i> <span class="margin-left-md">vegetablestore@gmail.com
+          </span>
+            </p>
+            <ul class="list-inline d-flex">
+                <li><a href="#">Quyền riêng tư</a></li>
+                <li class="mx-3"><a href="#">Điều khoản</a></li>
+                <li><a href="#">Liên hệ</a></li>
+            </ul>
+
+        </div>
+        <div class="col-3">
+            <div class="title-footer"><span>Phương thức thanh toán</span></div>
+            <hr>
+            <p>Hỗ trợ thanh toán qua VNQR-Pay, Paypal, Online Banking và các loại thẻ tín dụng</p>
+            <img class="img-responsive"
+                 src="https://misolhouse.com/themes/default/shop/assets//images/payment-methods.png"
+                 alt="Payment Methods" width="250">
+
+
+        </div>
+        <div class="col-3">
+            <div class="title-footer"><span>Theo dõi</span></div>
+            <hr>
+            <p>Theo dõi trực tiếp các trang của chúng tôi trên mạng xã hội</p>
+            <ul class="follow-us d-flex p-0">
+                <li class="me-3"><a target="_blank" href="#"><i class="fa fa-facebook"></i></a></li>
+                <li><a target="_blank" href="#"><i class="fa fa-instagram"></i></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="row bg-dark text-white" style="height: 50px; padding:15px 200px">
+        <div class="copyright line-height-lg col">
+            &copy; 2023 ORGANIC
+        </div>
+        <div class="col">Shop thực phẩm sạch số 1 Đà Nẵng - Luôn tươi ngon mỗi ngày!</div>
+    </div>
+
+</footer>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
+<script th:inline="javascript">
+    /*Hiển thị sao đánh giá*/
+    const productIdList = [[${productIdList}]];
+    for (let i = 0; i < productIdList.length; i++){
+        let star = document.getElementById('review'+ productIdList[i]).children
+        let num = star[0].innerText;
+        if (num > 0) {
+            for (let j = 1; j <= num; j++) {
+                star[j].style.color = "#FFD700";
+            }
+        } else {
+            for (let j = 0; j < 6; j++) {
+                star[j].style.display = "none";
+            }
+        }
+
+    }
+
+
+
+</script>
+</html>

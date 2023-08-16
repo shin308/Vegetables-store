@@ -350,11 +350,14 @@
         return namePattern.test(name);
     }
     function isValidAddress(address) {
-        var addressPattern = /^[a-zA-Z0-9\s,-àáâãèéêìíòóôõùúưứừửứựÁÀÂÃÈÉÊÌÍÒÓÔÕÙÚƯỨỪỬỰỦÝỲỴỶỸđĐạẠảẢắẮằẰẳẲặẶẵẴếẾềỀệỆểỂịỊọỌốỐồỒổỔộỘớỚờỜợỢụỤủỦứỨừỪựỰửỬựỶỴỹỸ\s]+$/;
+        var addressPattern = /^[\p{L}0-9\s,.-]+$/u;
         return addressPattern.test(address);
     }
     async function purchaseOrder() {
         const provinceSelect = document.getElementById("provinceSelect");
+        const districtSelect = document.getElementById("districtSelect");
+        const wardSelect = document.getElementById("wardSelect");
+
 
         const formattedTime = new Date(Date.now() + 7 * 60 * 60 * 1000).toISOString().slice(0, 16).replace('T', ' ');
 
@@ -366,10 +369,11 @@
         let inputAddressDOM = document.getElementById("staticAddress")
         let inputNoteDOM = document.getElementById("inputNotes")
 
-        let province = document.getElementById("provinceSelect").options[provinceSelect.selectedIndex].text;
-        let district =  document.getElementById("districtSelect").options[provinceSelect.selectedIndex].text;
-        let ward = document.getElementById("wardSelect").options[provinceSelect.selectedIndex].text;
+        let province = provinceSelect.options[provinceSelect.selectedIndex].text;
+        let district =  districtSelect.options[districtSelect.selectedIndex].text;
+        let ward = wardSelect.options[wardSelect.selectedIndex].text;
 
+        console.log(province, district, ward)
 
         let nameError = document.getElementById("nameError")
         let emailError = document.getElementById("emailError")
@@ -546,7 +550,7 @@
         } else {
             Swal.fire({
                 icon: 'error',
-                title: 'Vui lòng chọn địa chỉ giao hàng!',
+                title: 'Thông tin giao hàng không hợp lệ!',
                 toast: true,
                 position: 'top-end',
                 showConfirmButton: false,

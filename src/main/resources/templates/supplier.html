@@ -377,7 +377,7 @@
         return namePattern.test(name);
     }
     function isValidAddress(address) {
-        var addressPattern = /^[a-zA-Z0-9\s,-àáâãèéêìíòóôõùúưứừửứựÁÀÂÃÈÉÊÌÍÒÓÔÕÙÚƯỨỪỬỰỦÝỲỴỶỸđĐạẠảẢắẮằẰẳẲặẶẵẴếẾềỀệỆểỂịỊọỌốỐồỒổỔộỘớỚờỜợỢụỤủỦứỨừỪựỰửỬựỶỴỹỸ\s]+$/;
+        var addressPattern = /^[\p{L}0-9\s,.-]+$/u;
         return addressPattern.test(address);
     }
 

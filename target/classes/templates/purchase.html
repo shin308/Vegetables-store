@@ -9,6 +9,7 @@
           integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/5a213e1813.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 </head>
 <style>
     .title-footer{
@@ -54,6 +55,13 @@
         #column1, #column2{
             width:100%;
         }
+    }
+    .inputInfo, .addressInfo {
+        width: 480px;
+        border-radius: 4px;
+        height: 30px;
+        border: 1px solid #cbcaca;
+
     }
 
 </style>
@@ -133,7 +141,7 @@
         <div class="mb-3 row">
             <label for="staticName" class="col-3 col-form-label">Họ tên:<span style="color:red">*</span></label>
             <div class="col-9">
-                <input type="text"  id="staticName" th:value="${user.lastName} +' '+ ${user.firstName}" title="Vui lòng nhập tên đúng định dạng!">
+                <input type="text"  id="staticName" th:value="${user.lastName} +' '+ ${user.firstName}" title="Vui lòng nhập tên đúng định dạng!" class="inputInfo">
                 <div id="nameError" class="error-message">Tên không hợp lệ. Tên không được để trống hoặc chứa ký tự đặc biệt hoặc số</div>
             </div>
 
@@ -141,7 +149,7 @@
         <div class="mb-3 row">
             <label for="staticPhone" class="col-3 col-form-label">Số điện thoại:<span style="color:red">*</span></label>
             <div class="col-9">
-                <input type="tel" id="staticPhone" th:field="${user.phone}" title="Vui lòng nhập số điện thoại đúng 10 số!">
+                <input type="tel" id="staticPhone" th:field="${user.phone}" title="Vui lòng nhập số điện thoại đúng 10 số!" class="inputInfo">
                 <div id="phoneError" class="error-message">Số điện thoại không hợp lệ. Vui lòng nhập 10 chữ số</div>
             </div>
         </div>
@@ -149,17 +157,43 @@
             <label for="staticEmail" class="col-3 col-form-label">Email:<span style="color:red">*</span></label>
             <div class="col-9">
                 <input type="email" id="staticEmail"
-                       th:field="${user.email}" title="Vui lòng nhập email đúng định dạng!">
+                       th:field="${user.email}" title="Vui lòng nhập email đúng định dạng!" class="inputInfo">
                 <div id="emailError" class="error-message">Email không hợp lệ hoặc không được để trống</div>
             </div>
         </div>
         <div class="mb-3 row">
             <label for="staticAddress" class="col-3 col-form-label">Địa chỉ giao hàng:<span style="color:red">*</span></label>
             <div class="col-9">
-                <input type="text" id="staticAddress"
-                       th:field="${user.address}" title="Vui lòng nhập địa chỉ đúng định dạng!">
-                <div id="addressError" class="error-message">Địa chỉ không hợp lệ. Địa chỉ không được để trống hoặc chứa ký tự đặc biệt ngoại trừ dấu phẩy và dấu gạch ngang</div>
+                <div class="mb-3 row">
+                    <div class="col-9 mb-2" >
+                        <select name="province" id="provinceSelect" onchange="loadDistricts()" class="addressInfo">
+                            <option>Chọn Tỉnh/Thành Phố</option>
+                            <option th:each="province : ${mapData}" th:value="${province.Id}" th:text="${province.Name}"></option>
+                        </select>
+                    </div>
+                    <div class="col-9 mb-2" >
+                        <select name="district" id="districtSelect" onchange="loadWards()" class="addressInfo">
+                            <option>Chọn Quận/Huyện</option>
+                        </select>
+                    </div>
+
+                    <div class="col-9 mb-2" >
+                        <select name="ward" id="wardSelect" class="addressInfo">
+                            <option>Chọn Xã/Phường/Thị trấn</option>
+                        </select>
+                    </div>
+                    <div class="col-12">
+                        <input type="text" id="staticAddress"
+                               title="Vui lòng nhập địa chỉ đúng định dạng!" class="inputInfo" placeholder="Nhập số nhà/ tên đường">
+                        <div id="addressError" class="error-message">Địa chỉ không hợp lệ. Địa chỉ không được để trống hoặc chứa ký tự đặc biệt ngoại trừ dấu phẩy và dấu gạch ngang</div>
+                    </div>
+
+                </div>
+
+
             </div>
+
+
         </div>
         <div class="mb-3 row">
             <label for="inputNotes" class="col-3 col-form-label">Ghi chú:</label>
@@ -214,12 +248,12 @@
                 <h6>Tổng tiền</h6>
                 <p th:text="${#numbers.formatDecimal(totalPrice + 5000, 1 , 'POINT', 0 , 'DEFAULT')} + ' ₫'">60000</p>
             </div>
-            <div class="row1" style="display: flex;">
-                <input type="radio" name="option" id="radio1" checked> Thanh toán trực tuyến
+            <div class="row1 mb-2" style="display: flex;">
+                <input type="radio" name="option" id="radio1" checked style="transform: scale(1.5);">&nbsp Thanh toán trực tuyến
 
             </div>
-            <div class="row1" style="display: flex;">
-                <input type="radio" name="option" id="radio2"> Thanh toán khi nhận hàng
+            <div class="row1 mb-3" style="display: flex;">
+                <input type="radio" name="option" id="radio2" style="transform: scale(1.5);">&nbsp Thanh toán khi nhận hàng
             </div>
         </div>
 
@@ -293,8 +327,14 @@
 
 <!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>-->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
 <script th:inline="javascript">
 
+    $(document).ready(function() {
+        $('.addressInfo').select2();
+    });
     function isValidEmail(email) {
         var emailPattern = /^[a-zA-Z0-9._-]+@gmail\.com$/;
         return emailPattern.test(email);
@@ -310,10 +350,14 @@
         return namePattern.test(name);
     }
     function isValidAddress(address) {
-        var addressPattern = /^[a-zA-Z0-9\s,-àáâãèéêìíòóôõùúưứừửứựÁÀÂÃÈÉÊÌÍÒÓÔÕÙÚƯỨỪỬỰỦÝỲỴỶỸđĐạẠảẢắẮằẰẳẲặẶẵẴếẾềỀệỆểỂịỊọỌốỐồỒổỔộỘớỚờỜợỢụỤủỦứỨừỪựỰửỬựỶỴỹỸ\s]+$/;
+        var addressPattern = /^[\p{L}0-9\s,.-]+$/u;
         return addressPattern.test(address);
     }
     async function purchaseOrder() {
+        const provinceSelect = document.getElementById("provinceSelect");
+        const districtSelect = document.getElementById("districtSelect");
+        const wardSelect = document.getElementById("wardSelect");
+
 
         const formattedTime = new Date(Date.now() + 7 * 60 * 60 * 1000).toISOString().slice(0, 16).replace('T', ' ');
 
@@ -324,6 +368,12 @@
         let inputEmailDOM = document.getElementById("staticEmail")
         let inputAddressDOM = document.getElementById("staticAddress")
         let inputNoteDOM = document.getElementById("inputNotes")
+
+        let province = provinceSelect.options[provinceSelect.selectedIndex].text;
+        let district =  districtSelect.options[districtSelect.selectedIndex].text;
+        let ward = wardSelect.options[wardSelect.selectedIndex].text;
+
+        console.log(province, district, ward)
 
         let nameError = document.getElementById("nameError")
         let emailError = document.getElementById("emailError")
@@ -362,7 +412,7 @@
 
         var radio1 = document.getElementById("radio1");
         var radio2 = document.getElementById("radio2");
-        if(isValid)
+        if(isValid && province !== "Chọn Tỉnh/Thành Phố" && district !== "Chọn Quận/Huyện" && ward!== "Chọn Xã/Phường/Thị trấn")
         {
             const result = await Swal.fire({
                 title: 'Xác nhận',
@@ -388,7 +438,7 @@
                     });
 
                     const orderData = {
-                        address: inputAddressDOM.value,
+                        address: inputAddressDOM.value + ',' + ward + ',' + district + ',' + province ,
                         email: inputEmailDOM.value,
                         note: inputNoteDOM.value,
                         orderDay: formattedTime,
@@ -412,7 +462,7 @@
                             const vnpayUrl = await response.text();
                             window.location.href = vnpayUrl;
 
-                            await sendEmail(inputEmailDOM.value, inputNameDOM.value, formattedTime, inputPhoneDOM.value,inputAddressDOM.value)
+                            await sendEmail(inputEmailDOM.value, inputNameDOM.value, formattedTime, inputPhoneDOM.value,inputAddressDOM.value + ',' + ward + ',' + district + ',' + province)
 
                         } else {
                             console.error('Error:', response.statusText);
@@ -440,7 +490,7 @@
                     });
 
                     const orderData = {
-                        address: inputAddressDOM.value,
+                        address: inputAddressDOM.value + ',' + ward + ',' + district + ',' + province ,
                         email: inputEmailDOM.value,
                         note: inputNoteDOM.value,
                         orderDay: formattedTime,
@@ -474,7 +524,7 @@
                                 window.location.href = '/order_user';
                             }, 1000)
 
-                            await sendEmail(inputEmailDOM.value, inputNameDOM.value, formattedTime, inputPhoneDOM.value,inputAddressDOM.value)
+                            await sendEmail(inputEmailDOM.value, inputNameDOM.value, formattedTime, inputPhoneDOM.value,inputAddressDOM.value + ',' + ward + ',' + district + ',' + province)
 
                         } else {
                             console.error('Error:', response.statusText);
@@ -497,6 +547,15 @@
             }else {
             }
 
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Thông tin giao hàng không hợp lệ!',
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000
+            });
         }
 
 
@@ -543,5 +602,67 @@
         }
 
     }
+
+    async function loadDistricts() {
+        const selectedProvinceId = document.getElementById("provinceSelect").value;
+
+        const provinces = [[${mapData}]]
+        console.log(provinces)
+
+        //get province by id
+        const selectedProvince = provinces.find(function (province) {
+            return province.Id === selectedProvinceId;
+        });
+
+        const districtSelect = document.getElementById("districtSelect");
+        districtSelect.innerHTML = "";
+
+        //them option cho district
+        if (selectedProvince && selectedProvince.Districts) {
+            selectedProvince.Districts.forEach(function (district) {
+                const option = document.createElement("option");
+                option.value = district.Id;
+                option.text = district.Name;
+                districtSelect.appendChild(option);
+            });
+        }
+
+        loadWards();
+    }
+
+    async function loadWards() {
+
+        const selectedProvinceId = document.getElementById("provinceSelect").value;
+        const districtSelect = document.getElementById("districtSelect");
+        const selectedDistrictId = districtSelect.value;
+
+        const provinces = [[${mapData}]];
+
+        const selectedProvince = provinces.find(function (province) {
+            return province.Id === selectedProvinceId;
+        });
+
+        if (selectedProvince && selectedProvince.Districts) {
+            const selectedDistrict = selectedProvince.Districts.find(function (district) {
+                return district.Id === selectedDistrictId;
+            });
+
+            const wardSelect = document.getElementById("wardSelect");
+            wardSelect.innerHTML = "";
+
+            if (selectedDistrict && selectedDistrict.Wards) {
+                selectedDistrict.Wards.forEach(function (ward) {
+                    const option = document.createElement("option");
+                    option.value = ward.Id;
+                    option.text = ward.Name;
+                    wardSelect.appendChild(option);
+                });
+            }
+        }
+    }
+
+
+
+
 </script>
 </html>

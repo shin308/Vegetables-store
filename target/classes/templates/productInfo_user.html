@@ -313,7 +313,7 @@
                     Phản hồi
                   </button>
                   <a th:href="'/productInfoUser/' + ${review.product.productID} + '/delete/' + ${review.reviewID}">
-                    <button class="border-0" th:if="${review.user.id} == ${loggedInUser.id}">Xoá
+                    <button class="border-0" th:if="${review.user.id} == ${userLogged}">Xoá
                     </button>
                   </a>
                 </div>
@@ -342,7 +342,7 @@
                             <div class="col-4 text-end">
                               <a th:href="'/productInfoUser/' + ${review.product.productID} + '/delete/' + ${reply.reviewID}">
                                 <button class="border-0"
-                                        th:if="${review.user.id} == ${loggedInUser.id}">
+                                        th:if="${review.user.id} == ${userLogged}">
                                   Xoá
                                 </button>
                               </a>
@@ -399,7 +399,7 @@
                     Phản hồi
                   </button>
                   <a th:href="'/productInfoUser/' + ${review.product.productID} + '/delete/' + ${review.reviewID}">
-                    <button class="border-0" th:if="${review.user.id} == ${loggedInUser.id}">Xoá
+                    <button class="border-0" th:if="${review.user.id} == ${userLogged}">Xoá
                     </button>
                   </a>
                 </div>
@@ -428,7 +428,7 @@
                             <div class="col-4 text-end">
                               <a th:href="'/productInfoUser/' + ${review.product.productID} + '/delete/' + ${reply.reviewID}">
                                 <button class="border-0"
-                                        th:if="${review.user.id} == ${loggedInUser.id}">
+                                        th:if="${review.user.id} == ${userLogged}">
                                   Xoá
                                 </button>
                               </a>
@@ -447,7 +447,7 @@
                       <form class="w-100 d-flex" method="post"
                             th:action="'/productInfoUser/'+ ${productInfo.productID} +'/newReply'"
                             th:object="${addNew}">
-                        <input type="text" th:value="${loggedInUser.id}" name="user"
+                        <input type="text" th:value="${userLogged}" name="user"
                                style="display: none">
                         <input type="text" th:value="${review.reviewID}" name="replyID"
                                style="display: none">
@@ -471,7 +471,7 @@
             </div>
             <div class="input-group mb-2">
               <form class="w-100 d-flex" method="post" th:action="'/productInfoUser/'+ ${productInfo.productID} +'/newComment'" th:object="${addNew}">
-                <input type="text" th:value="${loggedInUser.id}" name="user" style="display: none">
+                <input type="text" th:value="${userLogged}" name="user" style="display: none">
                 <input type="text" th:value="${productInfo.productID}" name="product" style="display: none">
                 <input type="text" class="form-control" th:field="*{content}" id="comment" onchange="enterComment()" required>
                 <button class="btn btn-primary" type="submit" id="submitComment" disabled><i

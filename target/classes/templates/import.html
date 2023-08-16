@@ -235,7 +235,7 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-sm-4 col-form-label font-weight-bold">Ngày thêm:</label>
+                    <label class="col-sm-4 col-form-label font-weight-bold">Ngày nhập:</label>
                     <div class="col-sm-8">
                         <input type="text"  class="form-control" id="importDateView" name="importDateView" readonly/>
                     </div>
@@ -296,11 +296,11 @@
 
 <div id="addNew" class="my-5">
     <div style="background-color: white; border-radius:10px;" class="shadow-lg w-50 mt-5">
-        <form action="/admin/import/create" class="form-new" method="post" style="padding: 20px" enctype="multipart/form-data">
+        <form action="/admin/import/create" class="form-new" method="post" style="padding: 20px" enctype="multipart/form-data" onsubmit="return validateForm()">
             <h6 style="height: 50px; background-color:black; color:white; padding:15px; border-radius:10px 10px 0 0;">
                 Thêm đơn nhập hàng
             </h6>
-            <div class="border border-secondary rounded p-3">
+
                 <div class="row image form-floating" id="imageNewCon" style="height: 100px;">
                     <div class="col-sm-3">
                         <img class="border" src="/images/imageNull.png" alt="ảnh" width="100" height="100" >
@@ -310,28 +310,31 @@
                     </div>
                 </div>
                 <div class="form-group row mb-2">
-                    <label class="col-sm-3 col-form-label font-weight-bold">Tên sản phẩm:</label>
+                    <label class="col-sm-3 col-form-label font-weight-bold">Tên sản phẩm <span style="color:red">(*)</span>:</label>
                     <div class="col-sm-9">
                         <input type="text"  class="form-control" id="productName" name="productName" required minlength="3" maxlength="100"/>
                     </div>
+                    <div class="invalid-feedback">Tên sản phẩm không được trống.</div>
                 </div>
 
                 <div class="form-group row mb-2">
-                    <label class="col-sm-3 col-form-label font-weight-bold">Ngày thêm:</label>
+                    <label class="col-sm-3 col-form-label font-weight-bold">Ngày nhập <span style="color:red">(*)</span>:</label>
                     <div class="col-sm-9">
-                        <input type="date"  class="form-control" id="importDate" name="importDate" required/>
+                        <input type="date"  class="form-control" id="importDate" required name="importDate" />
                     </div>
+                    <div class="invalid-feedback">Ngày thêm không được trống.</div>
                 </div>
                 <div class="form-group row mb-2">
-                    <label class="col-sm-3 col-form-label font-weight-bold">Hạn sử dụng:</label>
+                    <label class="col-sm-3 col-form-label font-weight-bold">Hạn sử dụng <span style="color:red">(*)</span>:</label>
                     <div class="col-sm-9">
-                        <input type="date" onclick="checkDate()" id="expiry" name="expiry"  class="form-control" required/>
+                        <input type="date" onclick="checkDate()" id="expiry" name="expiry" required class="form-control" />
                     </div>
+                    <div class="invalid-feedback">Hạn sử dụng không được trống.</div>
                 </div>
                 <div class="form-group row mb-2">
-                    <label class="col-sm-3 col-form-label font-weight-bold">Loại sản phẩm:</label>
+                    <label class="col-sm-3 col-form-label font-weight-bold">Loại sản phẩm <span style="color:red">(*)</span>:</label>
                     <div class="col-sm-9">
-                        <select  class="form-control" required id="category" name="category">
+                        <select  class="form-control"  id="category" name="category">
                             <th:block th:each ="cat : ${categories}">
                                 <option th:text="${cat.categoryName}" th:value="${cat.categoryID}"></option>
                             </th:block>
@@ -339,9 +342,9 @@
                     </div>
                 </div>
                 <div class="form-group row mb-2">
-                    <label class="col-sm-3 col-form-label font-weight-bold">Nhà cung cấp:</label>
+                    <label class="col-sm-3 col-form-label font-weight-bold">Nhà cung cấp <span style="color:red">(*)</span>:</label>
                     <div class="col-sm-9">
-                        <select  class="form-control" required id="supplier" name="supplier">
+                        <select  class="form-control"  id="supplier" name="supplier">
                             <th:block th:each ="sup : ${suppliers}">
                                 <option th:text="${sup.supplierName}" th:value="${sup.supplierID}"></option>
                             </th:block>
@@ -349,28 +352,32 @@
                     </div>
                 </div>
                 <div class="form-group row mb-2">
-                    <label class="col-sm-3 col-form-label font-weight-bold">Giá thêm:</label>
+                    <label class="col-sm-3 col-form-label font-weight-bold">Giá thêm <span style="color:red">(*)</span>:</label>
                     <div class="col-sm-9">
                         <input type="number" name="importPrice" id="importPrice"  class="form-control" required min="0" />
                     </div>
+                    <div class="invalid-feedback">Giá thêm không được trống.</div>
                 </div>
                 <div class="form-group row mb-2">
-                    <label class="col-sm-3 col-form-label font-weight-bold">Giá bán:</label>
+                    <label class="col-sm-3 col-form-label font-weight-bold">Giá bán <span style="color:red">(*)</span>:</label>
                     <div class="col-sm-9">
                         <input type="number" name="price" id="price"  class="form-control" required min="0" />
                     </div>
+                    <div class="invalid-feedback">Giá bán không được trống.</div>
                 </div>
                 <div class="form-group row mb-2">
-                    <label class="col-sm-3 col-form-label font-weight-bold">Khối lượng:</label>
+                    <label class="col-sm-3 col-form-label font-weight-bold">Khối lượng <span style="color:red">(*)</span>:</label>
                     <div class="col-sm-9">
-                        <input type="text" name="unit" id="unit" class="form-control"  required>
+                        <input type="text" name="unit" id="unit"  required class="form-control"  >
                     </div>
+                    <div class="invalid-feedback">Khối lượng không được trống.</div>
                 </div>
                 <div class="form-group row mb-2">
-                    <label class="col-sm-3 col-form-label font-weight-bold">Số lượng:</label>
+                    <label class="col-sm-3 col-form-label font-weight-bold">Số lượng <span style="color:red">(*)</span>:</label>
                     <div class="col-sm-9">
-                        <input type="number" min="0" name="quantity" id="quantity"  class="form-control" required/>
+                        <input type="number" min="0" name="quantity" required id="quantity"  class="form-control" />
                     </div>
+                    <div class="invalid-feedback">Số lượng không được trống.</div>
                 </div>
                 <div class="form-group row">
                     <label class="col-sm-3 col-form-label font-weight-bold">Mô tả:</label>
@@ -383,7 +390,7 @@
                     <button type="button" class="btn btn-secondary" onclick="closeAddNew()">Huỷ</button>
                 </div>
 
-            </div>
+            <div class="invalid-feedback" id="formErrorMessage" style="color: red;"></div>
         </form>
     </div>
 </div>
@@ -501,6 +508,82 @@
         let x = document.getElementById("addNew");
         x.style.display = "none";
     }
+    function validateForm() {
+        var valid = true;
+        var formErrorMessage = document.getElementById("formErrorMessage");
+        formErrorMessage.innerHTML = ""; // Xóa thông báo lỗi trước mỗi lần kiểm tra mới
+
+        var productName = document.getElementById("productName");
+        if (productName == null) {
+            productName.classList.add("is-invalid");
+            valid = false;
+            formErrorMessage.innerHTML += "Tên sản phẩm không hợp lệ.<br>";
+        } else {
+            productName.classList.remove("is-invalid");
+        }
+
+        var weight = document.getElementById("unit");
+        if (weight == null) {
+            weight.classList.add("is-invalid");
+            valid = false;
+            formErrorMessage.innerHTML += "Khối lượng không được để trống.<br>";
+        } else {
+            weight.classList.remove("is-invalid");
+        }
+
+        var quantity = document.getElementById("quantity");
+        if (quantity.value <= 0 || quantity == null) {
+            quantity.classList.add("is-invalid");
+            valid = false;
+            formErrorMessage.innerHTML += "Số lượng không hợp lệ.<br>";
+        } else {
+            quantity.classList.remove("is-invalid");
+        }
+        var importPrice = document.getElementById("importPrice");
+        if (importPrice.value <= 1000 || importPrice == null) {
+            importPrice.classList.add("is-invalid");
+            valid = false;
+            formErrorMessage.innerHTML += "Giá thêm không hợp lệ.<br>";
+        } else {
+            importPrice.classList.remove("is-invalid");
+        }
+        var price = document.getElementById("price");
+        if (price.value <= importPrice || price == null) {
+            price.classList.add("is-invalid");
+            valid = false;
+            formErrorMessage.innerHTML += "Giá bán không thể nhỏ hơn hoặc bằng giá thêm.<br>";
+        } else {
+            price.classList.remove("is-invalid");
+        }
+        var importDate = document.getElementById("importDate");
+        if (importDate.value == null) {
+            importDate.classList.add("is-invalid");
+            valid = false;
+            formErrorMessage.innerHTML += "Ngày nhập không được để trống.<br>";
+        } else {
+            importDate.classList.remove("is-invalid");
+        }
+        var expiry = document.getElementById("expiry");
+        if (expiry.value == null) {
+            expiry.classList.add("is-invalid");
+            valid = false;
+            formErrorMessage.innerHTML += "Hạn sử dụng không được để trống.<br>";
+        } else {
+            expiry.classList.remove("is-invalid");
+        }
+        return valid;
+    }
+
+
+    // function isValidName(name) {
+    //     var namePattern = /^[\p{L}]+(?: [\p{L}]+)*$/u;
+    //     return namePattern.test(name);
+    // }
+    //
+    // function isValidUnit(unit) {
+    //     var addressPattern = /^[\p{L}0-9\s,.-]+$/u;
+    //     return addressPattern.test(address);
+    // }
 
     async function openView(importID) {
 
